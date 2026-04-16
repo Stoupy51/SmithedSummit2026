@@ -13,7 +13,7 @@ author: "Stoupy51"
 # Project version in semantic versioning format: major.minor.patch (e.g., 1.0.0 or 2.84.615).
 version: "0.0.1"
 # Minecraft version. Determines what resources beet loads (plugins like `mecha` determine what commands to use). Defaults: Latest
-minecraft: ""
+minecraft: "26.1.2"
 
 # Defines the directory that beet uses for the base path
 directory: "."
@@ -25,7 +25,6 @@ ignore: ["build", "manual_cache", "definitions_debug.json"]
 # A list of importable plugin strings
 require:
     - "stewbeet"
-    - "bolt"
 
 # Takes a nested pack config, see PackConfig() documentation
 data_pack:
@@ -57,13 +56,12 @@ pipeline:
     - "stewbeet.plugins.compatibilities.simpledrawer"
     - "stewbeet.plugins.compatibilities.neo_enchant"
     - "src.link" # User code
-    - "mecha"
-    - "stewbeet.plugins.finalyze.scoreboard_constants"
     - "stewbeet.plugins.finalyze.custom_blocks_ticking"
     - "stewbeet.plugins.finalyze.basic_datapack_structure"
     - "stewbeet.plugins.finalyze.dependencies"
     - "stewbeet.plugins.finalyze.check_unused_textures"
     - "stewbeet.plugins.finalyze.last_final"
+    - "stewbeet.plugins.auto.scoreboard_constants"
     - "stewbeet.plugins.auto.lang_file"
     - "stewbeet.plugins.auto.headers"
     - "stewbeet.plugins.archive"
@@ -74,7 +72,7 @@ pipeline:
 # Generic dict which holds extra information usable by plugins
 meta:
     # List of supported Minecraft versions (used when uploading to Modrinth or Smithed)
-    mc_supports: ["1.21.11", "26.1", "infinite"]
+    mc_supports: ["26.1.2", "infinite"]
 
     # Model resolver configuration for caching models
     model_resolver:

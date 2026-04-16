@@ -1,0 +1,15 @@
+{
+	"pack": {
+		"pack_format": 84,
+		"description": "Basic Template [0.0.1] by Stoupy51",
+		"min_format": [
+			84,
+			0
+		],
+		"max_format": [
+			9999,
+			0
+		]
+	},
+	"id": "basic_template"
+}
