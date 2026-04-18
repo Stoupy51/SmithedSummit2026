@@ -1,0 +1,5 @@
+{
+	"pools": [
+		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/black_hole"}]}
+	]
+}

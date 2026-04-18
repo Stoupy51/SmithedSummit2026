@@ -1,0 +1,41 @@
+{
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:command_block",
+					"functions": [
+						{
+							"function": "minecraft:set_components",
+							"components": {
+								"minecraft:item_model": "stewbeet_summit:black_hole",
+								"minecraft:item_name": {
+									"text": "Black Hole"
+								},
+								"minecraft:lore": [
+									[
+										"",
+										{"text": "I","color": "white","italic": false,"font": "stewbeet_summit:icons"},
+										{"text": " StewBeet Summit 2026","italic": true,"color": "blue"}
+									]
+								],
+								"minecraft:custom_data": {
+									"stewbeet_summit": {
+										"black_hole": true
+									},
+									"smithed": {
+										"id": "stewbeet_summit:black_hole",
+										"origin": "stewbeet_summit",
+										"ignore": {"functionality": true,"crafting": true}
+									}
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

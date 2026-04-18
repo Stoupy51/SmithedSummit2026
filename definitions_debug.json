@@ -1,1 +1,14 @@
-{}
+{
+	"black_hole": {
+		"id": "black_hole",
+		"base_item": "minecraft:command_block",
+		"recipes": [],
+		"components": {
+			"item_model": "stewbeet_summit:black_hole",
+			"item_name": {"text": "Black Hole"},
+			"lore": [["",{"text": "I","color": "white","italic": false,"font": "stewbeet_summit:icons"},{"text": " StewBeet Summit 2026","italic": true,"color": "blue"}]],
+			"custom_data": {"stewbeet_summit": {"black_hole": true},"smithed": {"id": "stewbeet_summit:black_hole","origin": "stewbeet_summit","ignore": {"functionality": true,"crafting": true}}}
+		},
+		"skip_gives": false
+	}
+}

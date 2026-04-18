@@ -11,10 +11,9 @@ from .definitions.additions import main as main_additions
 def beet_default(ctx: Context):
 
     # Generate custom disc records in definitions
-    generate_custom_records("auto")
+    # generate_custom_records("auto")
 
     # Run additional definitions modifications (src/definitions/additions.py)
-    # TODO: If you need to add items, you probably want to add them in src/definitions/additions.py, not here, to keep things organized.
     main_additions()
 
     # Final adjustments, you definitively should keep them!
