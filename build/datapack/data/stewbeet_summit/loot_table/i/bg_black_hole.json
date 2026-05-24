@@ -10,9 +10,9 @@
 						{
 							"function": "minecraft:set_components",
 							"components": {
-								"minecraft:item_model": "stewbeet_summit:black_hole",
+								"minecraft:item_model": "stewbeet_summit:bg_black_hole",
 								"minecraft:item_name": {
-									"text": "Black Hole"
+									"text": "Bg Black Hole"
 								},
 								"minecraft:lore": [
 									[
@@ -23,10 +23,10 @@
 								],
 								"minecraft:custom_data": {
 									"stewbeet_summit": {
-										"black_hole": true
+										"bg_black_hole": true
 									},
 									"smithed": {
-										"id": "stewbeet_summit:black_hole",
+										"id": "stewbeet_summit:bg_black_hole",
 										"origin": "stewbeet_summit",
 										"ignore": {"functionality": true,"crafting": true}
 									}

@@ -14,7 +14,7 @@ def beet_default(ctx: Context):
     black_hole_nbt: JsonDict = {
         "item":{
             "id": "minecraft:stone",
-            "components": {"minecraft:item_model":f"{ns}:black_hole"},
+            "components": {"minecraft:item_model":f"{ns}:bg_black_hole"},
             "count": 1,
         },
         "transformation":{
@@ -23,7 +23,7 @@ def beet_default(ctx: Context):
             "scale": [16.69, 9.69, -18.69],
             "translation": [0.0, 0.0, 0.0]
         },
-        "Tags": [f"{ns}.black_hole"]
+        "Tags": [f"{ns}.bg_black_hole"]
     }
 
 
@@ -31,7 +31,7 @@ def beet_default(ctx: Context):
     # Add some commands when loading datapack
     write_load_file(f"""
 # Summon a Black Hole underground
-execute unless entity @e[tag={ns}.black_hole] run summon minecraft:item_display 198.5 54.0 -21.5 {json.dumps(black_hole_nbt)}
+execute unless entity @e[tag={ns}.bg_black_hole] run summon minecraft:item_display 198.5 54.0 -21.5 {json.dumps(black_hole_nbt)}
 
 """)
 

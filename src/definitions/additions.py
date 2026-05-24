@@ -7,6 +7,6 @@ from stewbeet import *  # type: ignore
 def main():
 
     # Add items to the definitions
-    Item(id="black_hole", override_model={"parent":"minecraft:block/cube_all"})
+    Item(id="bg_black_hole", override_model={"parent":"minecraft:block/cube_all"})
     pass
 

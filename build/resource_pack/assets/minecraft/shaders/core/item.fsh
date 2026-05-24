@@ -51,12 +51,16 @@ const float effectIntensity  = 1;                   // overall effect intensity
 const vec3  rimColor         = vec3(.64, 0., 0.);   // rim color (red)
 const vec3  coreGlowColor    = vec3(.04, .3, .47);  // core glow color (blue-green)
 
+#define BH_MARCH_STEPS 20.0
+#define BH_FBM_OCTAVES 5.0
+
 // Volumetric ray-marching of the accretion disk
 vec4 computeAccretionDisk(vec3 localPos, float animTime) {
     vec4 accumulatedColor = vec4(0.);
+	vec3 normalizedPos = normalize(localPos);
     float rayDist = animTime;  // NOTE: used as loop accumulator, do not rename
-    for (float stepDist = 0., stepSize = 0., iterCount = 0.; iterCount < 20.; iterCount++) {
-        vec3 samplePos = stepDist * normalize(localPos);
+    for (float stepDist = 0., stepSize = 0., iterCount = 0.; iterCount < BH_MARCH_STEPS; iterCount++) {
+        vec3 samplePos = stepDist * normalizedPos;
         // Cylindrical coordinates to spiral around the axis
         samplePos = vec3(
             atan(samplePos.y / .2, samplePos.x) * 2.,
@@ -64,7 +68,7 @@ vec4 computeAccretionDisk(vec3 localPos, float animTime) {
             length(samplePos.xy) - 5. - stepDist * .2
         );
         // Fractal noise (FBM)
-        for (stepSize = 1.; stepSize < 7.; stepSize++) {
+        for (stepSize = 1.; stepSize < BH_FBM_OCTAVES; stepSize++) {
             samplePos += sin(samplePos.yzx * stepSize + rayDist + .3 * iterCount) / stepSize;
         }
         stepDist += stepSize = length(vec4(.4 * cos(samplePos) - .4, samplePos.z));
@@ -77,6 +81,7 @@ vec4 computeAccretionDisk(vec3 localPos, float animTime) {
 // Full black hole render (raycasting + visual effects)
 vec4 computeBlackHole() {
     vec3 viewDir       = normalize(c_);
+	viewDir = vec3(-viewDir.x, viewDir.y, -viewDir.z);  // 180° yaw rotation
     vec3 diskCenter    = blackHoleAxis * (GameTime * timeScale);
     vec3 axisRef       = diskCenter;
 
@@ -115,8 +120,9 @@ vec4 computeBlackHole() {
     vec3 axialProjection = blackHoleAxis * dot(hitPoint, blackHoleAxis);
     vec3 surfaceNormal   = normalize(hitPoint - axialProjection);
     float fresnel        = 1. - max(0., dot(surfaceNormal, -viewDir));
-    float fresnelPow     = pow(fresnel, 4.0);
-    vec3 rimGlow         = coreGlowColor * fresnelPow * effectIntensity;
+	float fresnelPow2	 = fresnel * fresnel;
+    float fresnelPow4    = fresnelPow2 * fresnelPow2;
+    vec3 rimGlow         = coreGlowColor * fresnelPow4 * effectIntensity;
 
     // Axial glow (along black hole axis)
     float axialDist  = dot(hitPoint, blackHoleAxis);
@@ -124,8 +130,8 @@ vec4 computeBlackHole() {
     vec3 axialColor  = rimColor * axialGlow * effectIntensity;
 
     // Additive composition (screen blend)
-    diskColor.rgb = vec3(1.) - (vec3(1.) - diskColor.rgb) * (vec3(1.) - rimGlow);
-    diskColor.rgb = vec3(1.) - (vec3(1.) - diskColor.rgb) * (vec3(1.) - axialColor);
+	vec3 invDiskColor = vec3(1.) - diskColor.rgb;
+    diskColor.rgb = vec3(1.) - invDiskColor * (vec3(1.) - rimGlow) * (vec3(1.) - axialColor);
 
     // Edge fade
     float edgeFade = smoothstep(-1.0, 1.0, axialDist);

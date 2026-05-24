@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:block/cube_all",
 	"textures": {
-		"all": "stewbeet_summit:item/black_hole"
+		"all": "stewbeet_summit:item/bg_black_hole"
 	}
 }
