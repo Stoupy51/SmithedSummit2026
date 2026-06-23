@@ -10,5 +10,8 @@ scoreboard players set #stewbeet_summit.loaded load.status 1
 function stewbeet_summit:v0.0.1/load/set_items_storage
 
 # Summon a Black Hole underground
-execute unless entity @e[tag=stewbeet_summit.bg_black_hole] run summon minecraft:item_display 198.5 54.0 -21.5 {"item": {"id": "minecraft:stone", "components": {"minecraft:item_model": "stewbeet_summit:bg_black_hole"}, "count": 1}, "transformation": {"left_rotation": [0.0, 0.0, 0.0, 1.0], "right_rotation": [0.0, 0.0, 0.0, 1.0], "scale": [16.69, 9.69, -18.69], "translation": [0.0, 0.0, 0.0]}, "Tags": ["stewbeet_summit.bg_black_hole"]}
+execute unless entity 20180612-2026-2002-2098-201000000000 run summon minecraft:item_display 198.5 54.0 -21.5 {UUID:uuid("20180612-2026-2002-2098-201000000000"),"item": {"id": "stone", "components": {"minecraft:item_model": "stewbeet_summit:bg_black_hole"}, "count": 1}, "Tags": ["stewbeet_summit.bg_black_hole", "summit.static"], "transformation": {"left_rotation": [0.0, 0.0, 0.0, 1.0], "right_rotation": [0.0, 0.0, 0.0, 1.0], "scale": [16.69, 9.69, -18.69], "translation": [0.0, 0.0, 0.0]}}
+
+# Summon the logo at entrance
+execute unless entity 20180612-2026-2002-2098-201000000001 run summon minecraft:item_display 197.0 98.0 -9.0 {UUID:uuid("20180612-2026-2002-2098-201000000001"),"item": {"id": "stone", "components": {"minecraft:item_model": "stewbeet_summit:logo"}, "count": 1}, "Tags": ["stewbeet_summit.logo", "summit.static"], "transformation": {"left_rotation": [0.0, 0.0, 0.0, 1.0], "right_rotation": [0.0, 0.0, 0.0, 1.0], "scale": [2.0, 2.0, 2.0], "translation": [0.0, 0.0, 0.0]}, "Rotation": [180, 0]}
 

@@ -8,5 +8,7 @@ def main():
 
     # Add items to the definitions
     Item(id="bg_black_hole", override_model={"parent":"minecraft:block/cube_all"})
+    Item(id="logo", override_model={"parent":"minecraft:item/generated"})
+
     pass
 
