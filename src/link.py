@@ -24,6 +24,7 @@ def item_nbt(item: str, **kwargs: Any) -> JsonDict:
             "count": 1,
         },
         "Tags": [f"{ns}.{item}", f"{ns}.static", "summit.static"],
+        "brightness": {"block": 15, "sky": 15},
         **kwargs
     }
 
