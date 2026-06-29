@@ -1,6 +1,29 @@
 {
-	"parent": "minecraft:block/cube_all",
+	"parent": "item/generated",
 	"textures": {
-		"all": "stewbeet_summit:item/bg_black_hole"
-	}
+		"all": "stewbeet_summit:item/bg_black_hole",
+		"particle": "stewbeet_summit:item/bg_black_hole"
+	},
+	"elements": [
+		{
+			"from": [
+				0,
+				0,
+				0
+			],
+			"to": [
+				16,
+				16,
+				16
+			],
+			"faces": {
+				"north": {"uv": [1,1,7,7],"texture": "#all"},
+				"east": {"uv": [1,1,7,7],"texture": "#all"},
+				"south": {"uv": [1,1,7,7],"texture": "#all"},
+				"west": {"uv": [1,1,7,7],"texture": "#all"},
+				"up": {"uv": [1,1,7,7],"texture": "#all"},
+				"down": {"uv": [1,1,7,7],"texture": "#all"}
+			}
+		}
+	]
 }

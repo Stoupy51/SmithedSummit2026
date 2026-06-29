@@ -1,0 +1,4 @@
+# Unique 4x uint8 (0-255) identifier for the `stewbeet_summit` shader namespace.
+# This exact RGBA must be placed as the pixel immediately right of the common
+# identifier pixel RGBA(1, 2, 3, 255) on any surface this namespace modifies.
+id = [83, 83, 50, 255]
