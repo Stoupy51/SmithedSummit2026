@@ -6,6 +6,6 @@
 # @within	stewbeet_summit:walls/zone0/show
 #
 
-data modify entity @e[tag=stewbeet_summit.disp0,limit=1] text set value ["", {"text": "The old way\n\n", "bold": true, "color": "gold"}, {"text": "A modern datapack means hundreds of\n", "color": "white"}, {"text": "hand-written files: models, loot tables,\n", "color": "white"}, {"text": "recipes, lang, item components...\n\n", "color": "white"}, {"text": "Tedious. Error-prone. Hard to maintain.", "color": "#7F8C99", "italic": true}]
-data modify entity @e[tag=stewbeet_summit.disp0,limit=1] line_width set value 200
+data modify entity @e[tag=stewbeet_summit.disp0,limit=1] text set value ["", {"text": "The old way\n\n", "bold": true, "color": "gold"}, {"text": "A modern datapack means hundreds of hand-written files: models, loot tables, ", "color": "white"}, {"text": "recipes, lang, item components...\n\n", "color": "white"}, {"text": "Tedious. Error-prone.\nHard to maintain.", "color": "#7F8C99", "italic": true}]
+data modify entity @e[tag=stewbeet_summit.disp0,limit=1] line_width set value 175
 

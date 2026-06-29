@@ -25,7 +25,7 @@ from stouputils.typing import JsonDict
 class Page:
 	name: str
 	text: TextComponent
-	line_width: int = 200
+	line_width: int = 175
 
 @dataclass
 class Zone:
@@ -65,6 +65,7 @@ def note(text: str) -> JsonDict:
 # Wider wrap so short code lines are never re-wrapped.
 CODE_W: int = 260
 
+# TODO: Talk about Model Resolver and other external resources (Smithed, Libraries, etc.) with clickable links
 
 #  The walls
 TEXTS: list[Zone] = [
@@ -73,17 +74,16 @@ TEXTS: list[Zone] = [
 	Zone("What is StewBeet?", (211, 102, -19), 90, [
 		Page("Introduction", [
 			title("What is StewBeet?\n\n"),
-			body("It is a "), beet(), body(" framework that brings\n"),
-			body("huge "), hl("automation"), body(" to Minecraft datapacks.\n\n"),
-			body("You describe "), hl("what", "gold"), body(" you want in Python.\n"),
+			body("It is a "), beet(), body(" framework that brings huge "),
+			hl("automation"), body(" to Minecraft datapacks.\n\n"),
+			body("You describe "), hl("what", "gold"), body(" you want in Python. "),
 			body("StewBeet generates everything else."),
 		]),
 		Page("The Problem", [
 			title("The old way\n\n"),
-			body("A modern datapack means hundreds of\n"),
-			body("hand-written files: models, loot tables,\n"),
+			body("A modern datapack means hundreds of hand-written files: models, loot tables, "),
 			body("recipes, lang, item components...\n\n"),
-			note("Tedious. Error-prone. Hard to maintain."),
+			note("Tedious. Error-prone.\nHard to maintain."),
 		]),
 		Page("The Solution", [
 			title("The StewBeet way\n\n"),

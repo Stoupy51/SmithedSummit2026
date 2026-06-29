@@ -7,5 +7,5 @@
 #
 
 data modify entity @e[tag=stewbeet_summit.disp0,limit=1] text set value ["", {"text": "The StewBeet way\n\n", "bold": true, "color": "gold"}, {"text": "Declare your items and blocks as\n", "color": "white"}, {"text": "Python objects", "bold": true, "color": "gold"}, {"text": ".\n\n", "color": "white"}, {"text": "Get a full ", "color": "white"}, {"text": "datapack", "bold": true, "color": "aqua"}, {"text": " + ", "color": "white"}, {"text": "resource pack", "bold": true, "color": "aqua"}, {"text": ",\nfollowing community conventions, for free.", "color": "white"}]
-data modify entity @e[tag=stewbeet_summit.disp0,limit=1] line_width set value 200
+data modify entity @e[tag=stewbeet_summit.disp0,limit=1] line_width set value 175
 

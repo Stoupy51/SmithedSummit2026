@@ -7,5 +7,5 @@
 #
 
 data modify entity @e[tag=stewbeet_summit.disp1,limit=1] text set value ["", {"text": "Modular by design\n\n", "bold": true, "color": "gold"}, {"text": "StewBeet is a ", "color": "white"}, {"text": "pipeline", "bold": true, "color": "aqua"}, {"text": " of plugins.\n\n", "color": "white"}, {"text": "Use the full suite for complete\n", "color": "white"}, {"text": "generation, or pick ", "color": "white"}, {"text": "only", "bold": true, "color": "gold"}, {"text": " the features\nyou actually need.", "color": "white"}]
-data modify entity @e[tag=stewbeet_summit.disp1,limit=1] line_width set value 200
+data modify entity @e[tag=stewbeet_summit.disp1,limit=1] line_width set value 175
 

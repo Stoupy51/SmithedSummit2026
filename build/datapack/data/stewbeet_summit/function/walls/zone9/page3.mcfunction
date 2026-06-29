@@ -7,5 +7,5 @@
 #
 
 data modify entity @e[tag=stewbeet_summit.disp9,limit=1] text set value ["", {"text": "Plays well with others\n\n", "bold": true, "color": "gold"}, {"text": "Automatic special support for:\n\n", "color": "white"}, {"text": "- SimpleDrawer compacted drawers\n", "color": "white"}, {"text": "- SimplEnergy pulverizer\n", "color": "white"}, {"text": "- NeoEnchant veinminer", "color": "white"}]
-data modify entity @e[tag=stewbeet_summit.disp9,limit=1] line_width set value 200
+data modify entity @e[tag=stewbeet_summit.disp9,limit=1] line_width set value 175
 

@@ -140,7 +140,7 @@ def setup_presentation_walls(ns: str) -> None:
         # TODO: I added "grayed_nav_arrow_right" and "grayed_nav_arrow_left" textures, we need to use them when their is no page to the left/right.
         write_function(f"{ns}:walls/zone{zi}/next", f"""
 scoreboard players add #wall{zi} {obj} 1
-execute if score #wall{zi} {obj} matches {n}.. run scoreboard players set #wall{zi} {obj} {n}
+execute if score #wall{zi} {obj} matches {n}.. run scoreboard players set #wall{zi} {obj} {n - 1}
 function {ns}:walls/zone{zi}/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
 """)

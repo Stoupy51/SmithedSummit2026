@@ -7,5 +7,5 @@
 #
 
 data modify entity @e[tag=stewbeet_summit.disp1,limit=1] text set value ["", {"text": "Friendly for newcomers\n\n", "bold": true, "color": "gold"}, {"text": "Sensible defaults and ready templates:\n", "color": "white"}, {"text": "minimal, basic, extensive.\n\n", "color": "white"}, {"text": "stewbeet init basic\n\n", "color": "#8BE9FD"}, {"text": "Up and running in seconds.", "color": "#7F8C99", "italic": true}]
-data modify entity @e[tag=stewbeet_summit.disp1,limit=1] line_width set value 200
+data modify entity @e[tag=stewbeet_summit.disp1,limit=1] line_width set value 175
 

@@ -7,5 +7,5 @@
 #
 
 data modify entity @e[tag=stewbeet_summit.disp9,limit=1] text set value ["", {"text": "Libraries, auto-wired\n\n", "bold": true, "color": "gold"}, {"text": "Use a Bookshelf or Smithed feature and\n", "color": "white"}, {"text": "the dependency is added for you:\n\n", "color": "white"}, {"text": "Bookshelf, Smithed Crafter & Blocks,\n", "color": "white"}, {"text": "ItemIO, Common Signals, and more.", "color": "white"}]
-data modify entity @e[tag=stewbeet_summit.disp9,limit=1] line_width set value 200
+data modify entity @e[tag=stewbeet_summit.disp9,limit=1] line_width set value 175
 

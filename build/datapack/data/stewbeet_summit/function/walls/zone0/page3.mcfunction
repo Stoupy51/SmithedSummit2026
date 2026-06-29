@@ -7,5 +7,5 @@
 #
 
 data modify entity @e[tag=stewbeet_summit.disp0,limit=1] text set value ["", {"text": "The result\n\n", "bold": true, "color": "gold"}, {"text": "Focus on your ", "color": "white"}, {"text": "ideas", "bold": true, "color": "gold"}, {"text": ", not boilerplate.\n\n", "color": "white"}, {"text": "- Fewer files\n", "color": "white"}, {"text": "- Fewer bugs\n", "color": "white"}, {"text": "- Much faster iteration", "color": "white"}]
-data modify entity @e[tag=stewbeet_summit.disp0,limit=1] line_width set value 200
+data modify entity @e[tag=stewbeet_summit.disp0,limit=1] line_width set value 175
 
