@@ -5,6 +5,8 @@ import json
 from beet import Context
 from stewbeet import *  # type: ignore
 
+from .texts import TEXTS
+
 
 # Utility functions
 def scale_only(sx: float, sy: float, sz: float) -> JsonDict:
@@ -30,6 +32,135 @@ def item_nbt(item: str, **kwargs: Any) -> JsonDict:
 
 def dump(obj: Any) -> str:
     return json.dumps(obj)[1:-1]
+
+def nbt(obj: Any) -> str:
+    """Full SNBT-compatible serialization (modern SNBT accepts this JSON form)."""
+    return json.dumps(obj, ensure_ascii=False)
+
+def root(components: Any) -> list[Any]:
+    """Wrap components with an empty root so siblings don't inherit the first
+    element's formatting (a bold title would otherwise bold the whole page)."""
+    return ["", *components]
+
+
+# ── Presentation walls ──────────────────────────────────────────────────────
+# Geometry tweakables, in the wall's local frame (caret: ^left ^up ^forward,
+# where "forward" is the way each Zone.rotation faces). Tune in-world as needed.
+# If a wall's text/arrows face away or left<->right feel swapped, flip that
+# Zone's rotation by 180 in texts.py.
+WALL_FWD: float = -0.45     # push displays just in front of the wall face
+PAGE_UP: float = 1.2        # page text vertical offset from the anchor block
+TITLE_UP: float = 3.0       # title sits above the wall
+ARROW_UP: float = 0.5       # arrows vertical offset (same height as the page)
+ARROW_OUT: float = 1.0      # horizontal distance from center to each arrow
+INT_W: float = 0.9          # interaction hitbox width
+INT_H: float = 0.9          # interaction hitbox height
+PAGE_SCALE: float = 0.65    # text_display scale for pages
+TITLE_SCALE: float = 1.0    # text_display scale for the title
+ARROW_SCALE: float = 1.0    # item_display scale for the arrows
+
+
+def setup_presentation_walls(ns: str) -> None:
+    """ Read TEXTS and place, per wall: a title, a page display, and left/right
+    textured arrows each backed by a summit.interactable interaction entity.
+
+    The page display is the only dynamic entity (its text is swapped on click),
+    so it is NOT tagged summit.static; everything else is static.
+    # TODO: should use UUIDs for selectors => faster and cleaner.
+    """
+    obj: str = f"{ns}.page"
+    static: list[str] = [f"{ns}.wall", "summit.static"]
+    summons: list[str] = []
+
+    for zi, zone in enumerate(TEXTS):
+        x, y, z = zone.coords
+        yaw: int = zone.rotation
+        ax, ay, az = x + 0.5, y - 1.0, z + 0.5
+        anchor: str = f"positioned {ax} {ay} {az} rotated {yaw} 0"
+        disp_tag: str = f"{ns}.disp{zi}"
+        rot: list[int] = [yaw, 0]
+        n: int = len(zone.pages)
+        first = zone.pages[0]
+
+        # Title (static) - above the wall.
+        title_nbt: JsonDict = {
+            "Tags": static, "billboard": "fixed", "alignment": "center", "Rotation": rot,
+            "text": root([{"text": zone.name, "bold": True, "color": "#FFD479"}]),
+            "transformation": scale_only(TITLE_SCALE, TITLE_SCALE, TITLE_SCALE),
+            "brightness": {"block": 15, "sky": 15},
+        }
+        # Page (dynamic) - baked with page 0; swapped on navigation.
+        page_nbt: JsonDict = {
+            "Tags": [f"{ns}.wall", disp_tag], "billboard": "fixed", "alignment": "left",
+            "Rotation": rot, "line_width": first.line_width, "text": root(first.text),
+            "transformation": scale_only(PAGE_SCALE, PAGE_SCALE, PAGE_SCALE),
+            "brightness": {"block": 15, "sky": 15},
+        }
+
+        def arrow_nbt(model: str, rot: list[int] = rot) -> JsonDict:
+            return {
+                "Tags": static, "billboard": "fixed", "item_display": "fixed", "Rotation": rot,
+                "item": {"id": "stone", "count": 1, "components": {"minecraft:item_model": f"{ns}:{model}"}},
+                "transformation": scale_only(ARROW_SCALE, ARROW_SCALE, ARROW_SCALE),
+                "brightness": {"block": 15, "sky": 15},
+            }
+
+        def interaction_nbt(action: str, zi: int = zi) -> JsonDict:
+            return {
+                "Tags": [f"{ns}.wall", "summit.static", "summit.interactable"],
+                "width": INT_W, "height": INT_H, "response": True,
+                "data": {"summit_interactable": {"on_right_click": f"function {ns}:walls/zone{zi}/{action}"}},
+            }
+
+        # The display faces the viewer, so the executor's left is the viewer's
+        # right: caret +left -> viewer's right (next), caret -left -> left (prev).
+        iy: float = ARROW_UP - INT_H / 2
+        summons += [
+            f"execute {anchor} run summon minecraft:text_display ^ ^{TITLE_UP} ^{WALL_FWD} {nbt(title_nbt)}",
+            f"execute {anchor} run summon minecraft:text_display ^ ^{PAGE_UP} ^{WALL_FWD} {nbt(page_nbt)}",
+            f"execute {anchor} run summon minecraft:item_display ^{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {nbt(arrow_nbt('nav_arrow_right'))}",
+            f"execute {anchor} run summon minecraft:item_display ^-{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {nbt(arrow_nbt('nav_arrow_left'))}",
+            f"execute {anchor} run summon minecraft:interaction ^{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(interaction_nbt('next'))}",
+            f"execute {anchor} run summon minecraft:interaction ^-{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(interaction_nbt('prev'))}",
+        ]
+
+        # One function per page that swaps the dynamic display's text + width.
+        sel: str = f"@e[tag={disp_tag},limit=1]"    # TODO: should use UUIDs for selectors => faster and cleaner.
+        for pi, page in enumerate(zone.pages):
+            write_function(f"{ns}:walls/zone{zi}/page{pi}",
+                f"data modify entity {sel} text set value {nbt(root(page.text))}\n"
+                f"data modify entity {sel} line_width set value {page.line_width}\n")
+
+        # Dispatch the current page index to the matching page function.
+        write_function(f"{ns}:walls/zone{zi}/show", "\n".join(
+            f"execute if score #wall{zi} {obj} matches {pi} run function {ns}:walls/zone{zi}/page{pi}"
+            for pi in range(n)) + "\n")
+
+        # Navigation: advance/rewind with wrap-around, then refresh + click sound.
+        # TODO: I added "grayed_nav_arrow_right" and "grayed_nav_arrow_left" textures, we need to use them when their is no page to the left/right.
+        write_function(f"{ns}:walls/zone{zi}/next", f"""
+scoreboard players add #wall{zi} {obj} 1
+execute if score #wall{zi} {obj} matches {n}.. run scoreboard players set #wall{zi} {obj} {n}
+function {ns}:walls/zone{zi}/show
+playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
+""")
+        write_function(f"{ns}:walls/zone{zi}/prev", f"""
+scoreboard players remove #wall{zi} {obj} 1
+execute if score #wall{zi} {obj} matches ..-1 run scoreboard players set #wall{zi} {obj} 0
+function {ns}:walls/zone{zi}/show
+playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
+""")
+
+    # On load: create the objective, clear any previous wall entities, (re)spawn
+    # everything, then reset every wall back to its first page.
+    init: str = "\n".join(f"scoreboard players set #wall{zi} {obj} 0" for zi in range(len(TEXTS)))
+    write_load_file(
+        f"\n# Presentation walls (StewBeet)\n"
+        f"scoreboard objectives add {obj} dummy\n"
+        f"kill @e[tag={ns}.wall]\n"
+        + "\n".join(summons) + "\n"
+        + init + "\n"
+    )
 
 
 # Main entry point (ran just before making finalyzing the build process (zip, headers, lang, ...))
@@ -60,7 +191,7 @@ def beet_default(ctx: Context):
     # You can either write your mcfunction files in src/data/... or with the python way:
     # Add some commands when loading datapack
     write_load_file(f"""
-# TODO: remove
+# TODO: remove when we're all finished.
 kill @e[tag={ns}.static]
 
 # Summon a Black Hole underground
@@ -72,6 +203,9 @@ execute unless entity {title} run summon minecraft:item_display 196.5 103.0 -9.6
 execute unless entity {arrow_1} run summon minecraft:item_display 197.6875 99.4375 -10.5 {{UUID:uuid("{arrow_1}"),{dump(arrow_nbt_1)}}}
 execute unless entity {arrow_2} run summon minecraft:item_display 198.9375 98.125 -4.0 {{UUID:uuid("{arrow_2}"),{dump(arrow_nbt_2)}}}
 """)
+
+    # Place the 10 StewBeet presentation walls (read from src/texts.py).
+    setup_presentation_walls(ns)
 
     pass
 

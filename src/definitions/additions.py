@@ -20,7 +20,12 @@ def main():
         "elements": [{"from": [0, 0, 0], "to": [16, 16, 16], "faces": black_hole_faces}],
     }
     Item(id="bg_black_hole", override_model=black_hole_model)
-    Item(id="logo", override_model={"parent":"minecraft:item/generated"})
+    Item(id="logo")
+
+    # Flat navigation arrows for the presentation walls (placeholder textures).
+    for grayed in ("", "gray_"):
+        for side in ("left", "right"):
+            Item(id=f"{grayed}nav_arrow_{side}")
 
     # 3D items
     for item in ["arrow", "title"]:

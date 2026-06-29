@@ -23,6 +23,54 @@
 		},
 		"skip_gives": false
 	},
+	"nav_arrow_left": {
+		"id": "nav_arrow_left",
+		"base_item": "minecraft:command_block",
+		"recipes": [],
+		"components": {
+			"item_model": "stewbeet_summit:nav_arrow_left",
+			"item_name": {"text": "Nav Arrow Left"},
+			"lore": [["",{"text": "I","color": "white","italic": false,"font": "stewbeet_summit:icons"},{"text": " StewBeet Summit 2026","italic": true,"color": "blue"}]],
+			"custom_data": {"stewbeet_summit": {"nav_arrow_left": true},"smithed": {"id": "stewbeet_summit:nav_arrow_left","origin": "stewbeet_summit","ignore": {"functionality": true,"crafting": true}}}
+		},
+		"skip_gives": false
+	},
+	"nav_arrow_right": {
+		"id": "nav_arrow_right",
+		"base_item": "minecraft:command_block",
+		"recipes": [],
+		"components": {
+			"item_model": "stewbeet_summit:nav_arrow_right",
+			"item_name": {"text": "Nav Arrow Right"},
+			"lore": [["",{"text": "I","color": "white","italic": false,"font": "stewbeet_summit:icons"},{"text": " StewBeet Summit 2026","italic": true,"color": "blue"}]],
+			"custom_data": {"stewbeet_summit": {"nav_arrow_right": true},"smithed": {"id": "stewbeet_summit:nav_arrow_right","origin": "stewbeet_summit","ignore": {"functionality": true,"crafting": true}}}
+		},
+		"skip_gives": false
+	},
+	"gray_nav_arrow_left": {
+		"id": "gray_nav_arrow_left",
+		"base_item": "minecraft:command_block",
+		"recipes": [],
+		"components": {
+			"item_model": "stewbeet_summit:gray_nav_arrow_left",
+			"item_name": {"text": "Gray Nav Arrow Left"},
+			"lore": [["",{"text": "I","color": "white","italic": false,"font": "stewbeet_summit:icons"},{"text": " StewBeet Summit 2026","italic": true,"color": "blue"}]],
+			"custom_data": {"stewbeet_summit": {"gray_nav_arrow_left": true},"smithed": {"id": "stewbeet_summit:gray_nav_arrow_left","origin": "stewbeet_summit","ignore": {"functionality": true,"crafting": true}}}
+		},
+		"skip_gives": false
+	},
+	"gray_nav_arrow_right": {
+		"id": "gray_nav_arrow_right",
+		"base_item": "minecraft:command_block",
+		"recipes": [],
+		"components": {
+			"item_model": "stewbeet_summit:gray_nav_arrow_right",
+			"item_name": {"text": "Gray Nav Arrow Right"},
+			"lore": [["",{"text": "I","color": "white","italic": false,"font": "stewbeet_summit:icons"},{"text": " StewBeet Summit 2026","italic": true,"color": "blue"}]],
+			"custom_data": {"stewbeet_summit": {"gray_nav_arrow_right": true},"smithed": {"id": "stewbeet_summit:gray_nav_arrow_right","origin": "stewbeet_summit","ignore": {"functionality": true,"crafting": true}}}
+		},
+		"skip_gives": false
+	},
 	"arrow": {
 		"id": "arrow",
 		"base_item": "minecraft:command_block",

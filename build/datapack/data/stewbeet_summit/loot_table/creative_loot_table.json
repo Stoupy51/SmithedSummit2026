@@ -2,6 +2,10 @@
 	"pools": [
 		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/bg_black_hole"}]},
 		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/logo"}]},
+		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/nav_arrow_left"}]},
+		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/nav_arrow_right"}]},
+		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/gray_nav_arrow_left"}]},
+		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/gray_nav_arrow_right"}]},
 		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/arrow"}]},
 		{"rolls": 1,"entries": [{"type": "minecraft:loot_table","value": "stewbeet_summit:i/title"}]}
 	]
