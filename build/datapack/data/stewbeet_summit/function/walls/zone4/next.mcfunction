@@ -7,7 +7,7 @@
 #
 
 scoreboard players add #wall4 stewbeet_summit.page 1
-execute if score #wall4 stewbeet_summit.page matches 4.. run scoreboard players set #wall4 stewbeet_summit.page 3
+execute if score #wall4 stewbeet_summit.page matches 6.. run scoreboard players set #wall4 stewbeet_summit.page 5
 function stewbeet_summit:walls/zone4/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
 

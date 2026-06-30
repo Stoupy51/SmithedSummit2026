@@ -1,9 +1,9 @@
 
 #> stewbeet_summit:walls/zone5/prev
 #
-# @executed	positioned 197.5 101.0 -27.5 & rotated 0 0
+# @executed	positioned 194.5 101.0 -19.5 & rotated 90 0
 #
-# @within	stewbeet_summit:v0.0.1/load/confirm_load [ positioned 197.5 101.0 -27.5 & rotated 0 0 ]
+# @within	stewbeet_summit:v0.0.1/load/confirm_load [ positioned 194.5 101.0 -19.5 & rotated 90 0 ]
 #
 
 scoreboard players remove #wall5 stewbeet_summit.page 1

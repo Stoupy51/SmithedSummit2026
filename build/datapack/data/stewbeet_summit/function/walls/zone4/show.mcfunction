@@ -10,4 +10,6 @@ execute if score #wall4 stewbeet_summit.page matches 0 run function stewbeet_sum
 execute if score #wall4 stewbeet_summit.page matches 1 run function stewbeet_summit:walls/zone4/page1
 execute if score #wall4 stewbeet_summit.page matches 2 run function stewbeet_summit:walls/zone4/page2
 execute if score #wall4 stewbeet_summit.page matches 3 run function stewbeet_summit:walls/zone4/page3
+execute if score #wall4 stewbeet_summit.page matches 4 run function stewbeet_summit:walls/zone4/page4
+execute if score #wall4 stewbeet_summit.page matches 5 run function stewbeet_summit:walls/zone4/page5
 

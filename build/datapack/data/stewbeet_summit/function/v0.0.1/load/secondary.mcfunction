@@ -8,6 +8,7 @@
 scoreboard objectives add stewbeet_summit.data dummy
 tag Stoupy51 add convention.debug
 
-# Confirm load
-function stewbeet_summit:v0.0.1/load/confirm_load
+# Check dependencies and wait for a player to connect (to get server version)
+function stewbeet_summit:v0.0.1/load/check_dependencies
+function stewbeet_summit:v0.0.1/load/valid_dependencies
 
