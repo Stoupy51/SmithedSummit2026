@@ -60,8 +60,8 @@ ARROW_UP: float = 0.5       # arrows vertical offset (same height as the page)
 ARROW_OUT: float = 1.0      # horizontal distance from center to each arrow
 INT_W: float = 0.9          # interaction hitbox width
 INT_H: float = 0.9          # interaction hitbox height
-PAGE_SCALE: float = 0.65    # text_display scale for pages
-TITLE_SCALE: float = 1.0    # text_display scale for the title
+PAGE_SCALE: float = 0.60    # text_display scale for pages
+TITLE_SCALE: float = 0.9    # text_display scale for the title
 ARROW_SCALE: float = 1.0    # item_display scale for the arrows
 
 
@@ -99,11 +99,14 @@ def setup_presentation_walls(ns: str) -> None:
             "transformation": scale_only(TITLE_SCALE, TITLE_SCALE, TITLE_SCALE),
             "brightness": {"block": 15, "sky": 15},
         }
-        # Page (dynamic) - baked with page 0; swapped on navigation.
+        # Page (dynamic) - baked with page 0; swapped on navigation. Each page's
+        # text size (page.scale, defaulting to PAGE_SCALE) rides in the
+        # transformation scale, refreshed on every swap (see the per-page function).
+        first_scale: float = first.scale if first.scale is not None else PAGE_SCALE
         page_nbt: JsonDict = {
-            "Tags": [f"{ns}.wall"], "billboard": "fixed", "alignment": "left",
+            "Tags": [f"{ns}.wall", "summit.dynamic"], "billboard": "fixed", "alignment": "left",
             "Rotation": rot, "line_width": first.line_width, "text": root(first.text),
-            "transformation": scale_only(PAGE_SCALE, PAGE_SCALE, PAGE_SCALE),
+            "transformation": scale_only(first_scale, first_scale, first_scale),
             "brightness": {"block": 15, "sky": 15},
         }
 
@@ -111,7 +114,7 @@ def setup_presentation_walls(ns: str) -> None:
         # only the wall tag - not summit.static.
         def arrow_nbt(model: str, rot: list[int] = rot) -> JsonDict:
             return {
-                "Tags": [f"{ns}.wall"], "billboard": "fixed", "item_display": "fixed", "Rotation": rot,
+                "Tags": [f"{ns}.wall", "summit.dynamic"], "billboard": "fixed", "item_display": "fixed", "Rotation": rot,
                 "item": {"id": "stone", "count": 1, "components": {"minecraft:item_model": f"{ns}:{model}"}},
                 "transformation": scale_only(ARROW_SCALE, ARROW_SCALE, ARROW_SCALE),
                 "brightness": {"block": 15, "sky": 15},
@@ -141,9 +144,11 @@ def setup_presentation_walls(ns: str) -> None:
         for pi, page in enumerate(zone.pages):
             left_model: str = "gray_nav_arrow_left" if pi == 0 else "nav_arrow_left"
             right_model: str = "gray_nav_arrow_right" if pi == n - 1 else "nav_arrow_right"
+            page_scale: float = page.scale if page.scale is not None else PAGE_SCALE
             write_function(f"{ns}:walls/zone{zi}/page{pi}",
                 f"data modify entity {disp_uuid} text set value {nbt(root(page.text))}\n"
                 f"data modify entity {disp_uuid} line_width set value {page.line_width}\n"
+                f"data modify entity {disp_uuid} transformation.scale set value {nbt([page_scale, page_scale, page_scale])}\n"
                 f'data modify entity {left_uuid} item.components."minecraft:item_model" set value "{ns}:{left_model}"\n'
                 f'data modify entity {right_uuid} item.components."minecraft:item_model" set value "{ns}:{right_model}"\n')
 
