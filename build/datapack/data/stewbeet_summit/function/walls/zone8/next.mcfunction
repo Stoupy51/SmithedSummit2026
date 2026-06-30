@@ -1,9 +1,9 @@
 
 #> stewbeet_summit:walls/zone8/next
 #
-# @executed	positioned 200.5 101.0 -24.5 & rotated 180 0
+# @executed	positioned 202.5 101.0 -24.5 & rotated 180 0
 #
-# @within	stewbeet_summit:v0.0.1/load/confirm_load [ positioned 200.5 101.0 -24.5 & rotated 180 0 ]
+# @within	stewbeet_summit:v0.0.1/load/confirm_load [ positioned 202.5 101.0 -24.5 & rotated 180 0 ]
 #
 
 scoreboard players add #wall8 stewbeet_summit.page 1

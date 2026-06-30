@@ -1,9 +1,8 @@
 
 #> stewbeet_summit:walls/zone1/show
 #
-# @executed	positioned 204.5 101.0 -22.5 & rotated 0 0
-#
-# @within	stewbeet_summit:walls/zone1/next
+# @within	stewbeet_summit:v0.0.1/load/confirm_load
+#			stewbeet_summit:walls/zone1/next
 #			stewbeet_summit:walls/zone1/prev
 #
 

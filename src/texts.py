@@ -164,7 +164,7 @@ TEXTS: list[Zone] = [
 	]),
 
 	# 4 Items in Pure Python
-	Zone("Items in Pure Python", (195, 102, -12), 180, [
+	Zone("Items in Pure Python", (196, 102, -12), 180, [
 		Page("The Item Class", [
 			title("Define an item\n\n"),
 			code("Item(\n"),
@@ -332,7 +332,7 @@ TEXTS: list[Zone] = [
 	]),
 
 	# 9 The Interactive In-Game Manual
-	Zone("In-Game Manual", (200, 102, -25), 180, [
+	Zone("In-Game Manual", (202, 102, -25), 180, [
 		Page("Free Documentation", [
 			title("A manual, generated\n\n"),
 			body("StewBeet builds a full "), hl("interactive"),

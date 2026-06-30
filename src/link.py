@@ -42,6 +42,11 @@ def root(components: Any) -> list[Any]:
     element's formatting (a bold title would otherwise bold the whole page)."""
     return ["", *components]
 
+def with_uuid(uuid: str, obj: JsonDict) -> str:
+    """SNBT for `obj` with a fixed `UUID:uuid("...")` spliced in, so the entity
+    can be selected directly by UUID instead of by tag."""
+    return '{UUID:uuid("' + uuid + '"),' + nbt(obj)[1:]
+
 
 # ── Presentation walls ──────────────────────────────────────────────────────
 # Geometry tweakables, in the wall's local frame (caret: ^left ^up ^forward,
@@ -65,8 +70,8 @@ def setup_presentation_walls(ns: str) -> None:
     textured arrows each backed by a summit.interactable interaction entity.
 
     The page display is the only dynamic entity (its text is swapped on click),
-    so it is NOT tagged summit.static; everything else is static.
-    # TODO: should use UUIDs for selectors => faster and cleaner.
+    so it is NOT tagged summit.static; the arrows are dynamic too (their texture
+    is gray out at the page boundaries), so they aren't static either.
     """
     obj: str = f"{ns}.page"
     static: list[str] = [f"{ns}.wall", "summit.static"]
@@ -77,10 +82,15 @@ def setup_presentation_walls(ns: str) -> None:
         yaw: int = zone.rotation
         ax, ay, az = x + 0.5, y - 1.0, z + 0.5
         anchor: str = f"positioned {ax} {ay} {az} rotated {yaw} 0"
-        disp_tag: str = f"{ns}.disp{zi}"
         rot: list[int] = [yaw, 0]
         n: int = len(zone.pages)
         first = zone.pages[0]
+
+        # Fixed UUIDs for the three dynamic entities of this wall, so their
+        # functions can target them directly (no per-tick @e tag scan).
+        disp_uuid: str = f"20180612-2026-2002-2098-2020{zi:08d}"
+        left_uuid: str = f"20180612-2026-2002-2098-2021{zi:08d}"
+        right_uuid: str = f"20180612-2026-2002-2098-2022{zi:08d}"
 
         # Title (static) - above the wall.
         title_nbt: JsonDict = {
@@ -91,15 +101,17 @@ def setup_presentation_walls(ns: str) -> None:
         }
         # Page (dynamic) - baked with page 0; swapped on navigation.
         page_nbt: JsonDict = {
-            "Tags": [f"{ns}.wall", disp_tag], "billboard": "fixed", "alignment": "left",
+            "Tags": [f"{ns}.wall"], "billboard": "fixed", "alignment": "left",
             "Rotation": rot, "line_width": first.line_width, "text": root(first.text),
             "transformation": scale_only(PAGE_SCALE, PAGE_SCALE, PAGE_SCALE),
             "brightness": {"block": 15, "sky": 15},
         }
 
+        # Arrows are dynamic (texture gray at the boundaries), so they carry
+        # only the wall tag - not summit.static.
         def arrow_nbt(model: str, rot: list[int] = rot) -> JsonDict:
             return {
-                "Tags": static, "billboard": "fixed", "item_display": "fixed", "Rotation": rot,
+                "Tags": [f"{ns}.wall"], "billboard": "fixed", "item_display": "fixed", "Rotation": rot,
                 "item": {"id": "stone", "count": 1, "components": {"minecraft:item_model": f"{ns}:{model}"}},
                 "transformation": scale_only(ARROW_SCALE, ARROW_SCALE, ARROW_SCALE),
                 "brightness": {"block": 15, "sky": 15},
@@ -117,19 +129,23 @@ def setup_presentation_walls(ns: str) -> None:
         iy: float = ARROW_UP - INT_H / 2
         summons += [
             f"execute {anchor} run summon minecraft:text_display ^ ^{TITLE_UP} ^{WALL_FWD} {nbt(title_nbt)}",
-            f"execute {anchor} run summon minecraft:text_display ^ ^{PAGE_UP} ^{WALL_FWD} {nbt(page_nbt)}",
-            f"execute {anchor} run summon minecraft:item_display ^{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {nbt(arrow_nbt('nav_arrow_right'))}",
-            f"execute {anchor} run summon minecraft:item_display ^-{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {nbt(arrow_nbt('nav_arrow_left'))}",
+            f"execute {anchor} run summon minecraft:text_display ^ ^{PAGE_UP} ^{WALL_FWD} {with_uuid(disp_uuid, page_nbt)}",
+            f"execute {anchor} run summon minecraft:item_display ^{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {with_uuid(right_uuid, arrow_nbt('nav_arrow_right'))}",
+            f"execute {anchor} run summon minecraft:item_display ^-{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {with_uuid(left_uuid, arrow_nbt('nav_arrow_left'))}",
             f"execute {anchor} run summon minecraft:interaction ^{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(interaction_nbt('next'))}",
             f"execute {anchor} run summon minecraft:interaction ^-{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(interaction_nbt('prev'))}",
         ]
 
-        # One function per page that swaps the dynamic display's text + width.
-        sel: str = f"@e[tag={disp_tag},limit=1]"    # TODO: should use UUIDs for selectors => faster and cleaner.
+        # One function per page: swap the page text + width, and gray out the
+        # arrow that has no page beyond it (left on the first, right on the last).
         for pi, page in enumerate(zone.pages):
+            left_model: str = "gray_nav_arrow_left" if pi == 0 else "nav_arrow_left"
+            right_model: str = "gray_nav_arrow_right" if pi == n - 1 else "nav_arrow_right"
             write_function(f"{ns}:walls/zone{zi}/page{pi}",
-                f"data modify entity {sel} text set value {nbt(root(page.text))}\n"
-                f"data modify entity {sel} line_width set value {page.line_width}\n")
+                f"data modify entity {disp_uuid} text set value {nbt(root(page.text))}\n"
+                f"data modify entity {disp_uuid} line_width set value {page.line_width}\n"
+                f'data modify entity {left_uuid} item.components."minecraft:item_model" set value "{ns}:{left_model}"\n'
+                f'data modify entity {right_uuid} item.components."minecraft:item_model" set value "{ns}:{right_model}"\n')
 
         # Dispatch the current page index to the matching page function.
         write_function(f"{ns}:walls/zone{zi}/show", "\n".join(
@@ -137,7 +153,6 @@ def setup_presentation_walls(ns: str) -> None:
             for pi in range(n)) + "\n")
 
         # Navigation: advance/rewind with wrap-around, then refresh + click sound.
-        # TODO: I added "grayed_nav_arrow_right" and "grayed_nav_arrow_left" textures, we need to use them when their is no page to the left/right.
         write_function(f"{ns}:walls/zone{zi}/next", f"""
 scoreboard players add #wall{zi} {obj} 1
 execute if score #wall{zi} {obj} matches {n}.. run scoreboard players set #wall{zi} {obj} {n - 1}
@@ -152,14 +167,17 @@ playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
 """)
 
     # On load: create the objective, clear any previous wall entities, (re)spawn
-    # everything, then reset every wall back to its first page.
+    # everything, reset every wall back to its first page, then run each wall's
+    # show once so the page text and arrow gray-state match page 0.
     init: str = "\n".join(f"scoreboard players set #wall{zi} {obj} 0" for zi in range(len(TEXTS)))
+    show: str = "\n".join(f"function {ns}:walls/zone{zi}/show" for zi in range(len(TEXTS)))
     write_load_file(
         f"\n# Presentation walls (StewBeet)\n"
         f"scoreboard objectives add {obj} dummy\n"
         f"kill @e[tag={ns}.wall]\n"
         + "\n".join(summons) + "\n"
         + init + "\n"
+        + show + "\n"
     )
 
 
