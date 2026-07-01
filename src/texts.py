@@ -66,16 +66,57 @@ def code(text: str) -> JsonDict:
 def note(text: str) -> JsonDict:
 	return {"text": text, "color": "#7F8C99", "italic": True}
 
-def link(label: str, url: str, color: str = "#8BE9FD") -> JsonDict:
-	""" A colored, underlined link. text_display entities don't fire click events
-	in-world, so the label doubles as a human-readable URL; the click/hover are
-	kept for any context (chat echo, future dialogs) that does honour them."""
-	# TODO: Add an interaction entity that opens a single dialog with the URL
-	return {
+# Custom "summit_icons" font provided by the Summit event: social-platform glyphs
+# addressed by translation key. See link.py, which turns every link on a page into
+# a clickable dialog button and reuses these icons.
+SOCIAL_ICONS: dict[str, str] = {
+	"github.com": "github",
+	"smithed.dev": "smithed",
+	"modrinth.com": "modrinth",
+	"curseforge.com": "curseforge",
+	"discord.gg": "discord",
+	"discord.com": "discord",
+	"youtube.com": "youtube",
+	"youtu.be": "youtube",
+	"twitch.tv": "twitch",
+	"twitter.com": "twitter",
+	"x.com": "twitter",
+	"bsky.app": "bluesky",
+	"instagram.com": "instagram",
+	"ko-fi.com": "kofi",
+	"patreon.com": "patreon",
+	"planetminecraft.com": "planetminecraft",
+	"mapverse": "mapverse",
+}
+
+def social_icon(key: str) -> JsonDict:
+	"""A single glyph from the custom 'summit_icons' font (e.g. key='github')."""
+	return {"font": "summit_icons:icons", "translate": f"summit_icons.{key}"}
+
+def icon_for_url(url: str) -> str | None:
+	"""The summit_icons key matching a URL's host, or None if we have no glyph."""
+	for fragment, key in SOCIAL_ICONS.items():
+		if fragment in url:
+			return key
+	return None
+
+def link(label: str, url: str, color: str = "#8BE9FD") -> TextComponent:
+	""" A colored, underlined link, prefixed with its platform's social icon when
+	we have one. text_display entities don't fire click events in-world, so link.py
+	backs every page that contains a link with an interaction entity that opens a
+	dialog; there the same label is a real, clickable button (dialogs honour clicks).
+
+	Returns a nested list component starting with an empty parent so the icon's
+	custom font doesn't leak onto the label (siblings inherit from the parent)."""
+	label_component: JsonDict = {
 		"text": label, "color": color, "underlined": True,
 		"click_event": {"action": "open_url", "url": url},
 		"hover_event": {"action": "show_text", "value": f"Open {url}"},
 	}
+	key: str | None = icon_for_url(url)
+	if key is None:
+		return ["", label_component]
+	return ["", social_icon(key), {"text": " "}, label_component]
 
 # Wider wrap so short code lines are never re-wrapped.
 CODE_W: int = 220
@@ -163,7 +204,7 @@ TEXTS: list[Zone] = [
 		]),
 		Page("Build", [
 			title("3. Build (3/4)\n\n"),
-			code("stewbeet\n\n"),
+			code("stewbeet\n\n"),	# TODO: add "(or 'beet build')"
 			body("Outputs a ready "), hl("datapack"), body(" and\n"),
 			hl("resource pack"), body(" zip into 'build/'."),
 		]),
