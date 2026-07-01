@@ -48,7 +48,8 @@ pipeline:
     - "stewbeet.plugins.datapack.loading.silent"
     - "stewbeet.plugins.datapack.custom_blocks.silent"
     - "stewbeet.plugins.datapack.loot_tables.silent"
-    - "src.link" # User code
+    - "src.intro" # User code
+    - "src.walls" # User code
     - "stewbeet.plugins.finalyze.basic_datapack_structure.silent"
     - "stewbeet.plugins.finalyze.dependencies.silent"
     - "stewbeet.plugins.finalyze.last_final.silent"
