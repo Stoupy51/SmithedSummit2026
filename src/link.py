@@ -198,7 +198,7 @@ def setup_presentation_walls(ns: str) -> None:
             return {
                 "Tags": [f"{ns}.wall", "summit.static", "summit.interactable"],
                 "width": INT_W, "height": INT_H, "response": True,
-                "data": {"summit_interactable": {"on_right_click": f"function {ns}:walls/zone{zi}/{action}"}},
+                "data": {"summit_interactable": {"on_right_click": f"function {ns}:walls/zone_{zi}/{action}"}},
             }
 
         # The display faces the viewer, so the executor's left is the viewer's
@@ -232,7 +232,7 @@ def setup_presentation_walls(ns: str) -> None:
             link_int_nbt: JsonDict = {
                 "Tags": [f"{ns}.wall", "summit.static", "summit.interactable"],
                 "width": first_link_size, "height": first_link_size, "response": True,
-                "data": {"summit_interactable": {"on_right_click": f"execute on target run function {ns}:walls/zone{zi}/openlink"}},
+                "data": {"summit_interactable": {"on_right_click": f"execute on target run function {ns}:walls/zone_{zi}/openlink"}},
             }
             link_iy: float = ARROW_UP - LINK_INT / 2
             summons += [
@@ -257,7 +257,7 @@ data modify entity {link_uuid} text set value {nbt(root(link_hint(zone_links[pi]
 data modify entity {link_int_uuid} width set value {link_size}f
 data modify entity {link_int_uuid} height set value {link_size}f
 """
-            write_function(f"{ns}:walls/zone{zi}/page{pi}", f"""
+            write_function(f"{ns}:walls/zone_{zi}/page_{pi}", f"""
 data modify entity {disp_uuid} text set value {nbt(root(page.text))}
 data modify entity {disp_uuid} line_width set value {page.line_width}
 data modify entity {disp_uuid} transformation.scale set value {nbt([page_scale, page_scale, page_scale])}
@@ -267,8 +267,8 @@ data modify entity {right_uuid} item.components."minecraft:item_model" set value
 """)
 
         # Dispatch the current page index to the matching page function.
-        write_function(f"{ns}:walls/zone{zi}/show", "\n".join(
-            f"execute if score #wall{zi} {obj} matches {pi} run function {ns}:walls/zone{zi}/page{pi}"
+        write_function(f"{ns}:walls/zone_{zi}/show", "\n".join(
+            f"execute if score #wall{zi} {obj} matches {pi} run function {ns}:walls/zone_{zi}/page_{pi}"
             for pi in range(n)) + "\n")
 
         # Open the current page's link dialog (only pages that have links get a
@@ -277,21 +277,21 @@ data modify entity {right_uuid} item.components."minecraft:item_model" set value
         # data-pack file, so it works without a server restart. @s is the clicking
         # player thanks to the 'execute on target run' in the interaction's callback.
         if has_links:
-            write_function(f"{ns}:walls/zone{zi}/openlink", "\n".join(
+            write_function(f"{ns}:walls/zone_{zi}/openlink", "\n".join(
                 f"execute if score #wall{zi} {obj} matches {pi} run dialog show @s {nbt(link_dialog(zone.name, zone.pages[pi].name, links))}"
                 for pi, links in enumerate(zone_links) if links) + "\n")
 
         # Navigation: advance/rewind with wrap-around, then refresh + click sound.
-        write_function(f"{ns}:walls/zone{zi}/next", f"""
+        write_function(f"{ns}:walls/zone_{zi}/next", f"""
 scoreboard players add #wall{zi} {obj} 1
 execute if score #wall{zi} {obj} matches {n}.. run scoreboard players set #wall{zi} {obj} {n - 1}
-function {ns}:walls/zone{zi}/show
+function {ns}:walls/zone_{zi}/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
 """)
-        write_function(f"{ns}:walls/zone{zi}/prev", f"""
+        write_function(f"{ns}:walls/zone_{zi}/prev", f"""
 scoreboard players remove #wall{zi} {obj} 1
 execute if score #wall{zi} {obj} matches ..-1 run scoreboard players set #wall{zi} {obj} 0
-function {ns}:walls/zone{zi}/show
+function {ns}:walls/zone_{zi}/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
 """)
 
@@ -299,7 +299,7 @@ playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
     # everything, reset every wall back to its first page, then run each wall's
     # show once so the page text and arrow gray-state match page 0.
     init: str = "\n".join(f"scoreboard players set #wall{zi} {obj} 0" for zi in range(len(TEXTS)))
-    show: str = "\n".join(f"function {ns}:walls/zone{zi}/show" for zi in range(len(TEXTS)))
+    show: str = "\n".join(f"function {ns}:walls/zone_{zi}/show" for zi in range(len(TEXTS)))
     write_load_file(
         f"\n# Presentation walls (StewBeet)\n"
         f"scoreboard objectives add {obj} dummy\n"
