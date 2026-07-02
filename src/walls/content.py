@@ -1,6 +1,6 @@
 """ The presentation-wall content: Page/Zone dataclasses and the TEXTS list.
 
-10 walls (Zones), each a 3x3 block face with 3-7 pages navigated with arrows.
+10 walls (Zones), each a 3x3 block face with 3-9 pages navigated with arrows.
 Coordinates are the in-world anchor block of each wall.
 
   1.  What is StewBeet?          6.  Standing on Giants (the deps)
@@ -54,7 +54,7 @@ TEXTS: list[Zone] = [
 			title("Introduction (1/4)\n\n"),
 			body("It is a "), beet(), body(" framework that brings huge "),
 			hl("automation"), body(" to Minecraft datapacks.\n\n"),
-			body("You describe "), hl("what", "gold"), body(" you want in Python. StewBeet generates everything else."),
+			body("You describe "), hl("what", "gold"), body(" you want in Python. "), brand(), body(" generates everything else."),
 		]),
 		Page("The Problem", [
 			title("The old way (2/4)\n\n"),
@@ -62,7 +62,7 @@ TEXTS: list[Zone] = [
 			note("Tedious. Error-prone. Hard to maintain."),
 		]),
 		Page("The Solution", [
-			title("The StewBeet way (3/4)\n\n"),
+			title("The "), brand(), title(" way (3/4)\n\n"),
 			body("Declare your items and blocks as "),
 			hl("Python objects", "gold"), body(".\n\n"),
 			body("Get a full "), hl("datapack"), body(" + "), hl("resource pack"),
@@ -79,7 +79,7 @@ TEXTS: list[Zone] = [
 	Zone("Why? For Who?", (204, 102, -23), 0, [
 		Page("Modular", [
 			title("Modular by design (1/4)\n\n"),
-			body("StewBeet is a "), hl("pipeline"), body(" of plugins.\n\n"),
+			brand(), body(" is a "), hl("pipeline"), body(" of plugins.\n\n"),
 			body("Use the full suite for complete generation, or pick "), hl("only", "gold"),
 			body(" the features you actually need."),
 		]),
@@ -121,7 +121,7 @@ TEXTS: list[Zone] = [
 		]),
 		Page("Auto-Copy", [
 			title("Bonus: auto-copy (4/4)\n\n"),
-			body("Point StewBeet at your world and resource pack folders and it copies the build there on every run:\n\n"),
+			body("Point "), brand(), body(" at your world and resource pack folders and it copies the build there on every run:\n\n"),
 			code("build_copy_destinations:\n"),
 			code("  datapack: \n   - \".../datapacks\",\n   - \"sftp://user:pass@host/path\"\n\n"),
 			code("  resource_pack: \n   - \"D:/minecraft/latest/resourcepacks\"\n\n"),
@@ -156,7 +156,7 @@ TEXTS: list[Zone] = [
 		Page("Textures Are Automatic", [
 			title("Just drop a texture (3/5)\n\n"),
 			body("Put "), hl("ruby.png"), body(" in assets/textures/\n\n"),
-			body("StewBeet auto-detects it and builds the model + item_model reference.\n\n"),
+			brand(), body(" auto-detects it and builds the model + item_model reference.\n\n"),
 			note("No JSON model files by hand."),
 		]),
 		Page("Override the Model", [
@@ -219,7 +219,7 @@ TEXTS: list[Zone] = [
 		], scale=0.45, line_width=CODE_W),
 		Page("Texture Patterns", [
 			title("Texture name patterns (5/6)\n\n"),
-			body("StewBeet tries to auto-detect the textures for you and check for patterns:\n\n"),
+			brand(), body(" tries to auto-detect the textures for you and check for patterns:\n\n"),
 			hl("front+side+top+bottom"), body(" -> furnace\n"),
 			hl("bottom+side+top"), body(" -> barrel\n"),
 			hl("end+side"), body(" -> pillar\n"),
@@ -228,7 +228,7 @@ TEXTS: list[Zone] = [
 		], scale=0.5, line_width=CODE_W),
 		Page("States & Facing", [
 			title("States & facing (6/6)\n\n"),
-			body("Add an "), hl("_on"), body(" texture and the block gets a powered state for free.\n\nSet "), hl("block_facing"), body(" and StewBeet builds "),
+			body("Add an "), hl("_on"), body(" texture and the block gets a powered state for free.\n\nSet "), hl("block_facing"), body(" and "), brand(), body(" builds "),
 			hl("directional"), body(" variants, all recognized from names like electric_furnace_front_on.png"),
 		]),
 	]),
@@ -237,7 +237,7 @@ TEXTS: list[Zone] = [
 	Zone("Standing on Giants", (194, 102, -20), 90, [
 		Page("Not Reinvented", [
 			title("Standing on giants (1/7)\n\n"),
-			body("StewBeet did not get here alone.\n\nBehind the magic is a whole family of "),
+			brand(), body(" did not get here alone.\n\nBehind the magic is a whole family of "),
 			hl("open-source", "gold"), body(" tools, made by people who love this craft as much as you do.\n\n"),
 			note("The next pages are a thank-you."),
 		]),
@@ -272,7 +272,7 @@ TEXTS: list[Zone] = [
 			title("Bookshelf (6/7)\n\n"),
 			body("A modular toolbox of many many datapack utilities by the "), hl("Bookshelf"),
 			body(" team.\n\nCall "), hl("#bs.math:..."),
-			body(" in a function and StewBeet pulls in just that module.\n\n"),
+			body(" in a function and "), brand(), body(" pulls in just that module.\n\n"),
 			link("github.com/mcbookshelf/bookshelf", "https://github.com/mcbookshelf/bookshelf"),
 		], line_width=190),
 		Page("More Libraries", [
@@ -315,7 +315,7 @@ TEXTS: list[Zone] = [
 		], scale=0.5, line_width=CODE_W),
 		Page("Custom Items Craft Anyway", [
 			title("The clever part (3/6)\n\n"),
-			body("Vanilla recipes can't output NBT items, and two packs sharing them would clash.\n\nSo StewBeet quietly routes any recipe touching custom items through "), hl("Smithed"),
+			body("Vanilla recipes can't output NBT items, and two packs sharing them would clash.\n\nSo "), brand(), body(" quietly routes any recipe touching custom items through "), hl("Smithed"),
 			body(" "), hl("Crafter"), body(" and "), hl("Furnace NBT Recipes"), body(".\n\n"),
 			note("You write one recipe. It picks the engine."),
 		], scale=0.5, line_width=CODE_W),
@@ -348,34 +348,91 @@ TEXTS: list[Zone] = [
 	]),
 
 	# 8 Generate Entire Material Sets
-	Zone("Generate Material Sets", (197, 102, -28), 0, [
+	Zone("Material Sets", (197, 102, -28), 0, [
 		Page("One Config", [
-			title("Describe a material once (1/3)\n\n"),
+			title("Describe it once (1/9)\n\n"),
+			body("A new metal usually means dozens of items, models and recipes, all by hand.\n\nWith "), brand(), body(", you write "),
+			hl("one"), body(" code block:\n\n"),
 			code("ORES_CONFIGS = {\n"),
-			code("  \"ruby\": EquipmentsConfig(\n"),
-			code("    equivalent_to=DefaultOre.DIAMOND,\n"),
-			code("    attributes={\"attack_damage\": 1},\n"),
-			code("  ),\n"),
+			code("    \"steel_ingot\": EquipmentsConfig(\n"),
+			code("        equivalent_to=DefaultOre.IRON,\n"),
+			code("    ),\n"),
 			code("}"),
-		], line_width=CODE_W),
-		Page("Generate Everything", [
-			title("One call, a whole set (2/3)\n\n"),
+		], line_width=CODE_W, scale=0.5),
+		Page("The Whole Family", [
+			title("One line in, a set out (2/9)\n\n"),
 			code("generate_everything_about_\n"),
 			code("these_materials(ORES_CONFIGS)\n\n"),
-			body("-> ingot, raw item, block, ore, pickaxe, axe, sword, hoe, shovel, helmet, chestplate, leggings, boots."),
-		], line_width=CODE_W),
-		Page("Balanced", [
-			title("Tune the stats (3/3)\n\n"),
-			body("Add modifiers on top of a base ore:\n\n- "), hl("attack_damage"), body("\n- "), hl("armor"), body(" / "), hl("armor_toughness"), body("\n- "), hl("mining_efficiency"), body("\n\n"),
-			note("Recipes and loot come with it."),
-		]),
+			body("And out comes the whole family:\n\n"),
+			code("steel_ingot, steel_nugget, raw_steel, steel_dust, steel_block, steel_ore, deepslate_steel_ore, "),
+			code("steel_pickaxe, steel_axe, steel_sword, steel_shovel, steel_hoe, steel_spear, ", color="#538b97"),
+			code("steel_helmet, steel_chestplate, steel_leggings, steel_boots, and more...\n\n"),
+			note("Around 20 items, from one config."),
+		], line_width=CODE_W, scale=0.42),
+		Page("Textures Lead", [
+			title("Your art decides (3/9)\n\n"),
+			brand(), body(" scans your textures folder and builds "), hl("only"), body(" what it finds there.\n\n"),
+			body("Drop in a "), code("steel_sword.png"), body(" and a steel sword exists. No file, no item.\n\n"),
+			note("Add the art, rebuild, it's there."),
+		], scale=0.5),
+		Page("Recipes Included", [
+			title("Crafts, for free (4/9)\n\n"),
+			body("Every generated item is already wired up:\n\n- Raw & dust "),
+			hl("smelt"), body(" to the ingot\n- Shapeless: 9 ingots "),
+			hl("<->"), body(" 1 block\n- Shapeless: 9 nuggets "), hl("<->"), body(" 1 ingot\n"),
+			body("- Tools & armor get their crafting "), hl("shapes"), body("\n- Melt old gear back into "),
+			hl("nuggets"), body("\n- The ore "), hl("drops"), body(" when no silk touch\n- ...\n\n"),
+			note("Blasting + pulverizing (2x dust) too."),
+		], scale=0.5, line_width=CODE_W),
+		Page("Wears On Your Body", [
+			title("Armor that renders (5/9)\n\n"),
+			body("Add two layer textures beside the gear:\n\n"),
+			code("steel_layer_1.png  # body & head\n"),
+			code("steel_layer_2.png  # legs & feet\n\n"),
+			brand(), body(" copies them into the assets/*/equipment folder and wires the "), hl("equippable"),
+			body(" component - so your set actually shows "), hl("on the player", "gold"), body(", not just in the slot."),
+		], line_width=CODE_W, scale=0.5),
+		Page("Give It A Personality", [
+			title("Not just a reskin (6/9)\n\n"),
+			body("Make your config relative to a vanilla tier, and bend the numbers:\n\n"),
+			code("equivalent_to = DefaultOre.IRON\n"),
+			code("pickaxe_durability = 3 * iron\n"),
+			code("attributes = {\n"),
+			code("    \"attack_damage\": 1,      # +1 a hit\n"),
+			code("    \"mining_efficiency\": 2,   # +20% speed\n"),
+			code("}\n\n"),
+			body("Steel: iron's stats, but the whole set is "), hl("3x tougher"), body(" and quicker to mine with."),
+		], line_width=CODE_W, scale=0.45),
+		Page("Pick Your Tier", [
+			title("Any vanilla tier (7/9)\n\n"),
+			body("Base the set on any tier: "),
+			hl("wood"), body(", "), hl("stone"), body(", "), hl("gold"), body(", "), hl("copper"), body(", "), hl("iron"), body(", "), hl("diamond"), body(", "), hl("netherite"), body(".\n\n"),
+			body("Modifiers auto-route: "), body("armor & toughness to "), hl("armor"), body(", "), hl("damage & mining to "), hl("tools"), body(".\n\n"),
+			note("Stone -> chainmail, wood -> leather."),
+		], scale=0.55),
+		Page("Names & Overrides", [
+			title("It reads your names (8/9)\n\n"),
+			code("\"steel_ingot\"         -> steel\n"),
+			code("\"minecraft:emerald\"   -> emerald\n"),
+			code("\"adamantium_fragment\" -> adamantium\n"),
+			code("\"awakened_stardust!\"  -> keep whole\n\n"),
+			body("A trailing "), hl("!"), body(" keeps a multi-word base intact. Set "), hl("ignore_recipes=True"),
+			body(" to keep the items but write the recipes yourself."),
+		], line_width=CODE_W, scale=0.4),
+		Page("Mix Anything", [
+			title("Custom or vanilla (9/9)\n\n"),
+			body("One dict can hold many materials at once - even vanilla ones:\n\n"),
+			code("\"steel_ingot\": EquipmentsConfig(...),\n"),
+			code("\"minecraft:stone\": None,\n\n"),
+			body("Pass "), hl("None"), body(" for no stats: stone still finds your "), hl("stone_stick"), body(" and "), hl("stone_rod"), body(" textures on its own."),
+		], line_width=CODE_W, scale=0.45),
 	]),
 
 	# 9 The Interactive In-Game Manual
 	Zone("In-Game Manual", (202, 102, -25), 180, [
 		Page("Free Documentation", [
 			title("A manual, generated (1/3)\n\n"),
-			body("StewBeet builds a full "), hl("interactive"),
+			brand(), body(" builds a full "), hl("interactive"),
 			body(" manual from your items and recipes.\n\n"),
 			note("Every recipe, rendered and clickable."),
 		]),

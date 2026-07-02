@@ -18,8 +18,8 @@ scoreboard players set #standing_on_giants stewbeet_summit.page 0
 function stewbeet_summit:walls/standing_on_giants/show
 scoreboard players set #recipes_loot stewbeet_summit.page 0
 function stewbeet_summit:walls/recipes_loot/show
-scoreboard players set #generate_material_sets stewbeet_summit.page 0
-function stewbeet_summit:walls/generate_material_sets/show
+scoreboard players set #material_sets stewbeet_summit.page 0
+function stewbeet_summit:walls/material_sets/show
 scoreboard players set #in_game_manual stewbeet_summit.page 0
 function stewbeet_summit:walls/in_game_manual/show
 scoreboard players set #qol_ecosystem stewbeet_summit.page 0

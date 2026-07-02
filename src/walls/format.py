@@ -12,7 +12,7 @@ from stouputils.typing import JsonDict
 
 def brand() -> list[JsonDict]:
 	""" The 'StewBeet' wordmark as a green->red gradient. """
-	return create_gradient_text("StewBeet", "#00FF00", "#FF0000")
+	return create_gradient_text("StewBeet", "#FF9100", "#FF0000")
 
 def beet() -> list[JsonDict]:
 	""" The 'Beet' wordmark as a green->red gradient. """
@@ -30,9 +30,9 @@ def hl(text: str, color: str = "aqua") -> JsonDict:
 	""" An inline highlighted (bold) word. """
 	return {"text": text, "bold": True, "color": color}
 
-def code(text: str) -> JsonDict:
+def code(text: str, color: str = "#8BE9FD") -> JsonDict:
 	""" A monospace-blue code fragment. """
-	return {"text": text, "color": "#8BE9FD"}
+	return {"text": text, "color": color}
 
 def note(text: str) -> JsonDict:
 	""" A gray italic aside. """
