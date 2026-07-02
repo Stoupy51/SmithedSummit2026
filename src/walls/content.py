@@ -19,7 +19,7 @@ from dataclasses import dataclass
 
 from stewbeet import TextComponent
 
-from .format import beet, body, brand, code, hl, note, title
+from .format import beet, body, brand, cmd, code, hl, note, title
 from .links import link
 
 
@@ -86,7 +86,7 @@ TEXTS: list[Zone] = [
 		Page("For Beginners", [
 			title("Friendly for newcomers (2/4)\n\n"),
 			body("Sensible defaults and ready templates: minimal, basic, extensive.\n\n"),
-			code("stewbeet init basic\n\n"),
+			cmd("stewbeet init basic\n\n"),
 			note("Up and running in seconds."),
 		]),
 		Page("For Veterans", [
@@ -106,17 +106,17 @@ TEXTS: list[Zone] = [
 	Zone("Start in 3 Commands", (201, 102, -20), 180, [
 		Page("Install", [
 			title("1. Install (1/4)\n\n"),
-			code("pip install stewbeet\n\n"),
+			cmd("pip install stewbeet\n\n"),
 			body("Pulls in beet, bolt, mecha and all the dependencies for you."),
 		]),
 		Page("Create", [
 			title("2. Create a project (2/4)\n\n"),
-			code("stewbeet init basic\n\n"),
+			cmd("stewbeet init basic\n\n"),
 			body("Generates the whole project layout: beet.yml, src/, assets/, and more."),
 		]),
 		Page("Build", [
 			title("3. Build (3/4)\n\n"),
-			code("stewbeet"), note("   (or 'beet build')"), body("\n\nOutputs a ready "), hl("datapack"), body(" and "),
+			cmd("stewbeet"), note("   (or 'beet build')"), body("\n\nOutputs a ready "), hl("datapack"), body(" and "),
 			hl("resource pack"), body(" zip into 'build/'."),
 		]),
 		Page("Auto-Copy", [
@@ -150,7 +150,7 @@ TEXTS: list[Zone] = [
 			code("        \"minecraft:sharpness\": 5\n"),
 			code("    },\n"),
 			code("    \"max_damage\": 500,\n"),
-			code("    !repairable: {}\n"),
+			code("    \"!repairable\": {},\n"),
 			code("}"),
 		], line_width=CODE_W, scale=0.5),
 		Page("Textures Are Automatic", [
@@ -215,7 +215,7 @@ TEXTS: list[Zone] = [
 			code("    veins_per_region=4,\n"),
 			code("    vein_size_logic=0.4,\n"),
 			code(")\n\n"),
-			note("Controls dimensions, height & vein size. Via Smart Ore Generation lib."),
+			note("Controls dimensions, height & vein size.\nVia Smart Ore Generation lib."),
 		], scale=0.45, line_width=CODE_W),
 		Page("Texture Patterns", [
 			title("Texture name patterns (5/6)\n\n"),
@@ -253,7 +253,7 @@ TEXTS: list[Zone] = [
 			hl("mecha"), body(" compiles and type-checks every command it emits.\n\n"),
 			hl("bolt"), body(" lets you script functions in real Python - loops, vars, if.\n\n"),
 			link("github.com/mcbeet/beet/.../bolt", "https://github.com/mcbeet/beet/blob/main/packages/bolt/README.md"),
-		], line_width=CODE_W),
+		], line_width=CODE_W, scale=0.5),
 		Page("Model Resolver", [
 			title("Model Resolver (4/7)\n\n"),
 			body("Renders every item and block to a real image, "), hl("in pure Python"),
@@ -361,18 +361,17 @@ TEXTS: list[Zone] = [
 		], line_width=CODE_W, scale=0.5),
 		Page("The Whole Family", [
 			title("One line in, a set out (2/9)\n\n"),
-			code("generate_everything_about_\n"),
-			code("these_materials(ORES_CONFIGS)\n\n"),
+			code("generate_everything_about_these_materials(ORES_CONFIGS)\n\n"),
 			body("And out comes the whole family:\n\n"),
-			code("steel_ingot, steel_nugget, raw_steel, steel_dust, steel_block, steel_ore, deepslate_steel_ore, "),
-			code("steel_pickaxe, steel_axe, steel_sword, steel_shovel, steel_hoe, steel_spear, ", color="#538b97"),
-			code("steel_helmet, steel_chestplate, steel_leggings, steel_boots, and more...\n\n"),
+			code("steel_ingot, steel_nugget, raw_steel, steel_dust, steel_block, steel_ore, deepslate_steel_ore, ", color="#538b97"),
+			code("steel_pickaxe, steel_axe, steel_sword, steel_shovel, steel_hoe, steel_spear, ", color="#70becf"),
+			code("steel_helmet, steel_chestplate, steel_leggings, steel_boots, and more...\n\n", color="#538b97"),
 			note("Around 20 items, from one config."),
-		], line_width=CODE_W, scale=0.42),
+		], line_width=225, scale=0.42),
 		Page("Textures Lead", [
 			title("Your art decides (3/9)\n\n"),
 			brand(), body(" scans your textures folder and builds "), hl("only"), body(" what it finds there.\n\n"),
-			body("Drop in a "), code("steel_sword.png"), body(" and a steel sword exists. No file, no item.\n\n"),
+			body("Drop in a "), code("steel_sword.png", color="#8BE9FD"), body(" and a steel sword exists. No file, no item.\n\n"),
 			note("Add the art, rebuild, it's there."),
 		], scale=0.5),
 		Page("Recipes Included", [
@@ -408,24 +407,25 @@ TEXTS: list[Zone] = [
 			body("Base the set on any tier: "),
 			hl("wood"), body(", "), hl("stone"), body(", "), hl("gold"), body(", "), hl("copper"), body(", "), hl("iron"), body(", "), hl("diamond"), body(", "), hl("netherite"), body(".\n\n"),
 			body("Modifiers auto-route: "), body("armor & toughness to "), hl("armor"), body(", "), hl("damage & mining to "), hl("tools"), body(".\n\n"),
-			note("Stone -> chainmail, wood -> leather."),
-		], scale=0.55),
+			note("Stone -> chainmail armor,\nwood -> leather armor."),
+		], line_width=195, scale=0.55),
 		Page("Names & Overrides", [
 			title("It reads your names (8/9)\n\n"),
-			code("\"steel_ingot\"         -> steel\n"),
-			code("\"minecraft:emerald\"   -> emerald\n"),
+			code("\"steel_ingot\"             -> steel\n"),
+			code("\"minecraft:emerald\"     -> emerald\n"),
 			code("\"adamantium_fragment\" -> adamantium\n"),
 			code("\"awakened_stardust!\"  -> keep whole\n\n"),
 			body("A trailing "), hl("!"), body(" keeps a multi-word base intact. Set "), hl("ignore_recipes=True"),
 			body(" to keep the items but write the recipes yourself."),
-		], line_width=CODE_W, scale=0.4),
+		], line_width=CODE_W, scale=0.5),
 		Page("Mix Anything", [
 			title("Custom or vanilla (9/9)\n\n"),
-			body("One dict can hold many materials at once - even vanilla ones:\n\n"),
+			body("One dict can hold many materials at once, even vanilla ones:\n\n"),
 			code("\"steel_ingot\": EquipmentsConfig(...),\n"),
+			code("\"minecraft:emerald\": EquipmentsConfig(...),\n"),
 			code("\"minecraft:stone\": None,\n\n"),
 			body("Pass "), hl("None"), body(" for no stats: stone still finds your "), hl("stone_stick"), body(" and "), hl("stone_rod"), body(" textures on its own."),
-		], line_width=CODE_W, scale=0.45),
+		], line_width=CODE_W, scale=0.5),
 	]),
 
 	# 9 The Interactive In-Game Manual
@@ -473,7 +473,7 @@ TEXTS: list[Zone] = [
 		]),
 		Page("Get StewBeet", [
 			title("Try it today (5/6)\n\n"),
-			code("pip install stewbeet\n\n"),
+			cmd("pip install stewbeet\n\n"),
 			body("Docs:  "), hl("stewbeet.paralya.fr", "gold"), body("\nJoin the Discord community!"),
 		], line_width=CODE_W),
 		Page("Thank You", [

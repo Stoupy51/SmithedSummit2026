@@ -13,6 +13,7 @@ Module map:
 """
 
 # Imports
+import stouputils as stp
 from beet import Context
 from stewbeet import Mem, write_load_file
 
@@ -20,6 +21,7 @@ from .builder import setup_presentation_walls
 
 
 # Main entry point (runs before the build is finalized: zip, headers, lang, ...).
+@stp.measure_time(message="src.walls")
 def beet_default(ctx: Context) -> None:
 	ns: str = Mem.ctx.project_id
 
@@ -36,3 +38,4 @@ kill @e[tag={ns}.wall]
 function {ns}:walls/setup
 function {ns}:walls/reset
 """)
+
