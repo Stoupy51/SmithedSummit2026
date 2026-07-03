@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/items_in_pure_python/show
 #
-# @executed	positioned 196.5 101.0 -11.5 & rotated 180 0
-#
-# @within	stewbeet_summit:walls/items_in_pure_python/next
-#			stewbeet_summit:walls/items_in_pure_python/prev
+# @within	stewbeet_summit:walls/items_in_pure_python/fade_swap_down
+#			stewbeet_summit:walls/items_in_pure_python/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

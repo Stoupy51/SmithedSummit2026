@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/why_for_who/show
 #
-# @executed	positioned 204.5 101.0 -22.5 & rotated 0 0
-#
-# @within	stewbeet_summit:walls/why_for_who/next
-#			stewbeet_summit:walls/why_for_who/prev
+# @within	stewbeet_summit:walls/why_for_who/fade_swap_down
+#			stewbeet_summit:walls/why_for_who/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

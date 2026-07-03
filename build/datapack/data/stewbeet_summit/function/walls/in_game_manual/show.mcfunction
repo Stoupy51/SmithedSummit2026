@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/in_game_manual/show
 #
-# @executed	positioned 202.5 101.0 -24.5 & rotated 180 0
-#
-# @within	stewbeet_summit:walls/in_game_manual/next
-#			stewbeet_summit:walls/in_game_manual/prev
+# @within	stewbeet_summit:walls/in_game_manual/fade_swap_down
+#			stewbeet_summit:walls/in_game_manual/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

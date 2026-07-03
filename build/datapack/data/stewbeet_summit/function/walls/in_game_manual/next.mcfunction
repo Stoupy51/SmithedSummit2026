@@ -6,10 +6,17 @@
 # @within	stewbeet_summit:walls/setup [ positioned 202.5 101.0 -24.5 & rotated 180 0 ]
 #
 
-scoreboard players add #in_game_manual stewbeet_summit.page 1
-execute if score #in_game_manual stewbeet_summit.page matches 3.. run scoreboard players set #in_game_manual stewbeet_summit.page 2
-function stewbeet_summit:walls/in_game_manual/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
-data merge entity 20180612-2026-2002-2098-202200000008 {interpolation_duration:0,start_interpolation:0,transformation:{scale:[1.25f,1.25f,1.25f]}}
+execute if score #in_game_manual stewbeet_summit.page matches 2.. run return 0
+schedule clear stewbeet_summit:walls/in_game_manual/fade_out_down
+schedule clear stewbeet_summit:walls/in_game_manual/fade_swap_down
+schedule clear stewbeet_summit:walls/in_game_manual/fade_in_down
+schedule clear stewbeet_summit:walls/in_game_manual/fade_out_up
+schedule clear stewbeet_summit:walls/in_game_manual/fade_swap_up
+schedule clear stewbeet_summit:walls/in_game_manual/fade_in_up
+scoreboard players add #in_game_manual stewbeet_summit.page 1
+data merge entity 20180612-2026-2002-2098-202200000008 {interpolation_duration:0,start_interpolation:-1,transformation:{scale:[1.25f,1.25f,1.25f]}}
 schedule function stewbeet_summit:walls/in_game_manual/pop_settle 2t replace
+scoreboard players set #in_game_manual stewbeet_summit.fc 2
+function stewbeet_summit:walls/in_game_manual/fade_out_down
 

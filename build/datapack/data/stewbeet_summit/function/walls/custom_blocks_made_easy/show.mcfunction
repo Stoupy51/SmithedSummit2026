@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/custom_blocks_made_easy/show
 #
-# @executed	positioned 191.5 101.0 -16.5 & rotated -90 0
-#
-# @within	stewbeet_summit:walls/custom_blocks_made_easy/next
-#			stewbeet_summit:walls/custom_blocks_made_easy/prev
+# @within	stewbeet_summit:walls/custom_blocks_made_easy/fade_swap_down
+#			stewbeet_summit:walls/custom_blocks_made_easy/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

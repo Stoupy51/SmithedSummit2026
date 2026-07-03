@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/start_in_3_commands/show
 #
-# @executed	positioned 201.5 101.0 -19.5 & rotated 180 0
-#
-# @within	stewbeet_summit:walls/start_in_3_commands/next
-#			stewbeet_summit:walls/start_in_3_commands/prev
+# @within	stewbeet_summit:walls/start_in_3_commands/fade_swap_down
+#			stewbeet_summit:walls/start_in_3_commands/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

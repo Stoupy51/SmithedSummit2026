@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/what_is_stewbeet/show
 #
-# @executed	positioned 211.5 101.0 -18.5 & rotated 90 0
-#
-# @within	stewbeet_summit:walls/what_is_stewbeet/next
-#			stewbeet_summit:walls/what_is_stewbeet/prev
+# @within	stewbeet_summit:walls/what_is_stewbeet/fade_swap_down
+#			stewbeet_summit:walls/what_is_stewbeet/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

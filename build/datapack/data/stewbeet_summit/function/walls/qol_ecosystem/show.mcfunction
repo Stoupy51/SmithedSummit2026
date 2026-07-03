@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/qol_ecosystem/show
 #
-# @executed	positioned 203.5 101.0 -27.5 & rotated 0 0
-#
-# @within	stewbeet_summit:walls/qol_ecosystem/next
-#			stewbeet_summit:walls/qol_ecosystem/prev
+# @within	stewbeet_summit:walls/qol_ecosystem/fade_swap_down
+#			stewbeet_summit:walls/qol_ecosystem/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

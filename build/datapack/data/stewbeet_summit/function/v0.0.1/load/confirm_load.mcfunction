@@ -15,6 +15,7 @@ function stewbeet_summit:intro/setup
 
 # Presentation walls (StewBeet)
 scoreboard objectives add stewbeet_summit.page dummy
+scoreboard objectives add stewbeet_summit.fc dummy
 kill @e[tag=stewbeet_summit.wall]
 function stewbeet_summit:walls/setup
 function stewbeet_summit:walls/reset

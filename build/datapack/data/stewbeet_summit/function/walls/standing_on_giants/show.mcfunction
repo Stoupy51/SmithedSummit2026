@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/standing_on_giants/show
 #
-# @executed	positioned 194.5 101.0 -19.5 & rotated 90 0
-#
-# @within	stewbeet_summit:walls/standing_on_giants/next
-#			stewbeet_summit:walls/standing_on_giants/prev
+# @within	stewbeet_summit:walls/standing_on_giants/fade_swap_down
+#			stewbeet_summit:walls/standing_on_giants/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

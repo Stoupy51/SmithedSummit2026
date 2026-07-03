@@ -4,9 +4,9 @@ Per wall (Zone) this summons a title, a page display and left/right textured nav
 arrows (each backed by a summit.interactable interaction), plus - on walls whose
 pages carry links - a centered "Open link" prompt + interaction. It also writes,
 per wall, one function per page (swap text/scale + gray the boundary arrow) and
-show / next / prev (+ openlink) navigation, plus pop_settle (the click-feedback
-arrow "pop": next/prev snap the clicked arrow big, pop_settle eases it back a tick
-later), all under walls/<slug>/.
+show / next / prev (+ openlink) navigation, plus the animation helpers - pop_settle
+(the click-feedback arrow "pop") and the manual page fade (fade_out_* -> fade_swap_* ->
+fade_in_*, one direction each for the down/up slide) - all under walls/<slug>/.
 
 The summons collect into walls/setup and the per-wall "reset to page 0 + refresh"
 into walls/reset; __init__ calls both from the load file after clearing old entities.
@@ -42,6 +42,16 @@ LINK_SCALE: float = 0.5     # text_display scale for the centered "Open link" pr
 LINK_INT: float = 0.75      # "Open link" interaction hitbox size (0 on pages with no link)
 ARROW_POP: float = 1.25     # clicked arrow snaps to this multiple of ARROW_SCALE, then eases back
 ARROW_POP_TICKS: int = 8    # ticks for the clicked arrow to ease from the popped size back to normal
+FADE_TICKS: int = 2         # ticks per page fade phase (out, then in)
+FADE_DROP: float = 0.15     # vertical slide distance (blocks) of the page text during a fade
+FADE_INTERP: int = 4        # per-frame interpolation_duration (ticks) that smooths between frames
+# text_opacity byte bands (unsigned alpha): 0..3 render fully opaque (avoid!), 4..26 are
+# invisible, 27..255 ramp faint->opaque. We drive opacity ourselves one value per tick
+# (the client's byte interpolation lerps the raw *signed* byte, which can't ramp
+# invisible->255), so these are just the endpoints of that manual ramp.
+PAGE_ALPHA_FULL: int = 255      # fully opaque
+PAGE_ALPHA_FADED: int = 10      # invisible (inside the 4..26 band, clear of the 0..3 quirk)
+BG_ALPHA_FULL: int = 64         # default page background alpha (0x40 of 0x40000000, black)
 
 
 def zone_slug(name: str) -> str:
@@ -193,7 +203,7 @@ data modify entity {link_int_uuid} height set value {link_size}f
 			write_function(f"{base}/page_{pi}", f"""
 data modify entity {disp_uuid} text set value {nbt(root(page.text))}
 data modify entity {disp_uuid} line_width set value {page.line_width}
-data modify entity {disp_uuid} transformation.scale set value {nbt([page_scale, page_scale, page_scale])}
+data modify entity {disp_uuid} transformation.scale set value [{page_scale}f, {page_scale}f, {page_scale}f]
 data modify entity {left_uuid} item.components."minecraft:item_model" set value "{ns}:{left_model}"
 data modify entity {right_uuid} item.components."minecraft:item_model" set value "{ns}:{right_model}"
 {link_lines}
@@ -219,9 +229,10 @@ data modify entity {right_uuid} item.components."minecraft:item_model" set value
 		#  - one 'data merge' per step so the whole transform update lands atomically.
 		#  - scale is a list of FLOATS: the values must carry the 'f' suffix, or the
 		#    merge is dropped as a double/float type mismatch (nothing moves).
-		#  - start_interpolation is (re)written every time: a Display only applies its
-		#    transformation *through* an interpolation event, so an update without it
-		#    is ignored by the client. duration 0 + start 0 = an instant, applied snap.
+		#  - start_interpolation is ABSOLUTE game-time, not a delay: 0 is a tick in the
+		#    distant past, so the window has already elapsed and the entity snaps. Use
+		#    -1, which the game rewrites to the current tick = "interpolate from now".
+		#    duration 0 + start -1 = an instant, applied snap.
 		#  - the snap and ease-back land on separate ticks: the client interpolates
 		#    from its last *rendered* transform, so a same-tick big->normal never pops.
 		pop_big: float = round(ARROW_SCALE * ARROW_POP, 4)
@@ -229,7 +240,7 @@ data modify entity {right_uuid} item.components."minecraft:item_model" set value
 		def scale_merge(v: float, dur: int) -> str:
 			""" data-merge SNBT setting scale (float list) + an interpolation of `dur` ticks. """
 			s: str = f"[{v}f,{v}f,{v}f]"
-			return "{interpolation_duration:" + str(dur) + ",start_interpolation:0,transformation:{scale:" + s + "}}"
+			return "{interpolation_duration:" + str(dur) + ",start_interpolation:-1,transformation:{scale:" + s + "}}"
 
 		def pop_arrow(uuid: str, base: str = base, pop_big: float = pop_big) -> str:
 			return f"""data merge entity {uuid} {scale_merge(pop_big, 0)}
@@ -243,21 +254,105 @@ data merge entity {left_uuid} {scale_merge(ARROW_SCALE, ARROW_POP_TICKS)}
 data merge entity {right_uuid} {scale_merge(ARROW_SCALE, ARROW_POP_TICKS)}
 """, overwrite=True)
 
-		# Navigation: advance/rewind with wrap-around, refresh + click sound, then
-		# pop the arrow that was clicked (right on next, left on prev).
-		write_function(f"{base}/next", f"""
-scoreboard players add {holder} {obj} 1
-execute if score {holder} {obj} matches {n}.. run scoreboard players set {holder} {obj} {n - 1}
+		# Page fade - driven manually, one value per tick. The client interpolates
+		# text_opacity as a raw *signed* byte, so it can't ramp invisible(~10)->opaque
+		# (255/-1): the short numeric path runs the wrong way through the 0..3 "opaque"
+		# band. So the page skips built-in interpolation entirely - a per-wall counter
+		# (#slug in {ns}.fc) counts a phase down from FADE_TICKS to 0 and each tick we
+		# write the exact opacity + background + translation for that frame.
+		fcobj: str = f"{ns}.fc"
+		F: int = FADE_TICKS
+
+		def op_of(frac: float) -> int:
+			""" Unsigned text alpha for a frame. frac 0..1 = faded..full. """
+			return round(PAGE_ALPHA_FADED + (PAGE_ALPHA_FULL - PAGE_ALPHA_FADED) * frac)
+
+		def page_frame(op: int, bg_alpha: int, y: float, dur: int, uuid: str = disp_uuid) -> str:
+			""" One fade frame: unsigned alpha `op` (->signed NBT byte), background alpha
+			`bg_alpha` (ARGB, black), vertical translation `y`, smoothed over `dur` ticks. """
+			sb: int = op - 256 if op > 127 else op
+			return (f"data merge entity {uuid} "
+				"{interpolation_duration:" + str(dur) + ",start_interpolation:-1"
+				",text_opacity:" + str(sb) + "b"
+				",background:" + str(bg_alpha << 24) +
+				",transformation:{translation:[0f," + f"{round(y, 4)}f" + ",0f]}}")
+
+		def phase_frames(frames: list[tuple[int, float, float]], holder: str = holder, fcobj: str = fcobj) -> list[str]:
+			""" One 'apply when fc==c' line per (c, frac, y) frame. Frames interpolate over
+			FADE_INTERP ticks for smoothness, except one whose opacity crosses the signed-byte
+			128 boundary from the prior frame: that lerp would run the wrong way through the
+			0..3 opaque band, so it snaps (dur 0) instead. """
+			lines: list[str] = []
+			for c, frac, y in frames:
+				op: int = op_of(frac)
+				lines.append(f"execute if score {holder} {fcobj} matches {c} run {page_frame(op, round(BG_ALPHA_FULL * frac), y, FADE_INTERP)}")
+			return lines
+
+		# Per direction (right arrow -> down, left arrow -> up) write the three parts of
+		# the transition. exit_y = where the old text slides off to; entry_y = the
+		# opposite side the new text slides in from.
+		#  fade_out_*:  counter F->0, text ramps full->invisible while sliding to exit_y.
+		#  fade_swap_*: once invisible, swap the new page in (show) at entry_y, reset F.
+		#  fade_in_*:   counter F->0, text ramps invisible->full while sliding entry_y->0.
+		def write_fade(d: str, exit_y: float, entry_y: float, base: str = base, holder: str = holder, F: int = F, fcobj: str = fcobj) -> None:
+			out_lines: list[str] = phase_frames([(c, c / F, exit_y * (F - c) / F) for c in range(F, -1, -1)])
+			# At c==0 hand off to fade_swap via SCHEDULE, not an inline call: fade_swap
+			# resets fc to F, and an inline call would let the `matches 1..` guards below
+			# re-see fc=F and re-arm fade_out - looping fade_out and fade_in forever.
+			out_lines += [
+				f"execute if score {holder} {fcobj} matches 0 run schedule function {base}/fade_swap_{d} 1t replace",
+				f"execute if score {holder} {fcobj} matches 1.. run schedule function {base}/fade_out_{d} 1t replace",
+				f"execute if score {holder} {fcobj} matches 1.. run scoreboard players remove {holder} {fcobj} 1",
+			]
+			write_function(f"{base}/fade_out_{d}", "\n".join(out_lines) + "\n", overwrite=True)
+
+			# Reposition (still invisible) to the entry side; snap it (dur 0) so the text
+			# doesn't visibly glide across from the exit side while it's being placed.
+			write_function(f"{base}/fade_swap_{d}", f"""
 function {base}/show
+{page_frame(PAGE_ALPHA_FADED, 0, entry_y, 0)}
+scoreboard players set {holder} {fcobj} {F}
+schedule function {base}/fade_in_{d} 1t replace
+""", overwrite=True)
+
+			in_lines: list[str] = phase_frames([(c, (F - c) / F, entry_y * c / F) for c in range(F, -1, -1)])
+			in_lines += [
+				f"execute if score {holder} {fcobj} matches 1.. run schedule function {base}/fade_in_{d} 1t replace",
+				f"execute if score {holder} {fcobj} matches 1.. run scoreboard players remove {holder} {fcobj} 1",
+			]
+			write_function(f"{base}/fade_in_{d}", "\n".join(in_lines) + "\n", overwrite=True)
+
+		write_fade("down", -FADE_DROP, FADE_DROP)   # right arrow: old slides down, new enters from above
+		write_fade("up", FADE_DROP, -FADE_DROP)     # left arrow:  old slides up,   new enters from below
+
+		# Cancel any fade chain still in flight for this wall (both directions, all three
+		# phases) so a fast second click can't leave two chains fighting over the counter.
+		clear_fades: str = "\n".join(
+			f"schedule clear {base}/fade_{p}_{fd}"
+			for fd in ("down", "up") for p in ("out", "swap", "in"))
+
+		# Navigation: advance/rewind, click sound, pop the clicked arrow, then kick off the
+		# page fade (fade_out defers the text swap to fade_swap, so the old text stays put
+		# until it has faded away). A no-op at the boundary (already on the last/first page)
+		# returns before doing anything, so a dead-end click neither animates nor interrupts
+		# an ongoing fade. The boundary guard also makes the wrap-around clamp unnecessary.
+		write_function(f"{base}/next", f"""
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
+execute if score {holder} {obj} matches {n - 1}.. run return 0
+{clear_fades}
+scoreboard players add {holder} {obj} 1
 {pop_arrow(right_uuid)}
+scoreboard players set {holder} {fcobj} {F}
+function {base}/fade_out_down
 """, overwrite=True)
 		write_function(f"{base}/prev", f"""
-scoreboard players remove {holder} {obj} 1
-execute if score {holder} {obj} matches ..-1 run scoreboard players set {holder} {obj} 0
-function {base}/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
+execute if score {holder} {obj} matches ..0 run return 0
+{clear_fades}
+scoreboard players remove {holder} {obj} 1
 {pop_arrow(left_uuid)}
+scoreboard players set {holder} {fcobj} {F}
+function {base}/fade_out_up
 """, overwrite=True)
 
 		# Reset this wall to page 0 and refresh it (collected into walls/reset).
@@ -266,3 +361,4 @@ playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
 	# Aggregate functions: all summons, and the whole-board reset.
 	write_function(f"{ns}:walls/setup", "\n".join(setup_cmds) + "\n", overwrite=True)
 	write_function(f"{ns}:walls/reset", "\n".join(reset_cmds) + "\n", overwrite=True)
+

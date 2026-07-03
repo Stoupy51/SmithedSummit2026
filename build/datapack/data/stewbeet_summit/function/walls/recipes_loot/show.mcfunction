@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/recipes_loot/show
 #
-# @executed	positioned 191.5 101.0 -22.5 & rotated -90 0
-#
-# @within	stewbeet_summit:walls/recipes_loot/next
-#			stewbeet_summit:walls/recipes_loot/prev
+# @within	stewbeet_summit:walls/recipes_loot/fade_swap_down
+#			stewbeet_summit:walls/recipes_loot/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 

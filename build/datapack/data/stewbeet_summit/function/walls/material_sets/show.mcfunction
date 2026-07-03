@@ -1,10 +1,8 @@
 
 #> stewbeet_summit:walls/material_sets/show
 #
-# @executed	positioned 197.5 101.0 -27.5 & rotated 0 0
-#
-# @within	stewbeet_summit:walls/material_sets/next
-#			stewbeet_summit:walls/material_sets/prev
+# @within	stewbeet_summit:walls/material_sets/fade_swap_down
+#			stewbeet_summit:walls/material_sets/fade_swap_up
 #			stewbeet_summit:walls/reset
 #
 
