@@ -4,7 +4,9 @@ Per wall (Zone) this summons a title, a page display and left/right textured nav
 arrows (each backed by a summit.interactable interaction), plus - on walls whose
 pages carry links - a centered "Open link" prompt + interaction. It also writes,
 per wall, one function per page (swap text/scale + gray the boundary arrow) and
-show / next / prev (+ openlink) navigation, all under walls/<slug>/.
+show / next / prev (+ openlink) navigation, plus pop_settle (the click-feedback
+arrow "pop": next/prev snap the clicked arrow big, pop_settle eases it back a tick
+later), all under walls/<slug>/.
 
 The summons collect into walls/setup and the per-wall "reset to page 0 + refresh"
 into walls/reset; __init__ calls both from the load file after clearing old entities.
@@ -38,6 +40,8 @@ TITLE_SCALE: float = 0.9    # text_display scale for the title
 ARROW_SCALE: float = 1.0    # item_display scale for the arrows
 LINK_SCALE: float = 0.5     # text_display scale for the centered "Open link" prompt
 LINK_INT: float = 0.75      # "Open link" interaction hitbox size (0 on pages with no link)
+ARROW_POP: float = 1.25     # clicked arrow snaps to this multiple of ARROW_SCALE, then eases back
+ARROW_POP_TICKS: int = 8    # ticks for the clicked arrow to ease from the popped size back to normal
 
 
 def zone_slug(name: str) -> str:
@@ -210,18 +214,50 @@ data modify entity {right_uuid} item.components."minecraft:item_model" set value
 				f"execute if score {holder} {obj} matches {pi} run dialog show @s {nbt(link_dialog(zone.name, zone.pages[pi].name, links))}"
 				for pi, links in enumerate(zone_links) if links) + "\n", overwrite=True)
 
-		# Navigation: advance/rewind with wrap-around, then refresh + click sound.
+		# Click feedback: snap the clicked arrow to ARROW_POP x its size *now*, then
+		# let pop_settle ease it back to normal one tick later. Three points matter:
+		#  - one 'data merge' per step so the whole transform update lands atomically.
+		#  - scale is a list of FLOATS: the values must carry the 'f' suffix, or the
+		#    merge is dropped as a double/float type mismatch (nothing moves).
+		#  - start_interpolation is (re)written every time: a Display only applies its
+		#    transformation *through* an interpolation event, so an update without it
+		#    is ignored by the client. duration 0 + start 0 = an instant, applied snap.
+		#  - the snap and ease-back land on separate ticks: the client interpolates
+		#    from its last *rendered* transform, so a same-tick big->normal never pops.
+		pop_big: float = round(ARROW_SCALE * ARROW_POP, 4)
+
+		def scale_merge(v: float, dur: int) -> str:
+			""" data-merge SNBT setting scale (float list) + an interpolation of `dur` ticks. """
+			s: str = f"[{v}f,{v}f,{v}f]"
+			return "{interpolation_duration:" + str(dur) + ",start_interpolation:0,transformation:{scale:" + s + "}}"
+
+		def pop_arrow(uuid: str, base: str = base, pop_big: float = pop_big) -> str:
+			return f"""data merge entity {uuid} {scale_merge(pop_big, 0)}
+schedule function {base}/pop_settle 2t replace"""
+
+		# Ease both arrows back to normal size (the un-clicked one is already there,
+		# so its interpolation is a no-op). One shared settle keeps rapid alternating
+		# clicks - which 'schedule ... replace' collapses to a single firing - correct.
+		write_function(f"{base}/pop_settle", f"""
+data merge entity {left_uuid} {scale_merge(ARROW_SCALE, ARROW_POP_TICKS)}
+data merge entity {right_uuid} {scale_merge(ARROW_SCALE, ARROW_POP_TICKS)}
+""", overwrite=True)
+
+		# Navigation: advance/rewind with wrap-around, refresh + click sound, then
+		# pop the arrow that was clicked (right on next, left on prev).
 		write_function(f"{base}/next", f"""
 scoreboard players add {holder} {obj} 1
 execute if score {holder} {obj} matches {n}.. run scoreboard players set {holder} {obj} {n - 1}
 function {base}/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
+{pop_arrow(right_uuid)}
 """, overwrite=True)
 		write_function(f"{base}/prev", f"""
 scoreboard players remove {holder} {obj} 1
 execute if score {holder} {obj} matches ..-1 run scoreboard players set {holder} {obj} 0
 function {base}/show
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
+{pop_arrow(left_uuid)}
 """, overwrite=True)
 
 		# Reset this wall to page 0 and refresh it (collected into walls/reset).
