@@ -51,6 +51,7 @@ execute unless entity {arrow_2} run summon minecraft:item_display 198.9375 98.12
 
 # Main entry point (runs before the build is finalized: zip, headers, lang, ...).
 def beet_default(ctx: Context) -> None:
+	""" Write the entrance decorations and wire the load file that places them. """
 	ns: str = Mem.ctx.project_id
 	setup_entrance(ns)
 

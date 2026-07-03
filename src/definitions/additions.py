@@ -1,3 +1,11 @@
+""" The pack's custom item definitions.
+
+Called by src.setup_definitions early in the pipeline. Every Item() registered
+here lands in Mem.definitions, from which StewBeet generates the models, loot
+tables and resource-pack entries. The items are all display props: the entrance
+decorations (black hole, logo, title, arrows - summoned by src/intro.py) and
+the presentation walls' nav arrows (used by src/walls).
+"""
 
 # Imports
 from stewbeet import *  # type: ignore
@@ -5,6 +13,7 @@ from stewbeet import *  # type: ignore
 
 # Main entry point
 def main():
+    """ Register every custom item of the pack into Mem.definitions. """
     ns: str = Mem.ctx.project_id
 
     # Add items to the definitions
@@ -27,11 +36,10 @@ def main():
         for side in ("left", "right"):
             Item(id=f"{grayed}nav_arrow_{side}")
 
-    # 3D items
+    # 3D items whose models live in assets/<item>.json (texture 0 swapped to the
+    # project's own texture).
     for item in ["arrow", "title"]:
         model = stp.json_load(Mem.ctx.directory / f"assets/{item}.json")
         model["textures"]["0"] = f"{ns}:item/{item}"
         Item(id=item, override_model=model)
-
-    pass
 

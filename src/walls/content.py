@@ -26,20 +26,29 @@ from .links import link
 # https://minecraft.wiki/w/Display#Entity_data
 @dataclass
 class Page:
+	""" One page of a wall: a named text component plus its display tuning. """
 	name: str
+	""" Page title, shown as the subtitle of the click-to-open link dialog. """
 	text: TextComponent
+	""" The page body, as a list of text components (see format.py stylers). """
 	line_width: int = 175
-	# Per-page text size override. None = use the global PAGE_SCALE. Lower it on
-	# tall pages so they don't grow up into the zone title (text is bottom-anchored,
-	# so a smaller scale keeps more headroom).
+	""" text_display wrapping width; raise it (e.g. CODE_W) so code lines never re-wrap. """
 	scale: float | None = None
+	""" Per-page text size override. None = use the global PAGE_SCALE. Lower it on
+	tall pages so they don't grow up into the zone title (text is bottom-anchored,
+	so a smaller scale keeps more headroom). """
 
 @dataclass
 class Zone:
+	""" One presentation wall: its title, in-world anchor and pages. """
 	name: str
+	""" Wall title, floated above the wall (and used to derive the function folder slug). """
 	coords: tuple[int, int, int]
+	""" In-world anchor block of the wall. """
 	rotation: int
+	""" Yaw the wall faces; flip by 180 if its text/arrows face the wrong way. """
 	pages: list[Page]
+	""" The pages navigated with the arrows, in order. """
 
 
 # Wider wrap so short code lines are never re-wrapped.
