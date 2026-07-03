@@ -65,8 +65,9 @@ TEXTS: list[Zone] = [
 			hl("automation"), body(" to Minecraft datapacks.\n\n"),
 			body("You describe "), hl("what", "gold"), body(" you want in Python. "),
 			brand(), body(" generates everything else.\n\n"),
-			link("stewbeet.paralya.fr", "https://stewbeet.paralya.fr"),
-		]),
+			link("stewbeet.paralya.fr", "https://stewbeet.paralya.fr"), body("\n"),
+			link("discord.gg/anxzu6rA9F", r"https://discord.gg/anxzu6rA9F"),
+		], scale=0.55),
 		Page("The Problem", [
 			title("The old way (2/4)\n\n"),
 			body("A modern datapack means hundreds of hand-written files: models, loot tables, recipes, lang, item components...\n\n"),
