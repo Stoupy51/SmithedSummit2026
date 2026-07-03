@@ -10,3 +10,7 @@ data modify entity 20180612-2026-2002-2098-202000000006 transformation.scale set
 data modify entity 20180612-2026-2002-2098-202100000006 item.components."minecraft:item_model" set value "stewbeet_summit:nav_arrow_left"
 data modify entity 20180612-2026-2002-2098-202200000006 item.components."minecraft:item_model" set value "stewbeet_summit:nav_arrow_right"
 
+data modify entity 20180612-2026-2002-2098-202300000006 text set value ["", {"text": ""}]
+data modify entity 20180612-2026-2002-2098-202400000006 width set value 0.0f
+data modify entity 20180612-2026-2002-2098-202400000006 height set value 0.0f
+

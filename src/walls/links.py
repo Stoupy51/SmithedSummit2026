@@ -18,6 +18,7 @@ from stouputils.typing import JsonDict
 # Social-platform glyphs from the custom "summit_icons" font, keyed by URL host.
 SOCIAL_ICONS: dict[str, str] = {
 	"github.com": "github",
+	"paralya.fr": "github",
 	"smithed.dev": "smithed",
 	"modrinth.com": "modrinth",
 	"curseforge.com": "curseforge",
@@ -91,7 +92,7 @@ def link_button_label(label: str, url: str) -> TextComponent:
 	""" Dialog button label: the platform icon (when known) followed by the text.
 	Starts with an empty parent so the icon's custom font doesn't leak onto the
 	label (in a component list, siblings inherit from the first element). """
-	text: JsonDict = {"text": label, "color": "#8BE9FD"}
+	text: JsonDict = {"text": label.replace("\n", " "), "color": "#8BE9FD"}
 	key: str | None = icon_for_url(url)
 	return ["", social_icon(key), {"text": " "}, text] if key else [text]
 

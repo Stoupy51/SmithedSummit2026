@@ -38,3 +38,4 @@ FADE_INTERP: int = 4        # per-frame interpolation_duration (ticks) that smoo
 PAGE_ALPHA_FULL: int = 255      # fully opaque
 PAGE_ALPHA_FADED: int = 10      # invisible (inside the 4..26 band, clear of the 0..3 quirk)
 BG_ALPHA_FULL: int = 64         # default page background alpha (0x40 of 0x40000000, black)
+

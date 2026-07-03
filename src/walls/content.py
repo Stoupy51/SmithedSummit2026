@@ -63,7 +63,9 @@ TEXTS: list[Zone] = [
 			title("Introduction (1/4)\n\n"),
 			body("It is a "), beet(), body(" framework that brings huge "),
 			hl("automation"), body(" to Minecraft datapacks.\n\n"),
-			body("You describe "), hl("what", "gold"), body(" you want in Python. "), brand(), body(" generates everything else."),
+			body("You describe "), hl("what", "gold"), body(" you want in Python. "),
+			brand(), body(" generates everything else.\n\n"),
+			link("stewbeet.paralya.fr", "https://stewbeet.paralya.fr"),
 		]),
 		Page("The Problem", [
 			title("The old way (2/4)\n\n"),
@@ -116,7 +118,8 @@ TEXTS: list[Zone] = [
 		Page("Install", [
 			title("1. Install (1/4)\n\n"),
 			cmd("pip install stewbeet\n\n"),
-			body("Pulls in beet, bolt, mecha and all the dependencies for you."),
+			body("Pulls in beet, bolt, mecha and all the dependencies for you.\n\n"),
+			link("Docs: Getting Started", r"https://stewbeet.paralya.fr/markdown?src=0_getting_started%2Fen.md"),
 		]),
 		Page("Create", [
 			title("2. Create a project (2/4)\n\n"),
@@ -186,7 +189,8 @@ TEXTS: list[Zone] = [
 			body("Every definition lives in "), hl("Mem.definitions"),
 			body(". You can access it from anywhere and update it.\n\n"),
 			code("ruby = Item.from_id(\"ruby\")\n"),
-			code("ruby.manual_category = \"materials\""),
+			code("ruby.manual_category = \"materials\"\n\n"),
+			link("Docs: Definitions Setup", r"https://stewbeet.paralya.fr/markdown?src=1_definitions_setup%2Fen.md"),
 		], line_width=200),
 	]),
 
@@ -238,7 +242,8 @@ TEXTS: list[Zone] = [
 		Page("States & Facing", [
 			title("States & facing (6/6)\n\n"),
 			body("Add an "), hl("_on"), body(" texture and the block gets a powered state for free.\n\nSet "), hl("block_facing"), body(" and "), brand(), body(" builds "),
-			hl("directional"), body(" variants, all recognized from names like electric_furnace_front_on.png"),
+			hl("directional"), body(" variants, all recognized from names like electric_furnace_front_on.png\n\n"),
+			link("Docs: Definitions Setup", r"https://stewbeet.paralya.fr/markdown?src=1_definitions_setup%2Fen.md"),
 		]),
 	]),
 
@@ -293,8 +298,9 @@ TEXTS: list[Zone] = [
 			hl("Realistic Explosion"), body(" - blasts\n"),
 			hl("Smithed Actionbar"), body(" - action bar\n"),
 			hl("Player Motion"), body(" - movement\n"),
-			note("...and more!"),
-		], scale=0.5, line_width=CODE_W),
+			note("...and more!\n\n"),
+			link("Docs: Libraries Support", r"https://stewbeet.paralya.fr/markdown?src=5_dependencies%2Fen.md"),
+		], scale=0.475, line_width=CODE_W),
 	]),
 
 	# 7 Recipes & Loot, Automatic
@@ -342,8 +348,8 @@ TEXTS: list[Zone] = [
 			code("result_count=8             # bulk\n"),
 			code("result=Ingr(\"bone_meal\") # other item\n"),
 			code("result_count={              # random!\n"),
-			code("    \"type\":\"minecraft:uniform\",\n"),
-			code("    \"min\":4, \"max\":6,\n"),
+			code("    \"type\": \"minecraft:uniform\",\n"),
+			code("    \"min\": 4, \"max\": 6,\n"),
 			code("}\n\n"),
 			note("Perfect for ore-crushing and drops."),
 		], line_width=CODE_W, scale=0.45),
@@ -352,8 +358,9 @@ TEXTS: list[Zone] = [
 			body("Every item gets a "), hl("loot table"), body(", and a "),
 			hl("_give_all"), body(" function hands out chests of everything you made - great for tests.\n\nBetter yet: every recipe is "), hl("rendered", "gold"),
 			body(" into the in-game manual, automatically.\n\n"),
-			note("Define once. Appreciate the rest."),
-		], scale=0.5),
+			note("Define once. Appreciate the rest.\n\n"),
+			link("Docs: Definitions Setup", r"https://stewbeet.paralya.fr/markdown?src=1_definitions_setup%2Fen.md"),
+		], scale=0.475),
 	]),
 
 	# 8 Generate Entire Material Sets
@@ -382,7 +389,7 @@ TEXTS: list[Zone] = [
 			brand(), body(" scans your textures folder and builds "), hl("only"), body(" what it finds there.\n\n"),
 			body("Drop in a "), code("steel_sword.png", color="#8BE9FD"), body(" and a steel sword exists. No file, no item.\n\n"),
 			note("Add the art, rebuild, it's there."),
-		], scale=0.5),
+		]),
 		Page("Recipes Included", [
 			title("Crafts, for free (4/9)\n\n"),
 			body("Every generated item is already wired up:\n\n- Raw & dust "),
@@ -433,7 +440,9 @@ TEXTS: list[Zone] = [
 			code("\"steel_ingot\": EquipmentsConfig(...),\n"),
 			code("\"minecraft:emerald\": EquipmentsConfig(...),\n"),
 			code("\"minecraft:stone\": None,\n\n"),
-			body("Pass "), hl("None"), body(" for no stats: stone still finds your "), hl("stone_stick"), body(" and "), hl("stone_rod"), body(" textures on its own."),
+			body("Pass "), hl("None"), body(" for no stats: stone still finds your "),
+			hl("stone_stick"), body(" and "), hl("stone_rod"), body(" textures on its own.\n\n"),
+			link("Docs: Definitions Setup", r"https://stewbeet.paralya.fr/markdown?src=1_definitions_setup%2Fen.md"),
 		], line_width=CODE_W, scale=0.5),
 	]),
 
@@ -443,20 +452,26 @@ TEXTS: list[Zone] = [
 			title("A manual, generated (1/3)\n\n"),
 			brand(), body(" builds a full "), hl("interactive"),
 			body(" manual from your items and recipes.\n\n"),
-			note("Every recipe, rendered and clickable."),
+			note("Every recipe, rendered and clickable.\n\n"),
+			link("Please check the GIF!\nI highly recommend it!!!", r"https://github.com/Stoupy51/StewBeet/blob/main/docs/plugins/img/ingame_manual.gif"),
 		]),
 		Page("Wiki Buttons", [
+			# TODO: Outdated, read the new docs (E:\my_folders\advanced_desktop\StewBeet\docs\7_ingame_manual) instead.
 			title("Add your own notes (2/3)\n\n"),
-			code("Item.from_id(\"ruby\").wiki_buttons = [\n"),
-			code("    WikiButton({\n"),
-			code("        \"text\": \"Drops from Ruby Ore\",\n"),
-			code("    }),\n"),
+			code("obj = Item.from_id(\"steel_ingot\")\n"),
+			code("obj.wiki_buttons = [\n"),
+			code("    WikiButton([\n"),
+			code("        {\"text\":\"Here is an example of a wiki component,\\nthis text component will be displayed as a button in the manual.\"},\n"),
+			code("        {\"text\":\"\\nYou can write anything you want here.\",\"color\":\"yellow\"},\n"),
+			code("    ]),\n"),
+			code("    WikiButton({\"text\":\"This is another button with a simple text component.\",\"color\":\"aqua\"}),\n"),
 			code("]"),
-		], line_width=CODE_W),
+		], line_width=250, scale=0.45),
 		Page("Always Up To Date", [
 			title("Never stale (3/3)\n\n"),
 			body("Add an item, rebuild, and the manual updates "), hl("itself", "gold"), body(".\n\n"),
-			note("Book or in-game dialog UI."),
+			note("Book or in-game dialog UI.\n\n"),
+			link("Docs: In-Game Manual", r"https://stewbeet.paralya.fr/markdown?src=7_ingame_manual%2Fen.md"),
 		]),
 	]),
 
