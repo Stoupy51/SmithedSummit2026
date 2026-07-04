@@ -1,11 +1,10 @@
 
-#> stewbeet_summit:v0.0.1/load/confirm_load
+#> stewbeet_summit:v1.0.0/load/confirm_load
 #
-# @within	stewbeet_summit:v0.0.1/load/secondary
+# @within	stewbeet_summit:v1.0.0/load/secondary
 #
 
 # Confirm load
-tellraw @a[tag=convention.debug] {"text":"[Loaded StewBeet Summit 2026 v0.0.1]","color":"green"}
 scoreboard players set #stewbeet_summit.loaded load.status 1
 
 # Booth entities (StewBeet): entrance decorations + presentation walls

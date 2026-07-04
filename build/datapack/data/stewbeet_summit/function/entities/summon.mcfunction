@@ -2,7 +2,7 @@
 #> stewbeet_summit:entities/summon
 #
 # @within	#summit.booth:stewbeet_summit/entities/summon
-#			stewbeet_summit:v0.0.1/load/confirm_load
+#			stewbeet_summit:v1.0.0/load/confirm_load
 #
 
 # Clear any previous booth entities so repeated calls never stack

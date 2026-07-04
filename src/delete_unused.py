@@ -15,7 +15,7 @@ def beet_default(ctx: Context):
         f: Function = ctx.data[ns].functions[path]
         f.text = "\n".join(
             line for line in f.text.split("\n")
-            if all(x not in line for x in ("set_items_storage", )) # TODO: add convention.debug
+            if all(x not in line for x in ("set_items_storage", "convention.debug")) # TODO: add convention.debug
         )
 
     # Delete unnecessary functions

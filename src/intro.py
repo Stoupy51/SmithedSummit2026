@@ -83,6 +83,13 @@ execute unless entity {title_2} run summon item_display 207.25 102.5 -16.0 {{UUI
 execute unless entity {underground_button} run summon item_display 210.0 52.5 -26.0 {{UUID:uuid("{underground_button}"),{dump(underground_button_nbt)}}}
 execute unless entity {underground_interaction} run summon interaction 210.0 52.5 -26.0 {{UUID:uuid("{underground_interaction}"),{dump(underground_interaction_nbt)}}}
 
+# Stoupy Mannequin (deferred: even with its death animation fast-forwarded in
+# entities/kill, the freshly killed corpse still holds the UUID this tick)
+schedule function {ns}:intro/mannequin 2t replace
+""", overwrite=True)
+
+	# The mannequin summon itself, run 2 ticks after intro/setup (see above).
+	write_function(f"{ns}:intro/mannequin", f"""
 # Stoupy Mannequin
 execute unless entity {stoupy_mannequin} run summon mannequin 192 53 -19 {{UUID:uuid("{stoupy_mannequin}"),{dump(stoupy_mannequin_nbt)}}}
 """, overwrite=True)

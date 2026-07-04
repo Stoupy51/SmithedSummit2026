@@ -44,12 +44,5 @@
 				"obtained_text": "Discovered Switch Minigames at the StewBeet booth"
 			}
 		]
-	},
-	"balloons": [
-		{
-			"balloon_id": "stewbeet",
-			"balloon_name": "StewBeet",
-			"balloon_model": "stewbeet_summit:stewbeet_balloon"
-		}
-	]
+	}
 }

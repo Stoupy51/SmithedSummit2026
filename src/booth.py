@@ -26,7 +26,11 @@ def beet_default(ctx: Context) -> None:
 	ns: str = Mem.ctx.project_id
 
 	# Kill everything the booth ever summoned (every entity carries the tag).
+	# Living entities (the mannequin) linger ~20 ticks after /kill playing their
+	# death animation; fast-forwarding DeathTime removes the corpse (and frees its
+	# UUID) on the very next tick instead.
 	write_function(f"{ns}:entities/kill", f"""
+execute as @e[type=mannequin,tag=summit.booth_entity.{ns}] run data merge entity @s {{DeathTime: 19s}}
 kill @e[tag=summit.booth_entity.{ns}]
 """, tags=[f"summit.booth:{ns}/entities/kill"])
 
