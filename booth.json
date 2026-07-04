@@ -17,27 +17,28 @@
 			}
 		}
 	},
+	"on_player_enter": "stewbeet_summit:booth/on_enter",
 	"sticker_book": {
 		"background_color": "#FF9100",
 		"region": "welded_woodlands",
 		"stickers": [
 			{
 				"sticker_id": "stewbeet",
-				"sticker_texture": "stewbeet_summit:logo_sticker",
+				"sticker_texture": "stewbeet_summit:item/logo_sticker",
 				"sticker_name": "StewBeet",
 				"unobtained_text": "Visit the StewBeet booth",
 				"obtained_text": "Visited the StewBeet booth"
 			},
 			{
 				"sticker_id": "simplenergy",
-				"sticker_texture": "stewbeet_summit:simplenergy",
+				"sticker_texture": "stewbeet_summit:item/simplenergy",
 				"sticker_name": "SimplEnergy",
 				"unobtained_text": "Discover SimplEnergy at the StewBeet booth",
 				"obtained_text": "Discovered SimplEnergy at the StewBeet booth"
 			},
 			{
 				"sticker_id": "switch_minigames",
-				"sticker_texture": "stewbeet_summit:switch_minigames",
+				"sticker_texture": "stewbeet_summit:item/switch_minigames",
 				"sticker_name": "Switch Minigames",
 				"unobtained_text": "Discover Switch Minigames at the StewBeet booth",
 				"obtained_text": "Discovered Switch Minigames at the StewBeet booth"

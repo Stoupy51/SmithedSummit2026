@@ -23,6 +23,9 @@ schedule clear stewbeet_summit:walls/switch_minigames/fade_in_up
 # Advance the page index (the text swap itself happens later, in fade_swap)
 scoreboard players add #switch_minigames stewbeet_summit.page 1
 
+# Reward the sticker of the page just reached to the clicking player
+execute on target run advancement grant @s only summit.sticker_book:stewbeet_summit/switch_minigames
+
 # Click feedback: snap the clicked arrow to its popped size now, ease it back next tick
 data merge entity 20180612-2026-2002-2098-202200000011 {interpolation_duration:0,start_interpolation:-1,transformation:{scale:[1.25f,1.25f,1.25f]}}
 schedule function stewbeet_summit:walls/switch_minigames/pop_settle 2t replace

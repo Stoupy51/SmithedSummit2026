@@ -37,6 +37,10 @@ class Page:
 	""" Per-page text size override. None = use the global PAGE_SCALE. Lower it on
 	tall pages so they don't grow up into the zone title (text is bottom-anchored,
 	so a smaller scale keeps more headroom). """
+	sticker: str | None = None
+	""" Sticker id (see booth.json) rewarded to the player who navigates onto this
+	page, via the summit.sticker_book:<ns>/<sticker_id> advancement (see
+	navigation.py). Reaching it needs no click. """
 
 @dataclass
 class Zone:
@@ -617,7 +621,7 @@ TEXTS: list[Zone] = [
 			body("- Options 2-7 are random picks based on the player count\n"),
 			body("- The 7th hides its pick under the name "), hl("\"Random\""), body("\n\n"),
 			note("15 seconds to vote,\nchange it anytime until the end."),
-		], line_width=CODE_W, scale=0.45),
+		], line_width=CODE_W, scale=0.45, sticker="switch_minigames"),
 		Page("The Minigames", [
 			title("50+ minigames (3/3)\n\n"),
 			body("The initial goal was 48... we now aim for an "), hl("infinite", "gold"), body(" number!\n\n"),
@@ -642,7 +646,7 @@ TEXTS: list[Zone] = [
 			link("[PMC]", r"https://www.planetminecraft.com/data-pack/simplenergy/"), body(" "),
 			link("[Modrinth]", r"https://modrinth.com/datapack/simplenergy"), body(" "),
 			link("[GitHub]", r"https://github.com/Stoupy51/SimplEnergy"),
-		], line_width=CODE_W, scale=0.5),
+		], line_width=CODE_W, scale=0.5, sticker="simplenergy"),
 		Page("Stardust Fragment", [
 			title("Stardust Fragment (3/6)\n\n"),
 			body("A whole tech-adventure progression:\n\n"),

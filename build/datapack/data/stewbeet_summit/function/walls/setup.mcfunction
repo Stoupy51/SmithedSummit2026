@@ -1,8 +1,7 @@
 
 #> stewbeet_summit:walls/setup
 #
-# @within	stewbeet_summit:v0.0.1/load/confirm_load
-#			stewbeet_summit:entities/summon
+# @within	stewbeet_summit:entities/summon
 #
 
 # Wall 1: What is StewBeet? (what_is_stewbeet)

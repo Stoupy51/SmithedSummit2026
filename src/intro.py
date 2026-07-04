@@ -3,20 +3,22 @@
 beet pipeline entry (referenced as `src.intro` in beet.yml). Independent of the
 presentation walls (src/walls): it summons the decorative displays at the summit
 entrance - background black hole, logo, title and two arrows - into intro/setup,
-then calls it from the load file. Each summon is guarded by a fixed UUID
+called from entities/summon (src/booth.py). Each summon is guarded by a fixed UUID
 (`execute unless entity ...`) so re-running on every /reload never duplicates them.
 """
 
 # Imports
 from beet import Context
-from stewbeet import Mem, write_function, write_load_file
+from stewbeet import Mem, write_function
 from stouputils.typing import JsonDict
 
 from .utils.nbt import dump, item_nbt, scale_only
 
 
-def setup_entrance(ns: str) -> None:
+# Main entry point (runs before the build is finalized: zip, headers, lang, ...).
+def beet_default(ctx: Context) -> None:
 	""" Write intro/setup: summon the summit entrance decorations if absent. """
+	ns: str = Mem.ctx.project_id
 	# Background black hole (placed underground)
 	black_hole: str = "20180612-2026-2002-2098-201000000000"
 	black_hole_nbt: JsonDict = item_nbt("bg_black_hole", transformation=scale_only(16.69, 9.8, -16.69))
@@ -84,20 +86,4 @@ execute unless entity {underground_interaction} run summon interaction 210.0 52.
 # Stoupy Mannequin
 execute unless entity {stoupy_mannequin} run summon mannequin 192 53 -19 {{UUID:uuid("{stoupy_mannequin}"),{dump(stoupy_mannequin_nbt)}}}
 """, overwrite=True)
-
-
-# Main entry point (runs before the build is finalized: zip, headers, lang, ...).
-def beet_default(ctx: Context) -> None:
-	""" Write the entrance decorations and wire the load file that places them. """
-	ns: str = Mem.ctx.project_id
-	setup_entrance(ns)
-
-	# Load: clear the previous decorations (they are UUID-guarded, so intro/setup
-	# only re-summons the missing ones) and place them.
-	# TODO: drop the kill when the summit build is finalized.
-	write_load_file(f"""
-# Entrance decorations (StewBeet)
-kill @e[tag=summit.booth_entity.{ns}]
-function {ns}:intro/setup
-""")
 
