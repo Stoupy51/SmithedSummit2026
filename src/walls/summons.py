@@ -35,7 +35,7 @@ from .wall import Wall
 def title_nbt(wall: Wall) -> JsonDict:
 	""" NBT for the static title text_display floating above the wall. """
 	return {
-		"Tags": [f"{wall.ns}.wall", "summit.static"], "billboard": "fixed", "alignment": "center", "Rotation": wall.rotation,
+		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.static"], "billboard": "fixed", "alignment": "center", "Rotation": wall.rotation,
 		"text": root([{"text": wall.zone.name, "bold": True, "color": "#FFD479"}]),
 		"transformation": scale_only(TITLE_SCALE, TITLE_SCALE, TITLE_SCALE),
 		"brightness": {"block": 15, "sky": 15},
@@ -51,7 +51,7 @@ def page_nbt(wall: Wall) -> JsonDict:
 	first = wall.zone.pages[0]
 	first_scale: float = wall.page_scale(first)
 	return {
-		"Tags": [f"{wall.ns}.wall", "summit.dynamic"], "billboard": "fixed", "alignment": "left",
+		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.dynamic"], "billboard": "fixed", "alignment": "left",
 		"Rotation": wall.rotation, "line_width": first.line_width, "text": root(first.text),
 		"transformation": scale_only(first_scale, first_scale, first_scale),
 		"brightness": {"block": 15, "sky": 15},
@@ -64,7 +64,7 @@ def arrow_nbt(wall: Wall, model: str) -> JsonDict:
 	Arrows are dynamic (their texture grays out at the boundaries), so they
 	carry the summit.dynamic tag - not summit.static. """
 	return {
-		"Tags": [f"{wall.ns}.wall", "summit.dynamic"], "billboard": "fixed", "item_display": "fixed", "Rotation": wall.rotation,
+		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.dynamic"], "billboard": "fixed", "item_display": "fixed", "Rotation": wall.rotation,
 		"item": {"id": "stone", "count": 1, "components": {"minecraft:item_model": f"{wall.ns}:{model}"}},
 		"transformation": scale_only(ARROW_SCALE, ARROW_SCALE, ARROW_SCALE),
 		"brightness": {"block": 15, "sky": 15},
@@ -75,7 +75,7 @@ def nav_interaction_nbt(wall: Wall, action: str) -> JsonDict:
 	""" NBT for the interaction entity behind an arrow: right-click runs the
 	wall's `action` function (next or prev). """
 	return {
-		"Tags": [f"{wall.ns}.wall", "summit.static", "summit.interactable"],
+		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.static", "summit.interactable"],
 		"width": INT_W, "height": INT_H, "response": True,
 		"data": {"summit_interactable": {"on_right_click": f"function {wall.function(action)}"}},
 	}
@@ -86,7 +86,7 @@ def link_prompt_nbt(wall: Wall) -> JsonDict:
 
 	Dynamic: refreshed on every page swap (empty text on linkless pages). """
 	return {
-		"Tags": [f"{wall.ns}.wall", "summit.dynamic"], "billboard": "fixed", "alignment": "center",
+		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.dynamic"], "billboard": "fixed", "alignment": "center",
 		"Rotation": wall.rotation, "text": root(link_hint(wall.page_links[0])),
 		"transformation": scale_only(LINK_SCALE, LINK_SCALE, LINK_SCALE),
 		"brightness": {"block": 15, "sky": 15},
@@ -103,7 +103,7 @@ def link_interaction_nbt(wall: Wall) -> JsonDict:
 	`dialog show @s` targets them. """
 	first_link_size: float = LINK_INT if wall.page_links[0] else 0.0
 	return {
-		"Tags": [f"{wall.ns}.wall", "summit.static", "summit.interactable"],
+		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.static", "summit.interactable"],
 		"width": first_link_size, "height": first_link_size, "response": True,
 		"data": {"summit_interactable": {"on_right_click": f"execute on target run function {wall.function('openlink')}"}},
 	}

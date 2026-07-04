@@ -33,7 +33,7 @@ def item_nbt(item: str, **kwargs: Any) -> JsonDict:
 			"components": {"minecraft:item_model": f"{ns}:{item}"},
 			"count": 1,
 		},
-		"Tags": [f"{ns}.{item}", f"{ns}.entity", "summit.static"],
+		"Tags": [f"{ns}.{item}", f"summit.booth_entity.{ns}", "summit.static"],
 		"brightness": {"block": 15, "sky": 15},
 		**kwargs,
 	}

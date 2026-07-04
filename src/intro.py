@@ -43,6 +43,18 @@ def setup_entrance(ns: str) -> None:
 	title_2: str = "20180612-2026-2002-2098-201000000006"
 	title_2_nbt: JsonDict = item_nbt("title", transformation=scale_only(2, 2, 2), Rotation=[-90, 0])
 
+	# Button to get out of the underground
+	underground_button: str = "20180612-2026-2002-2098-201000000007"
+	underground_button_nbt: JsonDict = item_nbt("underground_button", transformation=scale_only(1.5, 1.5, 1.5), Rotation=[0, 0])
+	underground_button_nbt["item"]["id"] = "minecraft:pale_oak_button"
+	underground_interaction: str = "20180612-2026-2002-2098-201000000008"
+	underground_interaction_nbt: JsonDict = {
+		"Tags": [f"summit.booth_entity.{ns}", "summit.static", "summit.interactable"],
+		"response": True, "width": 1.2, "height": 1.2,
+		"data": {"summit_interactable": {"on_right_click": "execute on target run effect give @s levitation 4 13 true"}}
+	}
+	del underground_button_nbt["item"]["components"]
+
 	# Write the intro/setup function
 	write_function(f"{ns}:intro/setup", f"""
 # Background black hole (underground)
@@ -57,6 +69,10 @@ execute unless entity {arrow_2} run summon minecraft:item_display 198.9375 98.12
 # Another time the logo and title at the real entrance
 execute unless entity {logo_2} run summon minecraft:item_display 207.0 103.5 -16.0 {{UUID:uuid("{logo_2}"),{dump(logo_2_nbt)}}}
 execute unless entity {title_2} run summon minecraft:item_display 207.25 102.5 -16.0 {{UUID:uuid("{title_2}"),{dump(title_2_nbt)}}}
+
+# Button to get out of the underground
+execute unless entity {underground_button} run summon minecraft:item_display 210.0 52.5 -26.0 {{UUID:uuid("{underground_button}"),{dump(underground_button_nbt)}}}
+execute unless entity {underground_interaction} run summon minecraft:interaction 210.0 52.5 -26.0 {{UUID:uuid("{underground_interaction}"),{dump(underground_interaction_nbt)}}}
 """, overwrite=True)
 
 
@@ -71,6 +87,7 @@ def beet_default(ctx: Context) -> None:
 	# TODO: drop the kill when the summit build is finalized.
 	write_load_file(f"""
 # Entrance decorations (StewBeet)
-kill @e[tag={ns}.entity]
+kill @e[tag=summit.booth_entity.{ns}]
 function {ns}:intro/setup
 """)
+

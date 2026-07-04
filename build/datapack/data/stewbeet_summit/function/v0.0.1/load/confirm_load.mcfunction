@@ -9,7 +9,7 @@ tellraw @a[tag=convention.debug] {"text":"[Loaded StewBeet Summit 2026 v0.0.1]",
 scoreboard players set #stewbeet_summit.loaded load.status 1
 
 # Entrance decorations (StewBeet)
-kill @e[tag=stewbeet_summit.entity]
+kill @e[tag=summit.booth_entity.stewbeet_summit]
 function stewbeet_summit:intro/setup
 
 # Presentation walls (StewBeet)
