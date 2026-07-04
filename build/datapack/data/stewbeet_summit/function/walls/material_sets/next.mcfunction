@@ -28,6 +28,6 @@ data merge entity 20180612-2026-2002-2098-202200000007 {interpolation_duration:0
 schedule function stewbeet_summit:walls/material_sets/pop_settle 2t replace
 
 # Kick off the page fade: arm the phase counter and run the first fade-out frame now
-scoreboard players set #material_sets stewbeet_summit.fc 2
+scoreboard players set #material_sets stewbeet_summit.data 2
 function stewbeet_summit:walls/material_sets/fade_out_down
 

@@ -41,7 +41,6 @@ def beet_default(ctx: Context) -> None:
 	write_load_file(f"""
 # Presentation walls (StewBeet)
 scoreboard objectives add {ns}.page dummy
-scoreboard objectives add {ns}.fc dummy
 kill @e[tag={ns}.wall]
 function {ns}:walls/setup
 function {ns}:walls/reset

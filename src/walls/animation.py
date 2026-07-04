@@ -16,7 +16,7 @@ Fade: driven manually, one opacity value per tick. The client interpolates
 text_opacity as a raw *signed* byte, so it can't ramp invisible(~10)->opaque
 (255/-1): the short numeric path runs the wrong way through the 0..3 "opaque"
 band. So the page skips built-in opacity interpolation entirely - a per-wall
-counter (holder in <ns>.fc) counts a phase down from FADE_TICKS to 0 and each
+counter (holder in <ns>.data) counts a phase down from FADE_TICKS to 0 and each
 tick we write the exact opacity + background + translation for that frame.
 """
 

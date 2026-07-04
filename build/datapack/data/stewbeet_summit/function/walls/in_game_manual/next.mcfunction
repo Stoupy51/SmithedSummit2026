@@ -10,7 +10,7 @@
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
 
 # Boundary guard: already on the last page (the right arrow is grayed), do nothing
-execute if score #in_game_manual stewbeet_summit.page matches 2.. run return 0
+execute if score #in_game_manual stewbeet_summit.page matches 7.. run return 0
 
 # Cancel any fade chain still in flight so a fast second click can't leave two running
 schedule clear stewbeet_summit:walls/in_game_manual/fade_out_down
@@ -28,6 +28,6 @@ data merge entity 20180612-2026-2002-2098-202200000008 {interpolation_duration:0
 schedule function stewbeet_summit:walls/in_game_manual/pop_settle 2t replace
 
 # Kick off the page fade: arm the phase counter and run the first fade-out frame now
-scoreboard players set #in_game_manual stewbeet_summit.fc 2
+scoreboard players set #in_game_manual stewbeet_summit.data 2
 function stewbeet_summit:walls/in_game_manual/fade_out_down
 

@@ -28,6 +28,6 @@ data merge entity 20180612-2026-2002-2098-202100000004 {interpolation_duration:0
 schedule function stewbeet_summit:walls/custom_blocks_made_easy/pop_settle 2t replace
 
 # Kick off the page fade: arm the phase counter and run the first fade-out frame now
-scoreboard players set #custom_blocks_made_easy stewbeet_summit.fc 2
+scoreboard players set #custom_blocks_made_easy stewbeet_summit.data 2
 function stewbeet_summit:walls/custom_blocks_made_easy/fade_out_up
 

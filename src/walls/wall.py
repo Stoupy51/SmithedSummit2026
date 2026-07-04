@@ -56,7 +56,7 @@ class Wall:
 		self.base: str = f"{ns}:walls/{slug}"       # function-path prefix for this wall
 		self.holder: str = f"#{slug}"               # scoreboard fake-player holding the page index
 		self.page_objective: str = f"{ns}.page"     # objective: current page index
-		self.fade_objective: str = f"{ns}.fc"       # objective: fade phase countdown
+		self.fade_objective: str = f"{ns}.data"       # objective: fade phase countdown
 
 		# Summon anchor: centered on the anchor block, one block down, facing the
 		# zone's rotation. All local-frame (^) offsets are relative to this.
