@@ -6,6 +6,7 @@
 #			stewbeet_summit:walls/reset
 #
 
+# Refresh this wall: run the page function matching the current page index (#material_sets)
 execute if score #material_sets stewbeet_summit.page matches 0 run function stewbeet_summit:walls/material_sets/page_0
 execute if score #material_sets stewbeet_summit.page matches 1 run function stewbeet_summit:walls/material_sets/page_1
 execute if score #material_sets stewbeet_summit.page matches 2 run function stewbeet_summit:walls/material_sets/page_2

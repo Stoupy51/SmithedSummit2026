@@ -22,21 +22,41 @@ def write_navigation_functions(wall: Wall) -> None:
 	obj: str = wall.page_objective
 
 	write_function(wall.function("next"), f"""
+# Click sound for nearby players
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.5
+
+# Boundary guard: already on the last page (the right arrow is grayed), do nothing
 execute if score {holder} {obj} matches {wall.page_count - 1}.. run return 0
+
+# Cancel any fade chain still in flight so a fast second click can't leave two running
 {clear_fade_commands(wall)}
+
+# Advance the page index (the text swap itself happens later, in fade_swap)
 scoreboard players add {holder} {obj} 1
+
 {pop_arrow_commands(wall, wall.right_arrow_uuid)}
+
+# Kick off the page fade: arm the phase counter and run the first fade-out frame now
 scoreboard players set {holder} {wall.fade_objective} {FADE_TICKS}
 function {wall.function('fade_out_down')}
 """, overwrite=True)
 
 	write_function(wall.function("prev"), f"""
+# Click sound for nearby players (slightly lower pitch than next)
 playsound minecraft:ui.button.click block @a[distance=..12] ~ ~ ~ 0.7 1.2
+
+# Boundary guard: already on the first page (the left arrow is grayed), do nothing
 execute if score {holder} {obj} matches ..0 run return 0
+
+# Cancel any fade chain still in flight so a fast second click can't leave two running
 {clear_fade_commands(wall)}
+
+# Rewind the page index (the text swap itself happens later, in fade_swap)
 scoreboard players remove {holder} {obj} 1
+
 {pop_arrow_commands(wall, wall.left_arrow_uuid)}
+
+# Kick off the page fade: arm the phase counter and run the first fade-out frame now
 scoreboard players set {holder} {wall.fade_objective} {FADE_TICKS}
 function {wall.function('fade_out_up')}
 """, overwrite=True)

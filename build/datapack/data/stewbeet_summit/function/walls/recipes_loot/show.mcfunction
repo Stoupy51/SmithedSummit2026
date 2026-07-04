@@ -6,6 +6,7 @@
 #			stewbeet_summit:walls/reset
 #
 
+# Refresh this wall: run the page function matching the current page index (#recipes_loot)
 execute if score #recipes_loot stewbeet_summit.page matches 0 run function stewbeet_summit:walls/recipes_loot/page_0
 execute if score #recipes_loot stewbeet_summit.page matches 1 run function stewbeet_summit:walls/recipes_loot/page_1
 execute if score #recipes_loot stewbeet_summit.page matches 2 run function stewbeet_summit:walls/recipes_loot/page_2

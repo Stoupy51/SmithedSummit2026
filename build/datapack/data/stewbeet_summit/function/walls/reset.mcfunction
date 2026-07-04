@@ -4,6 +4,7 @@
 # @within	stewbeet_summit:v0.0.1/load/confirm_load
 #
 
+# Put every wall back on its first page and refresh its display
 scoreboard players set #what_is_stewbeet stewbeet_summit.page 0
 function stewbeet_summit:walls/what_is_stewbeet/show
 scoreboard players set #why_for_who stewbeet_summit.page 0

@@ -4,12 +4,16 @@
 # @within	stewbeet_summit:walls/custom_blocks_made_easy/show
 #
 
+# Page 4/6 "Smart Ore Generation": swap this page's text, wrap width and text scale into the display
 data modify entity 20180612-2026-2002-2098-202000000004 text set value ["", {"text": "Ores that spawn (4/6)\n\n", "bold": true, "color": "gold"}, {"text": "Make the ore generate in the world with ", "color": "white"}, {"text": "CustomOreGeneration", "bold": true, "color": "aqua"}, {"text": ":\n\n", "color": "white"}, ["", {"text": "CustomOreGeneration", "color": "#8BE9FD"}, {"text": "(", "color": "#F8F8F2"}, {"text": "\n"}], ["", {"text": "    "}, {"text": "dimensions", "color": "#F8F8F2"}, {"text": "=", "color": "#FF79C6"}, {"text": "[", "color": "#F8F8F2"}, {"text": "\"minecraft:overworld\"", "color": "#F1FA8C"}, {"text": "],", "color": "#F8F8F2"}, {"text": "\n"}], ["", {"text": "    "}, {"text": "maximum_height", "color": "#F8F8F2"}, {"text": "=", "color": "#FF79C6"}, {"text": "70", "color": "#BD93F9"}, {"text": ",", "color": "#F8F8F2"}, {"text": "\n"}], ["", {"text": "    "}, {"text": "veins_per_region", "color": "#F8F8F2"}, {"text": "=", "color": "#FF79C6"}, {"text": "4", "color": "#BD93F9"}, {"text": ",", "color": "#F8F8F2"}, {"text": "\n"}], ["", {"text": "    "}, {"text": "vein_size_logic", "color": "#F8F8F2"}, {"text": "=", "color": "#FF79C6"}, {"text": "0.4", "color": "#BD93F9"}, {"text": ",", "color": "#F8F8F2"}, {"text": "\n"}], ["", {"text": ")", "color": "#F8F8F2"}, {"text": "\n\n"}], {"text": "Controls dimensions, height & vein size.\nVia Smart Ore Generation lib.", "color": "#7F8C99", "italic": true}]
 data modify entity 20180612-2026-2002-2098-202000000004 line_width set value 220
 data modify entity 20180612-2026-2002-2098-202000000004 transformation.scale set value [0.45f, 0.45f, 0.45f]
+
+# Gray the arrow that has no page beyond it (left on the first page, right on the last)
 data modify entity 20180612-2026-2002-2098-202100000004 item.components."minecraft:item_model" set value "stewbeet_summit:nav_arrow_left"
 data modify entity 20180612-2026-2002-2098-202200000004 item.components."minecraft:item_model" set value "stewbeet_summit:nav_arrow_right"
 
+# No link on this page: blank the "Open link" prompt and shrink its hitbox to 0 (unclickable)
 data modify entity 20180612-2026-2002-2098-202300000004 text set value ["", {"text": ""}]
 data modify entity 20180612-2026-2002-2098-202400000004 width set value 0.0f
 data modify entity 20180612-2026-2002-2098-202400000004 height set value 0.0f

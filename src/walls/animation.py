@@ -52,7 +52,8 @@ def pop_arrow_commands(wall: Wall, arrow_uuid: str) -> str:
 	""" Commands snapping the clicked arrow to its popped size *now*, then letting
 	pop_settle ease it back to normal one tick later (see the module docstring
 	for why the snap and the ease-back must land on separate ticks). """
-	return f"""data merge entity {arrow_uuid} {scale_merge(ARROW_POP_SCALE, 0)}
+	return f"""# Click feedback: snap the clicked arrow to its popped size now, ease it back next tick
+data merge entity {arrow_uuid} {scale_merge(ARROW_POP_SCALE, 0)}
 schedule function {wall.function('pop_settle')} 2t replace"""
 
 
@@ -62,6 +63,8 @@ def write_pop_settle(wall: Wall) -> None:
 	rapid alternating clicks - which 'schedule ... replace' collapses to a single
 	firing - correct. """
 	write_function(wall.function("pop_settle"), f"""
+# Ease both arrows back to normal size over {ARROW_POP_TICKS} ticks
+# (the un-clicked arrow is already at normal size, so its interpolation is a no-op)
 data merge entity {wall.left_arrow_uuid} {scale_merge(ARROW_SCALE, ARROW_POP_TICKS)}
 data merge entity {wall.right_arrow_uuid} {scale_merge(ARROW_SCALE, ARROW_POP_TICKS)}
 """, overwrite=True)
@@ -113,12 +116,21 @@ def write_fade_direction(wall: Wall, direction: str, exit_y: float, entry_y: flo
 	fcobj: str = wall.fade_objective
 	F: int = FADE_TICKS
 
-	out_lines: list[str] = phase_frames(wall, [(c, c / F, exit_y * (F - c) / F) for c in range(F, -1, -1)])
+	out_lines: list[str] = [
+		f"# Fade out ({direction}): while the counter ({holder} {fcobj}) ticks {F}->0, ramp the text",
+		"# full->invisible and slide it towards its exit side, one exact frame per counter value",
+	]
+	out_lines += phase_frames(wall, [(c, c / F, exit_y * (F - c) / F) for c in range(F, -1, -1)])
 	# At c==0 hand off to fade_swap via SCHEDULE, not an inline call: fade_swap
 	# resets fc to F, and an inline call would let the `matches 1..` guards below
 	# re-see fc=F and re-arm fade_out - looping fade_out and fade_in forever.
 	out_lines += [
+		"",
+		"# Counter at 0: the text is invisible, hand off to fade_swap next tick (via schedule, NOT",
+		"# an inline call: fade_swap resets the counter, which would re-arm the guards below)",
 		f"execute if score {holder} {fcobj} matches 0 run schedule function {wall.function(f'fade_swap_{direction}')} 1t replace",
+		"",
+		"# Otherwise: re-run this function next tick and count down",
 		f"execute if score {holder} {fcobj} matches 1.. run schedule function {wall.function(f'fade_out_{direction}')} 1t replace",
 		f"execute if score {holder} {fcobj} matches 1.. run scoreboard players remove {holder} {fcobj} 1",
 	]
@@ -127,14 +139,24 @@ def write_fade_direction(wall: Wall, direction: str, exit_y: float, entry_y: flo
 	# Reposition (still invisible) to the entry side; snap it (dur 0) so the text
 	# doesn't visibly glide across from the exit side while it's being placed.
 	write_function(wall.function(f"fade_swap_{direction}"), f"""
+# The old text is now invisible: swap the new page in, then snap it (duration 0, still
+# invisible) to its entry side so it doesn't visibly glide across from the exit side
 function {wall.function('show')}
 {page_frame_command(wall, PAGE_ALPHA_FADED, 0, entry_y, 0)}
+
+# Re-arm the phase counter and start the fade-in next tick
 scoreboard players set {holder} {fcobj} {F}
 schedule function {wall.function(f'fade_in_{direction}')} 1t replace
 """, overwrite=True)
 
-	in_lines: list[str] = phase_frames(wall, [(c, (F - c) / F, entry_y * c / F) for c in range(F, -1, -1)])
+	in_lines: list[str] = [
+		f"# Fade in ({direction}): while the counter ({holder} {fcobj}) ticks {F}->0, ramp the new text",
+		"# invisible->full while it slides from its entry side back to center",
+	]
+	in_lines += phase_frames(wall, [(c, (F - c) / F, entry_y * c / F) for c in range(F, -1, -1)])
 	in_lines += [
+		"",
+		"# Re-run this function next tick and count down until the counter reaches 0",
 		f"execute if score {holder} {fcobj} matches 1.. run schedule function {wall.function(f'fade_in_{direction}')} 1t replace",
 		f"execute if score {holder} {fcobj} matches 1.. run scoreboard players remove {holder} {fcobj} 1",
 	]

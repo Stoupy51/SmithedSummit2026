@@ -41,12 +41,12 @@ def setup_presentation_walls(ns: str) -> None:
 	file (see __init__) after the previous entities are killed. """
 	slugs: list[str] = unique_slugs(TEXTS)
 
-	setup_cmds: list[str] = []   # entity summons -> walls/setup
-	reset_cmds: list[str] = []   # per-wall "score 0 + show" -> walls/reset
+	setup_blocks: list[str] = []   # one block of entity summons per wall -> walls/setup
+	reset_cmds: list[str] = []     # per-wall "score 0 + show" -> walls/reset
 
 	for index, zone in enumerate(TEXTS):
 		wall: Wall = Wall(ns, index, zone, slugs[index])
-		setup_cmds += summon_commands(wall)
+		setup_blocks.append("\n".join(summon_commands(wall)))
 		write_wall_functions(wall)
 
 		# Reset this wall to page 0 and refresh it (collected into walls/reset).
@@ -55,6 +55,9 @@ def setup_presentation_walls(ns: str) -> None:
 			f"function {wall.function('show')}",
 		]
 
-	# Aggregate functions: all summons, and the whole-board reset.
-	write_function(f"{ns}:walls/setup", "\n".join(setup_cmds) + "\n", overwrite=True)
-	write_function(f"{ns}:walls/reset", "\n".join(reset_cmds) + "\n", overwrite=True)
+	# Aggregate functions: all summons (one commented block per wall), and the
+	# whole-board reset.
+	write_function(f"{ns}:walls/setup", "\n\n".join(setup_blocks) + "\n", overwrite=True)
+	write_function(f"{ns}:walls/reset",
+		"# Put every wall back on its first page and refresh its display\n"
+		+ "\n".join(reset_cmds) + "\n", overwrite=True)
