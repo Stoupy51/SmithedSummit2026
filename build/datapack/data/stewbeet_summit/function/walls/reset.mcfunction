@@ -25,4 +25,14 @@ scoreboard players set #in_game_manual stewbeet_summit.page 0
 function stewbeet_summit:walls/in_game_manual/show
 scoreboard players set #qol_ecosystem stewbeet_summit.page 0
 function stewbeet_summit:walls/qol_ecosystem/show
+scoreboard players set #my_projects stewbeet_summit.page 0
+function stewbeet_summit:walls/my_projects/show
+scoreboard players set #switch_minigames stewbeet_summit.page 0
+function stewbeet_summit:walls/switch_minigames/show
+scoreboard players set #released_datapacks stewbeet_summit.page 0
+function stewbeet_summit:walls/released_datapacks/show
+scoreboard players set #wip_datapacks stewbeet_summit.page 0
+function stewbeet_summit:walls/wip_datapacks/show
+scoreboard players set #myself stewbeet_summit.page 0
+function stewbeet_summit:walls/myself/show
 

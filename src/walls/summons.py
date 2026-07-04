@@ -120,13 +120,13 @@ def summon_commands(wall: Wall) -> list[str]:
 	commands: list[str] = [
 		f"# Wall {wall.index + 1}: {title} ({wall.slug})",
 		"# Title above the wall + the page text_display (baked with page 0, swapped on navigation)",
-		f"execute {anchor} run summon minecraft:text_display ^ ^{TITLE_UP} ^{WALL_FWD} {nbt(title_nbt(wall))}",
-		f"execute {anchor} run summon minecraft:text_display ^ ^{PAGE_UP} ^{WALL_FWD} {with_uuid(wall.page_uuid, page_nbt(wall))}",
+		f"execute {anchor} run summon text_display ^ ^{TITLE_UP} ^{WALL_FWD} {nbt(title_nbt(wall))}",
+		f"execute {anchor} run summon text_display ^ ^{PAGE_UP} ^{WALL_FWD} {with_uuid(wall.page_uuid, page_nbt(wall))}",
 		"# Nav arrows + the interactions catching their right-clicks (viewer's right = next)",
-		f"execute {anchor} run summon minecraft:item_display ^{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {with_uuid(wall.right_arrow_uuid, arrow_nbt(wall, 'nav_arrow_right'))}",
-		f"execute {anchor} run summon minecraft:item_display ^-{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {with_uuid(wall.left_arrow_uuid, arrow_nbt(wall, 'nav_arrow_left'))}",
-		f"execute {anchor} run summon minecraft:interaction ^{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(nav_interaction_nbt(wall, 'next'))}",
-		f"execute {anchor} run summon minecraft:interaction ^-{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(nav_interaction_nbt(wall, 'prev'))}",
+		f"execute {anchor} run summon item_display ^{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {with_uuid(wall.right_arrow_uuid, arrow_nbt(wall, 'nav_arrow_right'))}",
+		f"execute {anchor} run summon item_display ^-{ARROW_OUT} ^{ARROW_UP} ^{WALL_FWD} {with_uuid(wall.left_arrow_uuid, arrow_nbt(wall, 'nav_arrow_left'))}",
+		f"execute {anchor} run summon interaction ^{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(nav_interaction_nbt(wall, 'next'))}",
+		f"execute {anchor} run summon interaction ^-{ARROW_OUT} ^{iy} ^{WALL_FWD} {nbt(nav_interaction_nbt(wall, 'prev'))}",
 	]
 
 	# Centered "Open link" prompt + its interaction, between the two arrows.
@@ -135,7 +135,7 @@ def summon_commands(wall: Wall) -> list[str]:
 		link_iy: float = ARROW_UP - LINK_INT / 2
 		commands += [
 			'# Centered "Open link" prompt + its interaction (some pages on this wall carry links)',
-			f"execute {anchor} run summon minecraft:text_display ^ ^{ARROW_UP} ^{WALL_FWD} {with_uuid(wall.link_prompt_uuid, link_prompt_nbt(wall))}",
-			f"execute {anchor} run summon minecraft:interaction ^ ^{link_iy} ^{WALL_FWD} {with_uuid(wall.link_interaction_uuid, link_interaction_nbt(wall))}",
+			f"execute {anchor} run summon text_display ^ ^{ARROW_UP} ^{WALL_FWD} {with_uuid(wall.link_prompt_uuid, link_prompt_nbt(wall))}",
+			f"execute {anchor} run summon interaction ^ ^{link_iy} ^{WALL_FWD} {with_uuid(wall.link_interaction_uuid, link_interaction_nbt(wall))}",
 		]
 	return commands
