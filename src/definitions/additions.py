@@ -45,3 +45,10 @@ def main():
         model["textures"]["0"] = f"{ns}:item/{item}"
         Item(id=item, override_model=model)
 
+    # # StewBeet balloon
+    # model: JsonDict = {
+    #     "parent":"summit_balloons:item/template_basic",
+    #     "textures": {"0": f"{ns}:item/stewbeet_balloon"}
+    # }
+    # Item(id="stewbeet_balloon", override_model=model)
+
