@@ -1,0 +1,54 @@
+{
+	"namespace": "stewbeet_summit",
+	"booth_name": "StewBeet",
+	"bounding_boxes": {
+		"showroom": {
+			"position": {
+				"x": {"min": 189, "max": 212},
+				"y": {"min": 100, "max": 117},
+				"z": {"min": -31, "max": -7}
+			}
+		},
+		"underground": {
+			"position": {
+				"x": {"min": 187, "max": 215},
+				"y": {"min": 48, "max": 60},
+				"z": {"min": -32, "max": -11}
+			}
+		}
+	},
+	"sticker_book": {
+		"background_color": "#FF9100",
+		"region": "welded_woodlands",
+		"stickers": [
+			{
+				"sticker_id": "stewbeet",
+				"sticker_texture": "stewbeet_summit:logo_sticker",
+				"sticker_name": "StewBeet",
+				"unobtained_text": "Visit the StewBeet booth",
+				"obtained_text": "Visited the StewBeet booth"
+			},
+			{
+				"sticker_id": "simplenergy",
+				"sticker_texture": "stewbeet_summit:simplenergy",
+				"sticker_name": "SimplEnergy",
+				"unobtained_text": "Discover SimplEnergy at the StewBeet booth",
+				"obtained_text": "Discovered SimplEnergy at the StewBeet booth"
+			},
+			{
+				"sticker_id": "switch_minigames",
+				"sticker_texture": "stewbeet_summit:switch_minigames",
+				"sticker_name": "Switch Minigames",
+				"unobtained_text": "Discover Switch Minigames at the StewBeet booth",
+				"obtained_text": "Discovered Switch Minigames at the StewBeet booth"
+			}
+		]
+	},
+	"balloons": [
+		{
+			"balloon_id": "stewbeet",
+			"balloon_name": "StewBeet",
+			"balloon_model": "stewbeet_summit:balloon/stewbeet"
+		}
+	]
+}

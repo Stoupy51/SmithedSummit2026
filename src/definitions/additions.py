@@ -30,6 +30,8 @@ def main():
     }
     Item(id="bg_black_hole", override_model=black_hole_model)
     Item(id="logo")
+    Item(id="simplenergy")
+    Item(id="switch_minigames")
 
     # Flat navigation arrows for the presentation walls (placeholder textures).
     for grayed in ("", "gray_"):

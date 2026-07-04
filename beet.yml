@@ -48,6 +48,7 @@ pipeline:
     - "stewbeet.plugins.datapack.loading.silent"
     - "src.intro" # User code
     - "src.walls" # User code
+    - "src.booth" # User code
     - "stewbeet.plugins.finalyze.basic_datapack_structure.silent"
     - "stewbeet.plugins.finalyze.dependencies.silent"
     - "stewbeet.plugins.finalyze.last_final.silent"

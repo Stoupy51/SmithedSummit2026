@@ -103,7 +103,7 @@ def link_interaction_nbt(wall: Wall) -> JsonDict:
 	`dialog show @s` targets them. """
 	first_link_size: float = LINK_INT if wall.page_links[0] else 0.0
 	return {
-		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.static", "summit.interactable"],
+		"Tags": [f"{wall.ns}.wall", f"summit.booth_entity.{wall.ns}", "summit.dynamic", "summit.interactable"],
 		"width": first_link_size, "height": first_link_size, "response": True,
 		"data": {"summit_interactable": {"on_right_click": f"execute on target run function {wall.function('openlink')}"}},
 	}

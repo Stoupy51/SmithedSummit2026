@@ -2,6 +2,7 @@
 #> stewbeet_summit:walls/reset
 #
 # @within	stewbeet_summit:v0.0.1/load/confirm_load
+#			stewbeet_summit:entities/summon
 #
 
 # Put every wall back on its first page and refresh its display
