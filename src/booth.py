@@ -10,7 +10,8 @@ tags:
 This writes both functions, registers them in those tags, and wires the single
 load-file entry that (re)creates everything on /reload. It also writes
 booth/on_enter (referenced by booth.json's on_player_enter) which rewards the
-"visit the booth" sticker; the per-wall stickers are granted from the walls'
+"visit the booth" sticker and, when the entering player is alone in the booth,
+resets every wall to its first page; the per-wall stickers are granted from the walls'
 navigation (see src/walls/navigation.py). The booth metadata itself (bounding
 boxes, stickers, balloon) lives in booth.json at the project root, submitted
 alongside the packs.
@@ -55,8 +56,14 @@ function {ns}:entities/summon
 """)
 
 	# Runs as/at a player entering the booth (booth.json on_player_enter):
-	# reward the "visit the booth" sticker (a no-op if already obtained).
+	# reward the "visit the booth" sticker (a no-op if already obtained), and if
+	# they are the only player inside, put every wall back on its first page.
 	write_function(f"{ns}:booth/on_enter", f"""
 advancement grant @s only summit.sticker_book:{ns}/stewbeet
+
+# Alone in the booth (the summit tags players inside with summit.in_booth.<ns>):
+# reset every presentation wall to page 0 for a fresh visit
+execute store result score #in_booth {ns}.data if entity @a[tag=summit.in_booth.{ns}]
+execute if score #in_booth {ns}.data matches ..1 run function {ns}:walls/reset
 """)
 
