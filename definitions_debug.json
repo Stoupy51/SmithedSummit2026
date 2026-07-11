@@ -17,6 +17,15 @@
 		},
 		"skip_gives": false
 	},
+	"logo_sticker": {
+		"id": "logo_sticker",
+		"base_item": "minecraft:command_block",
+		"recipes": [],
+		"components": {
+			"item_model": "stewbeet_summit:logo_sticker"
+		},
+		"skip_gives": false
+	},
 	"simplenergy": {
 		"id": "simplenergy",
 		"base_item": "minecraft:command_block",
