@@ -2,15 +2,42 @@
 // All helpers are namespaced (stewbeet_summit_*) per the SDK convention.
 // Constants are kept as function-local consts to avoid bloating the global scope.
 
+// Ray-march budget for the accretion disk.
+//
+// The disk is drawn on a ~16x10 block backdrop, so it can cover most of the
+// screen: its cost scales with the framebuffer, not with the model. Spending a
+// fixed *step* budget therefore makes the shader several times more expensive at
+// 1440p/4K than at 1080p. Spend a roughly fixed *pixel* budget instead and let
+// the step count shrink as the framebuffer grows. ScreenSize is a uniform, so
+// every fragment of the draw takes the same branch.
+int stewbeet_summit_marchSteps() {
+    const float baseSteps  = 20.0;               // steps at the reference resolution
+    const float minSteps   = 8.0;                // floor: below this the disk visibly bands
+    const vec2  baseScreen = vec2(1920.0, 1080.0);
+
+    float pixelRatio = (ScreenSize.x * ScreenSize.y) / (baseScreen.x * baseScreen.y);
+    // sqrt() so 4K (4x the pixels) halves the step count instead of quartering it:
+    // 1080p -> 20 steps, 1440p -> 15, 4K -> 10.
+    float budget = baseSteps / max(sqrt(pixelRatio), 1.0);
+    return int(max(budget, minSteps));
+}
+
 // Volumetric ray-marching of the accretion disk.
-vec4 stewbeet_summit_computeAccretionDisk(vec3 localPos, float animTime) {
-    const float marchSteps = 20.0;
-    const float fbmOctaves = 5.0;
+//
+// Note: a saturation-based early-out is tempting here (the accumulator only ever
+// grows, so tanh() could be clamped early) but it is not worth the per-step test:
+// the accumulator averages ~8 and reaches the ~40 needed to pin tanh() on well
+// under 1% of rays. The step budget below is the lever that actually pays.
+vec4 stewbeet_summit_computeAccretionDisk(vec3 localPos, float animTime, int marchSteps) {
+    const int   fbmOctaves = 4;
+    const float minStepLen = 1e-4;   // keeps a degenerate step from dividing by zero
 
     vec4 accumulatedColor = vec4(0.0);
     vec3 normalizedPos = normalize(localPos);
-    float rayDist = animTime; // loop accumulator, do not rename
-    for (float stepDist = 0.0, stepSize = 0.0, iterCount = 0.0; iterCount < marchSteps; iterCount++) {
+    float stepDist = 0.0;
+
+    for (int iter = 0; iter < marchSteps; iter++) {
+        float iterCount = float(iter);
         vec3 samplePos = stepDist * normalizedPos;
         // Cylindrical coordinates to spiral around the axis
         samplePos = vec3(
@@ -18,11 +45,15 @@ vec4 stewbeet_summit_computeAccretionDisk(vec3 localPos, float animTime) {
             samplePos.z / 3.0,
             length(samplePos.xy) - 5.0 - stepDist * 0.2
         );
-        // Fractal noise (FBM)
-        for (stepSize = 1.0; stepSize < fbmOctaves; stepSize++) {
-            samplePos += sin(samplePos.yzx * stepSize + rayDist + 0.3 * iterCount) / stepSize;
+        // Fractal noise (FBM). Constant bounds so the compiler unrolls it and folds
+        // the 1/octave reciprocals.
+        float phase = animTime + 0.3 * iterCount;
+        for (int octave = 1; octave <= fbmOctaves; octave++) {
+            float scale = float(octave);
+            samplePos += sin(samplePos.yzx * scale + phase) / scale;
         }
-        stepDist += stepSize = length(vec4(0.4 * cos(samplePos) - 0.4, samplePos.z));
+        float stepSize = max(length(vec4(0.4 * cos(samplePos) - 0.4, samplePos.z)), minStepLen);
+        stepDist += stepSize;
         accumulatedColor += (cos(samplePos.x + iterCount * 0.4 + stepDist + vec4(6.0, 1.0, 2.0, 0.0)) + 1.0) / stepSize;
     }
     accumulatedColor = tanh(accumulatedColor * accumulatedColor / 4e2);
@@ -44,7 +75,13 @@ vec4 stewbeet_summit_computeBlackHole(vec3 rayDir) {
     vec3 diskCenter = blackHoleAxis * (GameTime * timeScale);
     vec3 axisRef    = diskCenter;
 
-    // Ray / infinite cylinder intersection (accretion disk)
+    // Ray / infinite cylinder intersection (accretion disk).
+    //
+    // These two discards read like a fast path for rays that miss the disk, but they
+    // are not one: the cylinder is infinite and diskCenter never gets further than
+    // ~0.49 from the origin, so in practice every fragment of the backdrop hits it
+    // and goes on to march. Treat the march cost below as paid by *every* pixel the
+    // black hole covers, not just the bright ones.
     float axisDotView  = dot(blackHoleAxis, viewDir);
     float axisDotRef   = dot(blackHoleAxis, axisRef);
     float cylA         = 1.0 - axisDotView * axisDotView;
@@ -73,7 +110,7 @@ vec4 stewbeet_summit_computeBlackHole(vec3 rayDir) {
     vec3 localHitPos   = vec3(dot(hitPoint, tangentU), dot(hitPoint, tangentV), dot(hitPoint, axisDir));
 
     // Disk color via ray-marching
-    vec4 diskColor = stewbeet_summit_computeAccretionDisk(localHitPos, GameTime * 320.0);
+    vec4 diskColor = stewbeet_summit_computeAccretionDisk(localHitPos, GameTime * 320.0, stewbeet_summit_marchSteps());
 
     // Fresnel effect (bright rim)
     vec3 axialProjection = blackHoleAxis * dot(hitPoint, blackHoleAxis);
