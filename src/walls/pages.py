@@ -58,7 +58,7 @@ data modify entity {wall.right_arrow_uuid} item.components."minecraft:item_model
 def write_show_function(wall: Wall) -> None:
 	""" Write show: dispatch the current page-index score to the matching page function. """
 	write_function(wall.function("show"), f"# Refresh this wall: run the page function matching the current page index ({wall.holder})\n" + "\n".join(
-		f"execute if score {wall.holder} {wall.page_objective} matches {pi} run function {wall.function(f'page_{pi}')}"
+		f"execute if score {wall.holder} {wall.page_objective} matches {pi} run return run function {wall.function(f'page_{pi}')}"
 		for pi in range(wall.page_count)) + "\n", overwrite=True)
 
 
@@ -77,5 +77,5 @@ def write_openlink_function(wall: Wall) -> None:
 		'# "Open link" hitbox is 0-sized anyway, so this function cannot fire on them)\n'
 	)
 	write_function(wall.function("openlink"), header + "\n".join(
-		f"execute if score {wall.holder} {wall.page_objective} matches {pi} run dialog show @s {nbt(link_dialog(wall.zone.name, wall.zone.pages[pi].name, links))}"
+		f"execute if score {wall.holder} {wall.page_objective} matches {pi} run return run dialog show @s {nbt(link_dialog(wall.zone.name, wall.zone.pages[pi].name, links))}"
 		for pi, links in enumerate(wall.page_links) if links) + "\n", overwrite=True)

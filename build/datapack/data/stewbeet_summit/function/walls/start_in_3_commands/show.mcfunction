@@ -7,8 +7,8 @@
 #
 
 # Refresh this wall: run the page function matching the current page index (#start_in_3_commands)
-execute if score #start_in_3_commands stewbeet_summit.page matches 0 run function stewbeet_summit:walls/start_in_3_commands/page_0
-execute if score #start_in_3_commands stewbeet_summit.page matches 1 run function stewbeet_summit:walls/start_in_3_commands/page_1
-execute if score #start_in_3_commands stewbeet_summit.page matches 2 run function stewbeet_summit:walls/start_in_3_commands/page_2
-execute if score #start_in_3_commands stewbeet_summit.page matches 3 run function stewbeet_summit:walls/start_in_3_commands/page_3
+execute if score #start_in_3_commands stewbeet_summit.page matches 0 run return run function stewbeet_summit:walls/start_in_3_commands/page_0
+execute if score #start_in_3_commands stewbeet_summit.page matches 1 run return run function stewbeet_summit:walls/start_in_3_commands/page_1
+execute if score #start_in_3_commands stewbeet_summit.page matches 2 run return run function stewbeet_summit:walls/start_in_3_commands/page_2
+execute if score #start_in_3_commands stewbeet_summit.page matches 3 run return run function stewbeet_summit:walls/start_in_3_commands/page_3
 
