@@ -12,6 +12,8 @@ def beet_default(ctx: Context):
 
     # Remove few lines in functions
     for path in (f"v{version}/load/secondary", f"v{version}/load/confirm_load"):
+        if not ctx.data[ns].functions.get(path):
+            continue
         f: Function = ctx.data[ns].functions[path]
         f.text = "\n".join(
             line for line in f.text.split("\n")
@@ -19,5 +21,6 @@ def beet_default(ctx: Context):
         )
 
     # Delete unnecessary functions
-    del ctx.data[ns].functions[f"v{version}/load/set_items_storage"]
+    if ctx.data[ns].functions.get(f"v{version}/load/set_items_storage"):
+        del ctx.data[ns].functions[f"v{version}/load/set_items_storage"]
 

@@ -53,7 +53,7 @@ function {ns}:walls/reset
 	write_load_file(f"""
 # Booth entities (StewBeet): entrance decorations + presentation walls
 function {ns}:entities/summon
-""")
+""", tags=["minecraft:load"])
 
 	# Runs as/at a player entering the booth (booth.json on_player_enter):
 	# reward the "visit the booth" sticker (a no-op if already obtained), and if
