@@ -43,6 +43,7 @@ kill @e[tag=summit.booth_entity.{ns}]
 function {ns}:entities/kill
 
 # Entrance decorations + presentation walls (reset back on page 0)
+scoreboard objectives add {ns}.data dummy
 scoreboard objectives add {ns}.page dummy
 function {ns}:intro/setup
 function {ns}:walls/setup

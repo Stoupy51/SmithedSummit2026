@@ -9,6 +9,7 @@
 function stewbeet_summit:entities/kill
 
 # Entrance decorations + presentation walls (reset back on page 0)
+scoreboard objectives add stewbeet_summit.data dummy
 scoreboard objectives add stewbeet_summit.page dummy
 function stewbeet_summit:intro/setup
 function stewbeet_summit:walls/setup
