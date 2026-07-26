@@ -4,6 +4,6 @@
 # @within	#summit.booth:stewbeet_summit/entities/kill
 #
 
-execute as @e[type=mannequin,tag=summit.booth_entity.stewbeet_summit] run data merge entity @s {DeathTime: 19s}
-kill @e[tag=summit.booth_entity.stewbeet_summit]
+execute as @e[type=mannequin,tag=stewbeet_summit.entity] run data merge entity @s {DeathTime: 19s}
+kill @e[tag=stewbeet_summit.entity]
 

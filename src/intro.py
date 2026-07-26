@@ -51,7 +51,7 @@ def beet_default(ctx: Context) -> None:
 	underground_button_nbt["item"]["id"] = "minecraft:pale_oak_button"
 	underground_interaction: str = "20180612-2026-2002-2098-201000000008"
 	underground_interaction_nbt: JsonDict = {
-		"Tags": [f"summit.booth_entity.{ns}", "summit.static", "summit.interactable"],
+		"Tags": [f"summit.booth_entity.{ns}", f"{ns}.entity", "summit.static", "summit.interactable"],
 		"response": True, "width": 1.2, "height": 1.2,
 		"data": {"summit_interactable": {"on_right_click": "execute on target run effect give @s levitation 4 13 true"}}
 	}

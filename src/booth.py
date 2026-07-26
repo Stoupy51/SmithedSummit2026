@@ -31,8 +31,8 @@ def beet_default(ctx: Context) -> None:
 	# death animation; fast-forwarding DeathTime removes the corpse (and frees its
 	# UUID) on the very next tick instead.
 	write_function(f"{ns}:entities/kill", f"""
-execute as @e[type=mannequin,tag=summit.booth_entity.{ns}] run data merge entity @s {{DeathTime: 19s}}
-kill @e[tag=summit.booth_entity.{ns}]
+execute as @e[type=mannequin,tag={ns}.entity] run data merge entity @s {{DeathTime: 19s}}
+kill @e[tag={ns}.entity]
 """, tags=[f"summit.booth:{ns}/entities/kill"])
 
 	# Summon everything. Kill first so the call is idempotent: the load file
