@@ -1,7 +1,7 @@
 {
 	"bg_black_hole": {
 		"id": "bg_black_hole",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:bg_black_hole"
@@ -10,7 +10,7 @@
 	},
 	"logo": {
 		"id": "logo",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:logo"
@@ -19,7 +19,7 @@
 	},
 	"logo_sticker": {
 		"id": "logo_sticker",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:logo_sticker"
@@ -28,7 +28,7 @@
 	},
 	"simplenergy": {
 		"id": "simplenergy",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:simplenergy"
@@ -37,7 +37,7 @@
 	},
 	"switch_minigames": {
 		"id": "switch_minigames",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:switch_minigames"
@@ -46,7 +46,7 @@
 	},
 	"nav_arrow_left": {
 		"id": "nav_arrow_left",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:nav_arrow_left"
@@ -55,7 +55,7 @@
 	},
 	"nav_arrow_right": {
 		"id": "nav_arrow_right",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:nav_arrow_right"
@@ -64,7 +64,7 @@
 	},
 	"gray_nav_arrow_left": {
 		"id": "gray_nav_arrow_left",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:gray_nav_arrow_left"
@@ -73,7 +73,7 @@
 	},
 	"gray_nav_arrow_right": {
 		"id": "gray_nav_arrow_right",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:gray_nav_arrow_right"
@@ -82,7 +82,7 @@
 	},
 	"arrow": {
 		"id": "arrow",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:arrow"
@@ -91,7 +91,7 @@
 	},
 	"title": {
 		"id": "title",
-		"base_item": "minecraft:command_block",
+		"base_item": "minecraft:recovery_compass",
 		"recipes": [],
 		"components": {
 			"item_model": "stewbeet_summit:title"

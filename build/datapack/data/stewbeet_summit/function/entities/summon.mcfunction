@@ -5,9 +5,6 @@
 #			stewbeet_summit:v1.0.0/load/confirm_load
 #
 
-# Clear any previous booth entities so repeated calls never stack
-function stewbeet_summit:entities/kill
-
 # Entrance decorations + presentation walls (reset back on page 0)
 scoreboard objectives add stewbeet_summit.data dummy
 scoreboard objectives add stewbeet_summit.page dummy

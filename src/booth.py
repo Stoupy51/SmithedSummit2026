@@ -39,9 +39,6 @@ kill @e[tag=summit.booth_entity.{ns}]
 	# also places the entities on /reload, and the wall titles/interactions
 	# have no UUID guard, so a bare re-summon would stack them.
 	write_function(f"{ns}:entities/summon", f"""
-# Clear any previous booth entities so repeated calls never stack
-function {ns}:entities/kill
-
 # Entrance decorations + presentation walls (reset back on page 0)
 scoreboard objectives add {ns}.data dummy
 scoreboard objectives add {ns}.page dummy
