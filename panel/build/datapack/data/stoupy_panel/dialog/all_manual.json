@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:dialog_list",
+	"title": [
+		"",
+		{"sprite": "stoupy_panel:item/dialog_sprite/pack_icon","shadow_color": [0,0,0,0],"atlas": "minecraft:items"},
+		" ",
+		{"translate": "stoupy_panel.boost_your_productivity_manual","underlined": true},
+		" ",
+		{"sprite": "stoupy_panel:item/dialog_sprite/pack_icon","shadow_color": [0,0,0,0],"atlas": "minecraft:items"}
+	],
+	"dialogs": [
+		"stoupy_panel:manual/page_1",
+		"stoupy_panel:manual/page_2"
+	],
+	"exit_action": {
+		"label": {"translate": "gui.back"},
+		"width": 200
+	}
+}

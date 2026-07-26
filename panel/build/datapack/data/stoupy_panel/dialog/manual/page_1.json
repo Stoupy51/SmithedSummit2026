@@ -1,0 +1,32 @@
+{
+	"type": "minecraft:notice",
+	"title": {
+		"translate": "stoupy_panel.boost_your_productivity_manual",
+		"underlined": true
+	},
+	"body": [
+		{
+			"type": "minecraft:plain_message",
+			"contents": [
+				{"text": "V   ","font": "stoupy_panel:manual","color": "white"},
+				{"text": "\n   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_previous_page"}," (1)"]}},
+				{"text": " ","font": "stoupy_panel:manual","color": "white"},
+				{"text": "   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_2"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_next_page"}," (2)"]}},
+				{"text": "\n   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_previous_page"}," (1)"]}},
+				{"text": " ","font": "stoupy_panel:manual","color": "white"},
+				{"text": "   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_2"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_next_page"}," (2)"]}}
+			],
+			"width": 400
+		},
+		{
+			"type": "minecraft:plain_message",
+			"contents": [
+				{"text": "","font": "stoupy_panel:manual","color": "white","shadow_color": [0,0,0,0]},
+				"耡\n\n\n\n\n\n",
+				[{"text": "","font": "minecraft:default","color": "black"},{"translate": "stoupy_panel.modify_in_beet_yml_the_text_that_will_be_shown_in_this_first_man","color": "#505050"}],
+				"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+			],
+			"width": 140
+		}
+	]
+}

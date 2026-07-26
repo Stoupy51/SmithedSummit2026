@@ -1,0 +1,10 @@
+[project]
+name = "panel"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "reef-beet-plugin>=1.0.0b6",
+    "stewbeet>=3.5.2",
+]
