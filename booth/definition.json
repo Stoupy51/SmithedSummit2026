@@ -9,6 +9,13 @@
 				"z": {"min": -31, "max": -7}
 			}
 		},
+		"elevator": {
+			"position": {
+				"x": {"min": 207, "max": 212},
+				"y": {"min": 48, "max": 117},
+				"z": {"min": -29, "max": -24}
+			}
+		},
 		"underground": {
 			"position": {
 				"x": {"min": 187, "max": 215},
