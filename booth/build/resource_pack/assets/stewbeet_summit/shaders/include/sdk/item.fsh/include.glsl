@@ -34,7 +34,7 @@ vec4 stewbeet_summit_computeAccretionDisk(vec3 localPos, float animTime, int mar
 
     vec4 accumulatedColor = vec4(0.0);
     vec3 normalizedPos = normalize(localPos);
-    float stepDist = 0.0;
+    float stepDist = 1e-4;
 
     for (int iter = 0; iter < marchSteps; iter++) {
         float iterCount = float(iter);
@@ -61,8 +61,9 @@ vec4 stewbeet_summit_computeAccretionDisk(vec3 localPos, float animTime, int mar
 }
 
 // Full black hole render (raycasting + visual effects).
-// `rayDir` is the model-space vertex position forwarded from the vertex stage.
-vec4 stewbeet_summit_computeBlackHole(vec3 rayDir) {
+// `fragPos` is the world-space fragment position and `nearPosH` the same pixel on the
+// camera near plane, still homogeneous; together they give the view ray.
+vec4 stewbeet_summit_computeBlackHole(vec3 fragPos, vec4 nearPosH) {
     const vec3  blackHoleAxis   = vec3(0.0, -0.4, -0.9); // black hole rotation axis
     const float diskRadius      = 0.4;                   // accretion disk radius
     const float timeScale       = 0.5;                   // animation speed
@@ -70,8 +71,16 @@ vec4 stewbeet_summit_computeBlackHole(vec3 rayDir) {
     const vec3  rimColor        = vec3(0.64, 0.0, 0.0);  // rim color (red)
     const vec3  coreGlowColor   = vec3(0.04, 0.3, 0.47); // core glow color (blue-green)
 
-    vec3 viewDir = normalize(rayDir);
+    // The eye stops being at the origin as soon as view bobbing is applied, so the
+    // direction has to be rebuilt from the near plane rather than assuming
+    // normalize(fragPos). The divide happens here, after interpolation, to stay linear.
+    vec3 nearPos = nearPosH.xyz / nearPosH.w;
+    vec3 viewDir = normalize(fragPos - nearPos);
     viewDir = vec3(-viewDir.x, viewDir.y, -viewDir.z); // 180 deg yaw rotation
+
+    // The backdrop is a skybox anchored on the eye, so the ray origin stays at the
+    // animated offset alone: giving it the eye's real parallax would distort the disk
+    // far more than the wrong direction ever did.
     vec3 diskCenter = blackHoleAxis * (GameTime * timeScale);
     vec3 axisRef    = diskCenter;
 
