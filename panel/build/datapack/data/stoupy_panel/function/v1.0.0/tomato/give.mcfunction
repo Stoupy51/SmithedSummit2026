@@ -12,6 +12,6 @@ loot give @a[gamemode=!spectator] loot stoupy_panel:i/tomato
 loot give @a[gamemode=!spectator] loot stoupy_panel:i/tomato
 loot give @a[gamemode=!spectator] loot stoupy_panel:i/tomato
 loot give @a[gamemode=!spectator] loot stoupy_panel:i/tomato
-tellraw @a [{"translate": "stoupy_panel.you_got_8_tomatoes", "color": "red"}, {"translate": "stoupy_panel.right_click_to_throw_them_at_me", "color": "gray"}]
+tellraw @a [{"text": "You got 8 tomatoes. ", "color": "red"}, {"text": "Right click to throw them at me.", "color": "gray"}]
 playsound minecraft:entity.item.pickup master @a ~ ~ ~ 1 1.2
 

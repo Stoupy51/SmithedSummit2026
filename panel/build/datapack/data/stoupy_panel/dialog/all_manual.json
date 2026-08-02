@@ -4,7 +4,7 @@
 		"",
 		{"sprite": "stoupy_panel:item/dialog_sprite/pack_icon","shadow_color": [0,0,0,0],"atlas": "minecraft:items"},
 		" ",
-		{"translate": "stoupy_panel.boost_your_productivity_manual","underlined": true},
+		{"text": "Boost Your Productivity Manual","underlined": true},
 		" ",
 		{"sprite": "stoupy_panel:item/dialog_sprite/pack_icon","shadow_color": [0,0,0,0],"atlas": "minecraft:items"}
 	],

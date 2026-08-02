@@ -69,7 +69,7 @@ pipeline:
     - "stewbeet.plugins.finalyze.last_final.silent"
     - "src.delete_unused" # User code
     - "stewbeet.plugins.auto.scoreboard_constants.silent"
-    - "stewbeet.plugins.auto.lang_file.silent"
+    # - "stewbeet.plugins.auto.lang_file.silent"
     - "stewbeet.plugins.auto.headers.silent"
     - "stewbeet.plugins.archive.silent"
     - "stewbeet.plugins.merge_smithed_weld.silent"

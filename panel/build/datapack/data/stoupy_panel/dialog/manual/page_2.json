@@ -1,7 +1,7 @@
 {
 	"type": "minecraft:notice",
 	"title": {
-		"translate": "stoupy_panel.category_browser",
+		"text": "Category browser",
 		"underlined": true
 	},
 	"body": [
@@ -9,12 +9,12 @@
 			"type": "minecraft:plain_message",
 			"contents": [
 				{"text": "V   ","font": "stoupy_panel:manual","color": "white"},
-				{"text": "\n   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_previous_page"}," (1)"]}},
-				{"text": "4","font": "stoupy_panel:manual","color": "white","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_first_page"}]}},
-				{"text": "   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_2"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_next_page"}," (2)"]}},
-				{"text": "\n   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_previous_page"}," (1)"]}},
-				{"text": " ","font": "stoupy_panel:manual","color": "white","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_first_page"}]}},
-				{"text": "   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_2"},"hover_event": {"action": "show_text","value": [{"translate": "stoupy_panel.go_to_next_page"}," (2)"]}}
+				{"text": "\n   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"text": "Go to previous page"}," (1)"]}},
+				{"text": "4","font": "stoupy_panel:manual","color": "white","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"text": "Go to first page"}]}},
+				{"text": "   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_2"},"hover_event": {"action": "show_text","value": [{"text": "Go to next page"}," (2)"]}},
+				{"text": "\n   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"text": "Go to previous page"}," (1)"]}},
+				{"text": " ","font": "stoupy_panel:manual","color": "white","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_1"},"hover_event": {"action": "show_text","value": [{"text": "Go to first page"}]}},
+				{"text": "   ","click_event": {"action": "show_dialog","dialog": "stoupy_panel:manual/page_2"},"hover_event": {"action": "show_text","value": [{"text": "Go to next page"}," (2)"]}}
 			],
 			"width": 400
 		},

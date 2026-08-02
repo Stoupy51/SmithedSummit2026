@@ -22,13 +22,13 @@
 									"has_consume_particles": false
 								},
 								"minecraft:item_name": {
-									"translate": "stoupy_panel.tomato"
+									"text": "Tomato"
 								},
 								"minecraft:lore": [
 									[
 										"",
 										{"text": "ꀁ","color": "white","italic": false,"font": "stoupy_panel:tooltip"},
-										[{"text":"뀁","italic": false,"color": "white","font": "stoupy_panel:tooltip"}, {"translate": "stoupy_panel.boost_your_productivity"}]
+										{"text": "뀁Boost Your Productivity","italic": false,"color": "white","font": "stoupy_panel:tooltip"}
 									]
 								],
 								"minecraft:custom_data": {
