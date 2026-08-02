@@ -1,9 +1,16 @@
+to build:
+- uv run stewbeet
+- or `D:\advanced_desktop\SmithedSummit2026\panel> uv run --with ../../beet stewbeet` for more performance
 
 Below is the plan for the panel on "How to Boost your Productivity" related to datapacks, presented in the 2026 Summit.
 Presentation time about 35 minutes.
 
 The people who are going to listen to this panel are beginners to experts in Minecraft datapacks.
 They are familiar with the basics of datapacks, so don't need to explain everything.
+
+Things I want to do:
+- Have a pointer (using bookshelf raycast) so people can see where i'm pointing on the screen.
+- Ability to launch tomatoes that explodes in red particles (redstone block) when encounter a block (check how grenades are thrown in D:\advanced_desktop\StoupGun\src)
 
 My initial plan is:
 

@@ -100,11 +100,11 @@ meta:
         # Directory containing libraries that will be copied to the build destination, and merged using Smithed Weld if enabled.
         libs_folder: "libs"
         # Optional list of destination paths where generated files will be copied
-        # build_copy_destinations:
-        #     # Paths to copy the datapack(s) to (See extensive_template/beet.yml for example)
-        #     datapack: ["sftp://airdox_smp@coll.paralya.fr/sftp/summit/datapacks"]
-        #     # Paths to copy the resource pack(s) to (See extensive_template/beet.yml for example)
-        #     resource_pack: ["D:/minecraft/latest/resourcepacks"]
+        build_copy_destinations:
+            # Paths to copy the datapack(s) to (See extensive_template/beet.yml for example)
+            datapack: ["D:/minecraft/latest/saves/smithed_summit_panels/datapacks"]
+            # Paths to copy the resource pack(s) to (See extensive_template/beet.yml for example)
+            resource_pack: ["D:/minecraft/latest/resourcepacks"]
         # Custom item lore configuration. If set to "auto" or unset, uses project icon followed by PROJECT_NAME
         source_lore: "auto"
         # Automagically checks for dependencies and their minimum required versions at runtime.
