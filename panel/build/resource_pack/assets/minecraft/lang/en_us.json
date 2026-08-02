@@ -1,5 +1,8 @@
 {
+	"stoupy_panel.bookshelf_move_v4_1_0": "[Bookshelf Move (v4.1.0+)]",
 	"stoupy_panel.boost_your_productivity": "Boost Your Productivity",
+	"stoupy_panel.boost_your_productivity_error_libraries_are_missingplease_downlo": "Boost Your Productivity Error: Libraries are missing\nplease download the right Boost Your Productivity datapack\nor download each of these libraries one by one:",
+	"stoupy_panel.boost_your_productivity_error_this_version_is_made_for_minecraft": "Boost Your Productivity Error: This version is made for Minecraft 26.2+.",
 	"stoupy_panel.boost_your_productivity_manual": "Boost Your Productivity Manual",
 	"stoupy_panel.category_browser": "Category browser",
 	"stoupy_panel.chest": "Chest",
@@ -7,5 +10,11 @@
 	"stoupy_panel.go_to_next_page": "Go to next page",
 	"stoupy_panel.go_to_previous_page": "Go to previous page",
 	"stoupy_panel.modify_in_beet_yml_the_text_that_will_be_shown_in_this_first_man": "Modify in beet.yml the text that will be shown in this first manual page",
-	"stoupy_panel.tomato": "Tomato"
+	"stoupy_panel.reef": "reef",
+	"stoupy_panel.registering_data_for_namespace_stoupy_panel": "Registering data for namespace 'stoupy_panel'",
+	"stoupy_panel.right_click_to_throw_them_at_me": "Right click to throw them at me.",
+	"stoupy_panel.that_is_enough_tomatoes_thank_you": "That is enough tomatoes, thank you.",
+	"stoupy_panel.tomato": "Tomato",
+	"stoupy_panel.tomatoes_are_live": "Tomatoes are live!",
+	"stoupy_panel.you_got_8_tomatoes": "You got 8 tomatoes. "
 }

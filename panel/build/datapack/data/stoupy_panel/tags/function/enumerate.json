@@ -1,5 +1,6 @@
 {
 	"values": [
+		"#stoupy_panel:dependencies",
 		"stoupy_panel:v1.0.0/load/enumerate"
 	]
 }
