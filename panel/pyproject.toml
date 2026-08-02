@@ -8,8 +8,15 @@ dependencies = [
     "reef-beet-plugin>=1.0.0b7",
     "stewbeet>=3.5.8",
     "smithed",
+    "pypdf>=6.14.2",
 ]
 
 [tool.uv.sources]
 smithed = { git = "https://github.com/Stoupy51/smithed-python.git" }
+
+[tool.pyright]
+typeCheckingMode = "strict"
+# reef-beet-plugin is annotated but ships no py.typed marker, so pyright asks for stubs it will never find.
+# Its source types are still inferred through useLibraryCodeForTypes, which stays on.
+reportMissingTypeStubs = false
 

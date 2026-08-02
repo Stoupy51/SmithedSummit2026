@@ -5,12 +5,10 @@ The page count is read from the PDF on every build, which means adding or removi
 """
 # Imports
 import json
-import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
-from pdf2image import pdfinfo_from_path
+from pypdf import PdfReader
 from stewbeet import Mem, write_load_file
 from stouputils.print import info, warning
 
@@ -26,9 +24,6 @@ SOURCE_PDF: str = "How to Boost your Productivity.pdf"
 SLIDESHOW_NAME: str = "panel"
 """ Path of the generated slideshow, loaded in game as `<namespace>:panel`. """
 
-PAGE_SIZE_PATTERN: re.Pattern[str] = re.compile(r"([\d.]+) x ([\d.]+) pts")
-""" Shape of the `Page size` field returned by poppler's pdfinfo, ex: "336 x 192 pts". """
-
 
 # Classes
 @dataclass(frozen=True)
@@ -39,18 +34,18 @@ class PageOverride:
 	anything other than exactly one element group, so the sequence field is left alone.
 	"""
 
-	on_load: list[str] = field(default_factory=list)
+	on_load: list[str] = field(default_factory=list[str])
 	""" Runs once when the slideshow is loaded onto a screen. """
-	on_enter: list[str] = field(default_factory=list)
+	on_enter: list[str] = field(default_factory=list[str])
 	""" Runs every time the slide is shown. """
-	on_unload: list[str] = field(default_factory=list)
+	on_unload: list[str] = field(default_factory=list[str])
 	""" Runs when the slideshow is cleared. """
 
-	def to_page(self) -> dict[str, Any]:
+	def to_page(self) -> dict[str, object]:
 		""" Convert to the partial Reef page that Reef merges into the generated slide.
 
 		Returns:
-			dict[str, Any]: Page holding only the command lists that are not empty.
+			dict[str, object]: Page holding only the command lists that are not empty.
 
 		Examples:
 			>>> PageOverride(on_enter=["say hi"]).to_page()
@@ -76,33 +71,20 @@ class ReefSlideshow:
 	""" Build-time generation of the panel slideshow out of the presentation PDF. """
 
 	@staticmethod
-	def poppler_arguments() -> dict[str, str]:
-		""" Tell pdf2image where poppler lives, reusing the path already configured for Reef.
+	def read_pdf(pdf_path: Path) -> tuple[int, tuple[int, int]]:
+		""" Read the slide count and the page size straight out of the presentation.
 
-		Returns:
-			dict[str, str]: Keyword arguments for pdf2image, empty when poppler is on the PATH.
-		"""
-		pdf_options: dict[str, Any] = Mem.ctx.meta.get("reef", {}).get("pdf", {})
-		poppler_path: str | None = pdf_options.get("poppler_path")
-		return {"poppler_path": poppler_path} if poppler_path else {}
-
-	@staticmethod
-	def read_page_size(raw: str) -> tuple[int, int]:
-		""" Parse poppler's `Page size` field into rounded points.
+		The size is taken from the first page only, since Reef gives the whole slideshow
+		the size of the PDF anyway.
 
 		Args:
-			raw (str): Raw field, ex: "336 x 192 pts"
+			pdf_path (Path): Presentation to inspect.
 		Returns:
-			tuple[int, int]: Page width and height in points.
-
-		Examples:
-			>>> ReefSlideshow.read_page_size("336 x 192 pts")
-			(336, 192)
+			tuple[int, tuple[int, int]]: Slide count, then page width and height in points.
 		"""
-		match: re.Match[str] | None = PAGE_SIZE_PATTERN.match(raw)
-		if match is None:
-			raise ValueError(f"Could not read the page size of '{SOURCE_PDF}' out of '{raw}'")
-		return round(float(match.group(1))), round(float(match.group(2)))
+		reader: PdfReader = PdfReader(pdf_path)
+		media_box = reader.pages[0].mediabox
+		return len(reader.pages), (round(float(media_box.width)), round(float(media_box.height)))
 
 	@staticmethod
 	def check_page_size(page_size: tuple[int, int], stage: Stage) -> None:
@@ -125,16 +107,16 @@ class ReefSlideshow:
 		)
 
 	@staticmethod
-	def definition(page_count: int) -> dict[str, Any]:
+	def definition(page_count: int) -> dict[str, object]:
 		""" Build the `reef:pdf` special definition that compiles the PDF into a slideshow.
 
 		Args:
 			page_count (int): Number of slides found in the PDF.
 		Returns:
-			dict[str, Any]: Content of data/<ns>/reef/special/<name>.json
+			dict[str, object]: Content of data/<ns>/reef/special/<name>.json
 		"""
 		namespace: str = Mem.ctx.project_id
-		definition: dict[str, Any] = {
+		definition: dict[str, object] = {
 			"type": "reef:pdf",
 			"pdf": f"{namespace}:{SLIDESHOW_NAME}",
 			"page_count": page_count,
@@ -154,9 +136,8 @@ class ReefSlideshow:
 			return
 
 		# Read the slide count and page size straight from the PDF so nothing has to be kept in sync by hand
-		pdf_info: dict[str, Any] = pdfinfo_from_path(str(pdf_path), **ReefSlideshow.poppler_arguments())
-		page_count: int = int(pdf_info["Pages"])
-		ReefSlideshow.check_page_size(ReefSlideshow.read_page_size(str(pdf_info["Page size"])), TARGET_STAGE)
+		page_count, page_size = ReefSlideshow.read_pdf(pdf_path)
+		ReefSlideshow.check_page_size(page_size, TARGET_STAGE)
 
 		# One texture, model and item model entry per slide
 		Mem.ctx.assets[ReefPdfAsset][f"{namespace}:{SLIDESHOW_NAME}"] = ReefPdfAsset(source_path=pdf_path)

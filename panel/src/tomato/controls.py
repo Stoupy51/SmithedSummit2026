@@ -5,6 +5,8 @@ Tomatoes always fly, so there is no arming step to forget: hand them out with
 Both are unversioned on purpose, so they stay short enough to type live.
 """
 # Imports
+import json
+
 from beet import ItemModifier
 from stewbeet import Mem, write_function, write_load_file, write_versioned_function
 
@@ -29,9 +31,10 @@ scoreboard objectives add {ns}.data dummy
 scoreboard objectives add {ns}.{TOMATO_ITEM}.life dummy
 """)
 
-		# Spending one tomato per throw, so a stack is a real budget
+		# Spending one tomato per throw, so a stack is a real budget.
+		# An item modifier is a JSON list, which beet only accepts as raw text.
 		Mem.ctx.data[ns].item_modifiers[f"v{Mem.ctx.project_version}/{TOMATO_ITEM}/consume_one"] = ItemModifier(
-			[{"function": "minecraft:set_count", "count": -1, "add": True}]
+			json.dumps([{"function": "minecraft:set_count", "count": -1, "add": True}])
 		)
 
 	@staticmethod
