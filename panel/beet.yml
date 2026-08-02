@@ -23,7 +23,9 @@ output: "build"
 ignore: ["build", "manual_cache", "definitions_debug.json"]
 
 # A list of importable plugin strings
+# "reef" comes first so its file handlers claim src/**/reef/** before any other plugin looks at them.
 require:
+    - "reef"
     - "stewbeet"
     - "beet.contrib.unknown_files"
 
@@ -56,6 +58,8 @@ pipeline:
     - "stewbeet.plugins.compatibilities.simpledrawer.silent"
     - "stewbeet.plugins.compatibilities.neo_enchant.silent"
     - "src.link"
+    - "src.reef" # Slideshow: rasterizes the presentation PDF and registers it as a Reef slideshow
+    - "src.tomato" # Throwable tomatoes for the AI section
     - "stewbeet.plugins.finalyze.last_final.silent"
     - "stewbeet.plugins.finalyze.custom_blocks_ticking.silent"
     - "stewbeet.plugins.finalyze.basic_datapack_structure.silent"
@@ -85,6 +89,20 @@ meta:
     mecha:
         multiline: true
         formatting: preserve
+
+    # Reef slideshow library, see REEF.md for the full reference
+    reef:
+        # Constant tint multiplied into every generated element. null keeps the PDF colors untouched.
+        tint: null
+        # true puts every registration command into a single function instead of one per definition
+        compress_functions: false
+        pdf:
+            # Keep this a multiple of 72 so page pixel dimensions stay integers.
+            # 144 = 2x, which turns a 336x192 pt page into a 672x384 px texture (32 px per block).
+            dpi: 144
+            # Poppler binaries required by pdf2image, from https://github.com/oschwartz10612/poppler-windows
+            # Set to null once poppler's bin folder is on the system PATH.
+            poppler_path: "D:/advanced_desktop/poppler/poppler-26.02.0/Library/bin"
 
     # StewBeet specific configuration
     stewbeet:
