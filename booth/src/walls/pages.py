@@ -3,6 +3,9 @@
 page_<i> swaps the page text / width / scale into the dynamic display and grays
 the boundary arrow; show dispatches the current page-index score to the matching
 page_<i>; openlink opens the current page's link dialog.
+
+blank_text_commands is the prelude walls/reset needs in front of show; see its
+docstring for why a plain refresh is invisible to the client.
 """
 
 # Imports
@@ -33,6 +36,20 @@ data modify entity {wall.link_prompt_uuid} text set value {nbt(root(link_hint(li
 data modify entity {wall.link_interaction_uuid} width set value {link_size}f
 data modify entity {wall.link_interaction_uuid} height set value {link_size}f
 """
+
+
+def blank_text_commands(wall: Wall) -> list[str]:
+	""" Blank this wall's dynamic text_displays, to run right before a `show`.
+
+	A `data modify` landing on the value the entity already holds never marks the
+	entity data dirty, so no update packet leaves the server: refreshing a wall that
+	is already on page 0 is a no-op for every client. Clients whose resource pack
+	finished loading after the wall entities entered their chunks would then keep the
+	un-baked summit_icons glyphs until someone navigates the wall. Blanking first
+	guarantees the following write differs; both land in the same tick, so only the
+	final (real) text is ever broadcast and nothing flickers. """
+	uuids: list[str] = [wall.page_uuid] + ([wall.link_prompt_uuid] if wall.has_links else [])
+	return [f"data modify entity {uuid} text set value {nbt('')}" for uuid in uuids]
 
 
 def write_page_functions(wall: Wall) -> None:

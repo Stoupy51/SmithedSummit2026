@@ -16,7 +16,7 @@ from stewbeet import write_function
 from .animation import write_fade_functions, write_pop_settle
 from .content import TEXTS
 from .navigation import write_navigation_functions
-from .pages import write_openlink_function, write_page_functions, write_show_function
+from .pages import blank_text_commands, write_openlink_function, write_page_functions, write_show_function
 from .summons import summon_commands
 from .wall import Wall, unique_slugs
 
@@ -42,22 +42,24 @@ def setup_presentation_walls(ns: str) -> None:
 	slugs: list[str] = unique_slugs(TEXTS)
 
 	setup_blocks: list[str] = []   # one block of entity summons per wall -> walls/setup
-	reset_cmds: list[str] = []     # per-wall "score 0 + show" -> walls/reset
+	reset_blocks: list[str] = []   # per-wall "score 0 + blank + show" -> walls/reset
 
 	for index, zone in enumerate(TEXTS):
 		wall: Wall = Wall(ns, index, zone, slugs[index])
 		setup_blocks.append("\n".join(summon_commands(wall)))
 		write_wall_functions(wall)
 
-		# Reset this wall to page 0 and refresh it (collected into walls/reset).
-		reset_cmds += [
+		# Reset this wall to page 0 and refresh it (collected into walls/reset). The
+		# blanking is what makes the refresh reach the clients even when the wall already
+		# sat on page 0 (see pages.blank_text_commands).
+		title: str = wall.zone.name.replace("\n", " ")
+		reset_blocks.append("\n".join([
+			f"# Wall {wall.index + 1}: {title} - back to page 1, forcing a real text update",
 			f"scoreboard players set {wall.holder} {wall.page_objective} 0",
+			*blank_text_commands(wall),
 			f"function {wall.function('show')}",
-		]
+		]))
 
-	# Aggregate functions: all summons (one commented block per wall), and the
-	# whole-board reset.
+	# Aggregate functions: all summons and the whole-board reset (one commented block per wall).
 	write_function(f"{ns}:walls/setup", "\n\n".join(setup_blocks) + "\n", overwrite=True)
-	write_function(f"{ns}:walls/reset",
-		"# Put every wall back on its first page and refresh its display\n"
-		+ "\n".join(reset_cmds) + "\n", overwrite=True)
+	write_function(f"{ns}:walls/reset", "\n\n".join(reset_blocks) + "\n", overwrite=True)
