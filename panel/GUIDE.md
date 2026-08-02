@@ -50,9 +50,9 @@ Watch for two lines in the output:
 That is your slide count. If it does not match your deck, the PDF did not re-export.
 
 ```
-[WARNING] 'How to Boost your Productivity.pdf' is 1440x810 pt but Welded Woodlands expects 336x192 pt.
+[INFO] Fitted slides from 1440x810 pt to 336x192 pt for Welded Woodlands -> 21x12 blocks
 ```
-While this warning shows, the slides render four times too big. See [HUMAN_TODO.md](HUMAN_TODO.md) §1.
+Reef sizes the in-game screen from the PDF page size, so the build rescales your export to the stage first. **Export at any page size you like** — 1920x1080 is fine. Only the aspect ratio matters, and only a little: the screen is 7:4, a 16:9 deck loses 1.5 pt (0.09 block) top and bottom. Past a 2% border the build says so.
 
 Enable the resource pack once in Minecraft's options; after that a `/reload` picks up datapack changes, but **resource pack changes need `F3+T`** (or rejoining the world).
 
@@ -153,7 +153,7 @@ Slide indexes are 0-based.
 | Screen is blank, slideshow gone | Screen was cleared | Remote → settings → *Load slideshow* → `stoupy_panel:panel`, then *Change page* |
 | No screen at all | Screen entity removed | `/function summit.stages:resummon_screens` — **resummons every stage screen and drops their slideshows**, so reload yours afterwards |
 | Wall is missing / screen hidden | Stage screen toggle is off | Stage Remote → Welded Woodlands → toggle the screen back on |
-| Slides look enormous | PDF page size is wrong | Re-export at 336 × 192 pt |
+| Slides look enormous | Fitted copy is stale | Delete `.beet_cache/panel_slides/` and rebuild |
 | Slides are the old version | Resource pack not reloaded | `F3+T`, or rejoin the world |
 | Slide count is stale | PDF did not re-export | Check the `holding N slides` line in the build output |
 

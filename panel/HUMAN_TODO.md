@@ -5,26 +5,9 @@ Technical background in [REEF.md](REEF.md). Panel content plan in [TODO.md](TODO
 
 ---
 
-## 🔴 Blocking — the one thing standing between you and working slides
+## 🔴 Blocking — nothing right now
 
-### 1. Re-export the presentation at 336 x 192 pt
-
-`How to Boost your Productivity.pdf` is currently **1440 x 810 pt** (16:9). Reef maps 1 point to 1/16 of a block, so that renders as a **90 x 50.6 block** screen — roughly four times the Welded Woodlands wall.
-
-The build already tells you this on every run:
-
-```
-[WARNING] 'How to Boost your Productivity.pdf' is 1440x810 pt but Welded Woodlands expects
-336x192 pt. Reef would render a 90x50.625 block screen instead of 21x12.
-```
-
-**Set a custom page size of `336 x 192 pt`** = `4.667 x 2.667 in` = `118.53 x 67.73 mm`, then re-export over the same filename. Nothing else needs touching — the build picks up the new size and slide count automatically.
-
-> The aspect changes from 16:9 (1.778) to 7:4 (1.75). A 1.6% difference, invisible in practice, but your existing 6 slides will squash very slightly. Fix it now while the deck is small.
->
-> To keep true 16:9 instead, use **336 x 189 pt** and change `page_height` in [src/reef/stages.py](src/reef/stages.py). You lose 3 pt (0.19 block) at the bottom of the wall, which nobody will notice.
-
-### 2. Confirm the stage with the organisers
+### 1. Confirm the stage with the organisers
 
 I inferred **Welded Woodlands** because it is the only Summit stage template that is exactly 336 x 192 pt. If they move you, change `TARGET_STAGE` in [src/reef/stages.py](src/reef/stages.py) — every other stage is already in the table.
 
@@ -53,6 +36,7 @@ Also worth asking:
 | Scaffold the Reef source | Replaced by [src/reef/](src/reef/), which reads the PDF directly — no renaming, no copying, no manual page count |
 | Hook `register_namespace` | Called from `confirm_load`, verified in the build output |
 | Build a laser pointer | Summit already ships one: `loot give @s loot summit.laser_pointer:zz/green_laser_pointer` |
+| Export the PDF at 336 x 192 pt | Not needed — the build rescales any page size to the stage, keeping the aspect ratio. **Export at whatever your tool allows, 1920x1080 included.** |
 
 ---
 
@@ -63,7 +47,7 @@ Also worth asking:
 35 minutes, beginner-to-expert audience. Outline in [TODO.md](TODO.md).
 
 Design constraints that come from Reef, not from taste:
-- **7:4 aspect** (1.75), wider than 16:9. Do not design at 16:9 and letterbox.
+- **Page size does not matter**, the build fits it to the stage. Aspect ratio does: the screen is **7:4** (1.75). A 16:9 export (1.778) leaves a 1.5 pt band top and bottom — 0.09 block, invisible. Anything squarer would leave a real border.
 - At dpi 144 the texture is **672 x 384 px** = 32 px per block. Small text will be mush. **Test your minimum font size in-game early.**
 - Slides render **fullbright** — no world lighting, no shadows. High-contrast flat designs read best.
 - The audience stands at variable distance and angle. Bigger than you think.

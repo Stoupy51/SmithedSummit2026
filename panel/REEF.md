@@ -415,9 +415,9 @@ The generic advice above is implemented in [src/reef/](src/reef/). Two files, no
 
 What the build does on every run:
 
-1. Reads `How to Boost your Productivity.pdf` from the project root with poppler's `pdfinfo`.
-2. **Warns** if the page size is not `TARGET_STAGE`'s, quoting the block size it would produce.
-3. Registers the PDF as `stoupy_panel:panel`, generating one texture, model and item-model entry per slide.
+1. Reads `How to Boost your Productivity.pdf` from the project root with `pypdf`.
+2. **Rescales it to `TARGET_STAGE`'s page size**, preserving aspect and centring, into `.beet_cache/panel_slides/`. Only redone when the export actually changed, since rasterizing is the slow part. Export at any page size.
+3. Registers that fitted copy as `stoupy_panel:panel`, generating one texture, model and item-model entry per slide.
 4. Emits `data/stoupy_panel/reef/special/panel.json` with the **page count read from the PDF**, so adding slides needs no code change.
 5. Appends `function stoupy_panel:reef/register_namespace` to `confirm_load`.
 
