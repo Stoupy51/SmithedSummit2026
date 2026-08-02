@@ -23,9 +23,6 @@ TOMATOES_PER_PLAYER: int = 8
 SPLAT_PARTICLES: int = 60
 """ Redstone block particles spawned on impact. """
 
-ENABLED_SCORE: str = "#tomato.enabled"
-""" Fake player holding 1 while the audience is allowed to throw, on the `<ns>.data` objective. """
-
 TOMATO_TAG: str = "tomato"
 """ Suffix of the entity tag marking a flying tomato, prefixed with the namespace at write time. """
 

@@ -66,8 +66,8 @@ class PageOverride:
 
 # Constants
 PAGE_OVERRIDES: dict[int, PageOverride] = {
-	# Slide indexes are 0-based. Example, arming the tomatoes when the AI slide shows up:
-	# 12: PageOverride(on_enter=["function stoupy_panel:tomato/enable"], on_unload=["function stoupy_panel:tomato/disable"]),
+	# Slide indexes are 0-based. Example, handing out the tomatoes when the AI slide shows up:
+	# 12: PageOverride(on_enter=["function stoupy_panel:tomato/give"], on_unload=["function stoupy_panel:tomato/clear"]),
 }
 """ Per-slide commands. While empty, the slideshow compiles to a lighter Reef Mini definition. """
 

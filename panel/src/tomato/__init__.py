@@ -1,7 +1,8 @@
 """ Throwable tomatoes for the AI section of the panel.
 
 Right clicking a tomato launches it, Bookshelf's move module flies it, and the first block it
-touches bursts it into redstone block debris. `<ns>:tomato/disable` is the kill switch.
+touches bursts it into redstone block debris. Tomatoes always fly, so the only two controls are
+`<ns>:tomato/give` and `<ns>:tomato/clear`, the latter doubling as the kill switch.
 """
 # Imports
 from beet import Context

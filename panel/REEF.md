@@ -427,7 +427,7 @@ Per-slide commands go in `PAGE_OVERRIDES` in [src/reef/slideshow.py](src/reef/sl
 
 ```python
 PAGE_OVERRIDES: dict[int, PageOverride] = {
-	12: PageOverride(on_enter=["function stoupy_panel:tomato/enable"], on_unload=["function stoupy_panel:tomato/disable"]),
+	12: PageOverride(on_enter=["function stoupy_panel:tomato/give"], on_unload=["function stoupy_panel:tomato/clear"]),
 }
 ```
 

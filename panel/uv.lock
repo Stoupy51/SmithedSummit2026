@@ -607,12 +607,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "reef-beet-plugin" },
+    { name = "smithed" },
     { name = "stewbeet" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "reef-beet-plugin", specifier = ">=1.0.0b7" },
+    { name = "smithed", git = "https://github.com/Stoupy51/smithed-python.git" },
     { name = "stewbeet", specifier = ">=3.5.8" },
 ]
 
@@ -983,8 +985,8 @@ wheels = [
 
 [[package]]
 name = "smithed"
-version = "0.19.0"
-source = { registry = "https://pypi.org/simple" }
+version = "0.20.0"
+source = { git = "https://github.com/Stoupy51/smithed-python.git#dcd0a996aa8afab504220da735542f31cb47d6f2" }
 dependencies = [
     { name = "backports-strenum" },
     { name = "beet" },
@@ -993,10 +995,6 @@ dependencies = [
     { name = "rich" },
     { name = "tokenstream" },
     { name = "typer" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/5a/56/9ec6543d427307c8b0bcff4bbd6ad89cfa9400635f8fed54e3fbdf9c8d1d/smithed-0.19.0.tar.gz", hash = "sha256:8fcce1ae649c23505c74d16022a84c4f8eec3a083dbbd084b9c364b9fdc00251", size = 45482, upload-time = "2024-07-18T17:04:50.696Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/71/61/ae66783ff4a5242a7ad6ef25c8631e941ac6951cb2e1e088c447e835e2a1/smithed-0.19.0-py3-none-any.whl", hash = "sha256:a0858e0a04ffa50c801e8afb8f33e44669f2f47b142fbd4d6b3602f378b9677f", size = 60250, upload-time = "2024-07-18T17:04:49.496Z" },
 ]
 
 [[package]]

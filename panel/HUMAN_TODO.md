@@ -122,10 +122,10 @@ Tomatoes:
 
 ```mcfunction
 function stoupy_panel:tomato/give      # 8 tomatoes to everyone
-function stoupy_panel:tomato/enable    # arm them
-function stoupy_panel:tomato/disable   # kill switch, also clears what is in the air
-function stoupy_panel:tomato/clear     # just clear what is flying
+function stoupy_panel:tomato/clear     # kill switch: splats what is flying and empties every inventory
 ```
+
+Tomatoes always fly, so there is nothing to arm and nothing to forget. `clear` is the only thing you need if the room gets rowdy.
 
 ### 9. Practise the remote until it is muscle memory
 

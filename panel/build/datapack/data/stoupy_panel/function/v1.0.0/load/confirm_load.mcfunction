@@ -11,7 +11,6 @@ function stoupy_panel:reef/register_namespace
 
 scoreboard objectives add stoupy_panel.data dummy
 scoreboard objectives add stoupy_panel.tomato.life dummy
-scoreboard players set #tomato.enabled stoupy_panel.data 0
 
 # Set scoreboard constants for stoupy_panel.data
 scoreboard players set #900 stoupy_panel.data 900

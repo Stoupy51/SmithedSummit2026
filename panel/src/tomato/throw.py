@@ -8,7 +8,6 @@ that stream back into one throw per press. The consume never completes, so no to
 from stewbeet import Mem, write_advancement, write_tick_file, write_versioned_function
 
 from .constants import (
-	ENABLED_SCORE,
 	LIFETIME,
 	THROW_SPEED,
 	THROWER_TAG,
@@ -48,9 +47,6 @@ advancement revoke @a only {ns}:{TOMATO_ITEM}/use
 # One throw per press, not one per tick spent holding the button
 execute if entity @s[tag={ns}.{USED_TAG}] run return 0
 tag @s add {ns}.{USED_TAG}
-
-# The kill switch, flipped by <ns>:tomato/enable and <ns>:tomato/disable
-execute unless score {ENABLED_SCORE} {ns}.data matches 1 run return 0
 
 function {ns}:v{version}/{TOMATO_ITEM}/throw
 """)
