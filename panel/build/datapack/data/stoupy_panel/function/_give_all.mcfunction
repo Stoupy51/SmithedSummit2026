@@ -1,8 +1,0 @@
-
-#> stoupy_panel:_give_all
-#
-# @within	???
-#
-
-give @s chest[container=[{slot:0,item:{count:1,id:"minecraft:recovery_compass",components:{"profile": {"properties": [{"name": "textures","value": "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzhiNzUyZTUyMzJiMDM5YjFlNzVlNDU0MTgzYTE5MmQ0MDU3YjdjYTgzMmY3YzI0YTVmZDg2Nzk2OWNiNGQifX19"}]},"consumable": {"consume_seconds": 3600,"animation": "spear","sound": "minecraft:intentionally_empty","has_consume_particles": false},"item_name": {"text": "Tomato"},"lore": [["",{"text": "ꀁ","color": "white","italic": false,"font": "stoupy_panel:tooltip"},{"text": "뀁Boost Your Productivity","italic": false,"color": "white","font": "stoupy_panel:tooltip"}]],"custom_data": {"stoupy_panel": {"tomato": true},"smithed": {"id": "stoupy_panel:tomato","origin": "stoupy_panel","ignore": {"functionality": true,"crafting": true}}}}}}],custom_name={"text":"Chest [1/1]","color":"yellow"},lore=[["",{"text": "ꀁ","color": "white","italic": false,"font": "stoupy_panel:tooltip"},{"text": "뀁Boost Your Productivity","italic": false,"color": "white","font": "stoupy_panel:tooltip"}]]]
-

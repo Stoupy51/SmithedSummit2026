@@ -17,7 +17,7 @@ uv run stewbeet                    # build + deploy to the world and resourcepac
 /loot give @s loot summit.stages:remote/welded_woodlands
 ```
 
-Hold the remote → **Sneak + Sprint + right-click** → *Load slideshow* → `stoupy_panel:panel` → **right-click** to advance.
+Hold the remote → **Sneak + Sprint + right-click** → *Load slideshow* → `stoupy:panel` → **right-click** to advance.
 
 ---
 
@@ -45,14 +45,14 @@ The build already copies itself where it needs to go — no manual zip juggling:
 Watch for two lines in the output:
 
 ```
-[INFO] Registered slideshow 'stoupy_panel:panel' holding 6 slides
+[INFO] Registered slideshow 'stoupy:panel' holding 6 slides
 ```
 That is your slide count. If it does not match your deck, the PDF did not re-export.
 
 ```
-[INFO] Fitted slides from 1440x810 pt to 336x192 pt for Welded Woodlands -> 21x12 blocks
+[INFO] Fitted 6 slides of 1440x810 pt onto Welded Woodlands (21x12 blocks) at scale 0.2333
 ```
-Reef sizes the in-game screen from the PDF page size, so the build rescales your export to the stage first. **Export at any page size you like** — 1920x1080 is fine. Only the aspect ratio matters, and only a little: the screen is 7:4, a 16:9 deck loses 1.5 pt (0.09 block) top and bottom. Past a 2% border the build says so.
+Reef would size the screen from the PDF page size, so the build shrinks each slide back to the stage using the display entity's scale. The PDF itself is never touched. **Export at any page size you like** — 1920x1080 is fine. Only the aspect ratio matters, and only a little: the screen is 7:4, so a 16:9 deck leaves 0.09 block top and bottom. Past a 2% border the build says so.
 
 Enable the resource pack once in Minecraft's options; after that a `/reload` picks up datapack changes, but **resource pack changes need `F3+T`** (or rejoining the world).
 
@@ -90,10 +90,10 @@ Optional while developing — Reef then narrates what it is doing in chat:
 
 Hold the remote and **sneak + sprint + right-click** (Shift + Ctrl + right-click). The settings dialog opens.
 
-1. *Load slideshow* → type `stoupy_panel:panel`
+1. *Load slideshow* → type `stoupy:panel`
 2. *Change page* → `0`
 
-The slideshow id is always `<namespace>:panel`, so `stoupy_panel:panel`. It does not change when you add slides.
+The slideshow id is always `<namespace>:panel`, so `stoupy:panel`. It does not change when you add slides.
 
 ---
 
@@ -127,8 +127,8 @@ Two things worth internalising before you are in front of people:
 **Tomatoes** (for the AI section):
 
 ```mcfunction
-/function stoupy_panel:tomato/give      # 8 tomatoes to everyone not spectating
-/function stoupy_panel:tomato/clear     # splats what is flying AND empties every inventory
+/function stoupy:tomato/give      # 8 tomatoes to everyone not spectating
+/function stoupy:tomato/clear     # splats what is flying AND empties every inventory
 ```
 
 Tomatoes always fly, there is nothing to arm. `clear` is the kill switch — it takes them out of people's hands, so the barrage actually stops.
@@ -137,7 +137,7 @@ To fire either of these off a specific slide instead of typing them, add a `PAGE
 
 ```python
 PAGE_OVERRIDES: dict[int, PageOverride] = {
-	12: PageOverride(on_enter=["function stoupy_panel:tomato/give"], on_unload=["function stoupy_panel:tomato/clear"]),
+	12: PageOverride(on_enter=["function stoupy:tomato/give"], on_unload=["function stoupy:tomato/clear"]),
 }
 ```
 
@@ -150,10 +150,11 @@ Slide indexes are 0-based.
 | Symptom | Cause | Fix |
 |---|---|---|
 | Remote does nothing, no message | Missing permission | `/tag @s add reef.permissions.use_remote` |
-| Screen is blank, slideshow gone | Screen was cleared | Remote → settings → *Load slideshow* → `stoupy_panel:panel`, then *Change page* |
+| Screen is blank, slideshow gone | Screen was cleared | Remote → settings → *Load slideshow* → `stoupy:panel`, then *Change page* |
 | No screen at all | Screen entity removed | `/function summit.stages:resummon_screens` — **resummons every stage screen and drops their slideshows**, so reload yours afterwards |
 | Wall is missing / screen hidden | Stage screen toggle is off | Stage Remote → Welded Woodlands → toggle the screen back on |
-| Slides look enormous | Fitted copy is stale | Delete `.beet_cache/panel_slides/` and rebuild |
+| Slides look enormous | Page definitions are stale in the world's storage | `/function stoupy:reef/register_namespace`, then reload the slideshow on the remote |
+| Slides look like the previous export | Reef reused its cached rasterization | `rm -rf .beet_cache/reef` and rebuild |
 | Slides are the old version | Resource pack not reloaded | `F3+T`, or rejoin the world |
 | Slide count is stale | PDF did not re-export | Check the `holding N slides` line in the build output |
 
@@ -161,7 +162,7 @@ Reef's own escape hatches, if the registry ever gets confused:
 
 ```mcfunction
 /function reef:api/clear_registry
-/function stoupy_panel:reef/register_namespace
+/function stoupy:reef/register_namespace
 ```
 
 The second one is what the datapack runs on load; running it by hand re-registers the slideshow without a `/reload`.
@@ -178,13 +179,13 @@ The second one is what the datapack runs on load; running it by hand re-register
 /tag @s add reef.permissions.see_debug
 
 # Panel
-/function stoupy_panel:tomato/give
-/function stoupy_panel:tomato/clear
+/function stoupy:tomato/give
+/function stoupy:tomato/clear
 
 # Recovery
 /function summit.stages:resummon_screens
 /function reef:api/clear_registry
-/function stoupy_panel:reef/register_namespace
+/function stoupy:reef/register_namespace
 ```
 
-Slideshow id: **`stoupy_panel:panel`**
+Slideshow id: **`stoupy:panel`**

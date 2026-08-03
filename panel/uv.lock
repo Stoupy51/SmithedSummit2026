@@ -615,7 +615,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "pypdf", specifier = ">=6.14.2" },
-    { name = "reef-beet-plugin", specifier = ">=1.0.0b7" },
+    { name = "reef-beet-plugin", specifier = ">=1.0.0b9" },
     { name = "smithed", git = "https://github.com/Stoupy51/smithed-python.git" },
     { name = "stewbeet", specifier = ">=3.5.8" },
 ]
@@ -917,16 +917,16 @@ hiredis = [
 
 [[package]]
 name = "reef-beet-plugin"
-version = "1.0.0b7"
+version = "1.0.0b9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "beet" },
     { name = "odfdo" },
     { name = "pdf2image" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/5e/f3c622efbc4ec945b5aced05b971bffab7fed3025acccf63db1aee4ab352/reef_beet_plugin-1.0.0b7.tar.gz", hash = "sha256:f54435ce3c693428201e81e627af8750e19f3a397a5b9432a3a7de0c5991ad4f", size = 10584, upload-time = "2026-07-29T14:44:19.842Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6a/db/b88dc3e164aef46ce4aa26060f5aed8033f972ede4a0c46c99f279acc858/reef_beet_plugin-1.0.0b9.tar.gz", hash = "sha256:605b93a84521115814eed3586e9d89c49a6bd1bdb9aeb6efde01223abea6d0ff", size = 10575, upload-time = "2026-08-03T12:34:11.769Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/20/cd/d2290ff4edf5222a573382762497f016e10b63b59f483ca263bfa4e52195/reef_beet_plugin-1.0.0b7-py3-none-any.whl", hash = "sha256:be30070ba98de98d30a7a68795d381489595b551a02807f97d08a404c4c1aa78", size = 18695, upload-time = "2026-07-29T14:44:18.099Z" },
+    { url = "https://files.pythonhosted.org/packages/08/84/631f133f04f80813aa01df11af5a5aabfda1c521882e8d1cee1092ba75ad/reef_beet_plugin-1.0.0b9-py3-none-any.whl", hash = "sha256:28b7a113ec6caf1401b46700aa755c3609f9bcd750f42892b21d781311f538a7", size = 18682, upload-time = "2026-08-03T12:34:10.504Z" },
 ]
 
 [[package]]

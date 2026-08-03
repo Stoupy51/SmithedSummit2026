@@ -1,0 +1,21 @@
+{
+	"criteria": {
+		"use_item": {
+			"trigger": "minecraft:using_item",
+			"conditions": {
+				"item": {
+					"predicates": {
+						"custom_data": {
+							"stoupy": {
+								"tomato": true
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"rewards": {
+		"function": "stoupy:v1.0.0/tomato/on_use"
+	}
+}

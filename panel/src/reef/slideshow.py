@@ -1,22 +1,26 @@
 """ Turns the presentation PDF into a Reef slideshow.
 
-Reef reads the in-game slide size straight from the PDF page size, so the export has to match the stage.
-The page count is read from the PDF on every build, which means adding or removing slides needs no code change.
+The PDF is handed to Reef untouched, so the baked textures keep the full resolution of the export.
+Reef sizes an element from the PDF page size, which would make a 1920x1080 pt deck a 120x67 block
+wall, so each slide is shrunk back to the stage with the display entity's own scale instead.
+
+That means the pages are built here rather than through a `reef:pdf` special definition, which
+also gives per-slide commands for free.
 """
 # Imports
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from pypdf import PdfReader, PdfWriter, Transformation
-from pypdf.generic import RectangleObject
+from pypdf import PdfReader
 from stewbeet import Mem, write_load_file
 from stouputils.print import info, warning
 
 from reef.assets.pdf import ReefPdfAsset
-from reef.data.special import ReefSpecialData
+from reef.data.page import ReefPageData
+from reef.data.slideshow import ReefSlideshowData
 
-from .stages import TARGET_STAGE, Stage
+from .stages import POINTS_PER_BLOCK, TARGET_STAGE, Stage
 
 # Constants
 SOURCE_PDF: str = "How to Boost your Productivity.pdf"
@@ -25,9 +29,6 @@ SOURCE_PDF: str = "How to Boost your Productivity.pdf"
 SLIDESHOW_NAME: str = "panel"
 """ Path of the generated slideshow, loaded in game as `<namespace>:panel`. """
 
-FITTED_CACHE: str = ".beet_cache/panel_slides"
-""" Where the stage-sized copy of the presentation is kept, next to beet's own cache so git ignores it. """
-
 MAX_MARGIN_RATIO: float = 0.02
 """ Border left by fitting the slides, past which the export aspect ratio is worth complaining about. """
 
@@ -35,11 +36,7 @@ MAX_MARGIN_RATIO: float = 0.02
 # Classes
 @dataclass(frozen=True)
 class PageOverride:
-	""" Commands Reef runs around one slide.
-
-	Only commands are supported on purpose: reef 1.0.0b7 crashes on an override carrying
-	anything other than exactly one element group, so the sequence field is left alone.
-	"""
+	""" Commands Reef runs around one slide. """
 
 	on_load: list[str] = field(default_factory=list[str])
 	""" Runs once when the slideshow is loaded onto a screen. """
@@ -48,30 +45,64 @@ class PageOverride:
 	on_unload: list[str] = field(default_factory=list[str])
 	""" Runs when the slideshow is cleared. """
 
-	def to_page(self) -> dict[str, object]:
-		""" Convert to the partial Reef page that Reef merges into the generated slide.
+	def to_commands(self) -> dict[str, list[str]]:
+		""" Convert to the `commands` object of a Reef page.
 
 		Returns:
-			dict[str, object]: Page holding only the command lists that are not empty.
+			dict[str, list[str]]: Only the command lists that are not empty.
 
 		Examples:
-			>>> PageOverride(on_enter=["say hi"]).to_page()
-			{'commands': {'on_enter': ['say hi']}}
+			>>> PageOverride(on_enter=["say hi"]).to_commands()
+			{'on_enter': ['say hi']}
 		"""
 		named_commands: tuple[tuple[str, list[str]], ...] = (
 			("on_load",   self.on_load),
 			("on_enter",  self.on_enter),
 			("on_unload", self.on_unload),
 		)
-		return {"commands": {name: commands for name, commands in named_commands if commands}}
+		return {name: commands for name, commands in named_commands if commands}
+
+
+@dataclass(frozen=True)
+class Placement:
+	""" How one slide has to be scaled and offset to land on the stage screen. """
+
+	scale: float
+	""" Factor shrinking the slide down to the screen, applied to the display entity. """
+	offset_x: float
+	""" Blocks between the left edge of the screen and the slide. """
+	offset_y: float
+	""" Blocks between the top edge of the screen and the slide. """
+
+	@staticmethod
+	def fit(page_size: tuple[int, int], stage: Stage) -> Placement:
+		""" Fit a page onto a stage screen, keeping its aspect ratio and centring what is left over.
+
+		Args:
+			page_size (tuple[int, int]): Page width and height of the exported PDF, in points.
+			stage     (Stage):           Stage the slides have to fit.
+		Returns:
+			Placement: Scale and offsets to put on every slide element.
+
+		Examples:
+			>>> from .stages import WELDED_WOODLANDS
+			>>> Placement.fit((336, 192), WELDED_WOODLANDS)
+			Placement(scale=1.0, offset_x=0.0, offset_y=0.0)
+		"""
+		scale: float = min(stage.page_width / page_size[0], stage.page_height / page_size[1])
+		return Placement(
+			scale=scale,
+			offset_x=(stage.page_width - page_size[0] * scale) / 2 / POINTS_PER_BLOCK,
+			offset_y=(stage.page_height - page_size[1] * scale) / 2 / POINTS_PER_BLOCK,
+		)
 
 
 # Constants
 PAGE_OVERRIDES: dict[int, PageOverride] = {
 	# Slide indexes are 0-based. Example, handing out the tomatoes when the AI slide shows up:
-	# 12: PageOverride(on_enter=["function stoupy_panel:tomato/give"], on_unload=["function stoupy_panel:tomato/clear"]),
+	# 12: PageOverride(on_enter=["function stoupy:tomato/give"], on_unload=["function stoupy:tomato/clear"]),
 }
-""" Per-slide commands. While empty, the slideshow compiles to a lighter Reef Mini definition. """
+""" Per-slide commands, merged into the generated pages. """
 
 
 class ReefSlideshow:
@@ -81,8 +112,7 @@ class ReefSlideshow:
 	def read_pdf(pdf_path: Path) -> tuple[int, tuple[int, int]]:
 		""" Read the slide count and the page size straight out of the presentation.
 
-		The size is taken from the first page only, since Reef gives the whole slideshow
-		the size of the PDF anyway.
+		The size comes from the first page only, since Reef gives every slide the size of the PDF.
 
 		Args:
 			pdf_path (Path): Presentation to inspect.
@@ -94,78 +124,49 @@ class ReefSlideshow:
 		return len(reader.pages), (round(float(media_box.width)), round(float(media_box.height)))
 
 	@staticmethod
-	def fit_to_stage(pdf_path: Path, page_size: tuple[int, int], stage: Stage) -> Path:
-		""" Rewrite the presentation at the stage's page size, because Reef sizes the screen from it.
-
-		Slides keep their aspect ratio and are centred, so a deck exported at any resolution lands
-		on the screen at the right size. Export at whatever your slide editor allows.
+	def page(index: int, placement: Placement) -> dict[str, object]:
+		""" Build the Reef page showing one slide of the PDF.
 
 		Args:
-			pdf_path  (Path):            Presentation as exported.
-			page_size (tuple[int, int]): Its page width and height in points.
-			stage     (Stage):           Stage the slides have to fit.
+			index     (int):       0-based slide number, selecting the frame of the generated item model.
+			placement (Placement): Scale and offsets bringing the slide onto the screen.
 		Returns:
-			Path: Presentation to hand over to Reef, which is the original one when it already fits.
-		"""
-		if page_size == (stage.page_width, stage.page_height):
-			info(f"Slides already match {stage.display_name}: {stage.page_width}x{stage.page_height} pt -> {stage.blocks_wide:g}x{stage.blocks_tall:g} blocks")
-			return pdf_path
-
-		# Rasterizing is the slow part of the build, so only redo it once the export actually moved
-		fitted_path: Path = Path(Mem.ctx.directory) / FITTED_CACHE / f"{SLIDESHOW_NAME}.pdf"
-		fitted_path.parent.mkdir(parents=True, exist_ok=True)
-		if fitted_path.is_file() and fitted_path.stat().st_mtime >= pdf_path.stat().st_mtime:
-			return fitted_path
-
-		scale: float = min(stage.page_width / page_size[0], stage.page_height / page_size[1])
-		margin_x: float = (stage.page_width - page_size[0] * scale) / 2
-		margin_y: float = (stage.page_height - page_size[1] * scale) / 2
-		stage_box: RectangleObject = RectangleObject((0, 0, stage.page_width, stage.page_height))
-
-		reader: PdfReader = PdfReader(pdf_path)
-		writer: PdfWriter = PdfWriter()
-		for page in reader.pages:
-			# The source box does not have to start at the origin, so bring it there before scaling
-			page.add_transformation(
-				Transformation()
-				.translate(-float(page.mediabox.left), -float(page.mediabox.bottom))
-				.scale(scale, scale)
-				.translate(margin_x, margin_y)
-			)
-			page.mediabox = stage_box
-			page.cropbox = stage_box
-			writer.add_page(page)
-		writer.write(fitted_path)
-
-		info(
-			f"Fitted slides from {page_size[0]}x{page_size[1]} pt to {stage.page_width}x{stage.page_height} pt "
-			f"for {stage.display_name} -> {stage.blocks_wide:g}x{stage.blocks_tall:g} blocks"
-		)
-		if max(margin_x / stage.page_width, margin_y / stage.page_height) > MAX_MARGIN_RATIO:
-			warning(
-				f"The slides leave a {margin_x:.1f}x{margin_y:.1f} pt border on the screen. "
-				f"Export them at a {stage.page_width / stage.page_height:.3f} aspect ratio to fill it edge to edge."
-			)
-		return fitted_path
-
-	@staticmethod
-	def definition(page_count: int) -> dict[str, object]:
-		""" Build the `reef:pdf` special definition that compiles the PDF into a slideshow.
-
-		Args:
-			page_count (int): Number of slides found in the PDF.
-		Returns:
-			dict[str, object]: Content of data/<ns>/reef/special/<name>.json
+			dict[str, object]: Content of data/<ns>/reef/page/<name>/<index>.json
 		"""
 		namespace: str = Mem.ctx.project_id
-		definition: dict[str, object] = {
-			"type": "reef:pdf",
-			"pdf": f"{namespace}:{SLIDESHOW_NAME}",
-			"page_count": page_count,
+		page: dict[str, object] = {
+			"sequence": [[{
+				"type": "graphic",
+				"model": f"{namespace}:reef/mini/{SLIDESHOW_NAME}",
+				"components": {"minecraft:custom_model_data": {"floats": [index]}},
+				"pos": [placement.offset_x, -placement.offset_y, 0],
+				"scale": [placement.scale, placement.scale, 1],
+			}]]
 		}
-		if PAGE_OVERRIDES:
-			definition["overrides"] = {str(index): override.to_page() for index, override in sorted(PAGE_OVERRIDES.items())}
-		return definition
+		override: PageOverride | None = PAGE_OVERRIDES.get(index)
+		if override is not None:
+			page["commands"] = override.to_commands()
+		return page
+
+	@staticmethod
+	def report(page_count: int, page_size: tuple[int, int], placement: Placement, stage: Stage) -> None:
+		""" Say what the slides will look like in game, and complain about a border worth fixing.
+
+		Args:
+			page_count (int):               Number of slides found in the PDF.
+			page_size  (tuple[int, int]):   Page width and height of the exported PDF, in points.
+			placement  (Placement):         Scale and offsets applied to every slide.
+			stage      (Stage):             Stage the panel is presented on.
+		"""
+		info(
+			f"Fitted {page_count} slides of {page_size[0]}x{page_size[1]} pt onto {stage.display_name} "
+			f"({stage.blocks_wide:g}x{stage.blocks_tall:g} blocks) at scale {placement.scale:.4g}"
+		)
+		if max(placement.offset_x / stage.blocks_wide, placement.offset_y / stage.blocks_tall) > MAX_MARGIN_RATIO:
+			warning(
+				f"The slides leave a {placement.offset_x:.2f}x{placement.offset_y:.2f} block border on the screen. "
+				f"Export them at a {stage.page_width / stage.page_height:.3f} aspect ratio to fill it edge to edge."
+			)
 
 	@staticmethod
 	def write() -> None:
@@ -179,17 +180,20 @@ class ReefSlideshow:
 
 		# Read the slide count and page size straight from the PDF so nothing has to be kept in sync by hand
 		page_count, page_size = ReefSlideshow.read_pdf(pdf_path)
+		placement: Placement = Placement.fit(page_size, TARGET_STAGE)
+		ReefSlideshow.report(page_count, page_size, placement, TARGET_STAGE)
 
-		# Reef sizes the in-game screen from the page size, so hand it a stage-sized copy
-		slides_path: Path = ReefSlideshow.fit_to_stage(pdf_path, page_size, TARGET_STAGE)
+		# One texture, model and item model entry per slide, at the resolution the PDF was exported with
+		Mem.ctx.assets[ReefPdfAsset][f"{namespace}:{SLIDESHOW_NAME}"] = ReefPdfAsset(source_path=pdf_path)
 
-		# One texture, model and item model entry per slide
-		Mem.ctx.assets[ReefPdfAsset][f"{namespace}:{SLIDESHOW_NAME}"] = ReefPdfAsset(source_path=slides_path)
-
-		# Compile those slides into a slideshow the Reef remote can load
-		Mem.ctx.data[ReefSpecialData][f"{namespace}:{SLIDESHOW_NAME}"] = ReefSpecialData(json.dumps(ReefSlideshow.definition(page_count)))
+		# One page per slide, each shrinking its graphic down to the stage screen
+		slideshow: list[str] = []
+		for index in range(page_count):
+			page_id: str = f"{namespace}:{SLIDESHOW_NAME}/{index}"
+			Mem.ctx.data[ReefPageData][page_id] = ReefPageData(json.dumps(ReefSlideshow.page(index, placement)))
+			slideshow.append(page_id)
+		Mem.ctx.data[ReefSlideshowData][f"{namespace}:{SLIDESHOW_NAME}"] = ReefSlideshowData(json.dumps(slideshow))
 
 		# Reef only learns about the slideshow once this generated function has run
 		write_load_file(f"function {namespace}:reef/register_namespace")
 		info(f"Registered slideshow '{namespace}:{SLIDESHOW_NAME}' holding {page_count} slides")
-

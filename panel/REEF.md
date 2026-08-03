@@ -169,7 +169,7 @@ Source files are **consumed and dropped** — none of them appear in the built p
 
 The plugin creates **`<ns>:reef/register_namespace`** and **attaches it to nothing**. Nothing calls it for you.
 
-> **You must call `function stoupy_panel:reef/register_namespace` from your load function**, or no slideshow will exist in-game.
+> **You must call `function stoupy:reef/register_namespace` from your load function**, or no slideshow will exist in-game.
 
 Definitions are written to storage `<ns>:reef` under `register.page."<id>"` / `register.slideshow."<id>"` / etc., then handed to `reef:api/register/*`. Reef's own registry lives in `reef.zzzinternals:registry`.
 
@@ -183,9 +183,9 @@ A flat list of page identifiers, in order. The same page may repeat (useful for 
 
 ```json
 [
-    "stoupy_panel:intro",
-    "stoupy_panel:who_am_i",
-    "stoupy_panel:explore_code"
+    "stoupy:intro",
+    "stoupy:who_am_i",
+    "stoupy:explore_code"
 ]
 ```
 
@@ -271,9 +271,9 @@ Reef pre-summons one transition-layer entity per screen, tagged `reef.element.tr
 ```json
 {
     "type": "reef:pdf",
-    "pdf": "stoupy_panel:panel_slides",
+    "pdf": "stoupy:panel_slides",
     "page_count": 42,
-    "transition": "stoupy_panel:my_transition",
+    "transition": "stoupy:my_transition",
     "overrides": {
         "0": { "commands": { "on_enter": ["tellraw @a 'first slide'"] } }
     }
@@ -336,7 +336,7 @@ All of these `return fail` if no slideshow is loaded or a transition is still pl
 | `reef:api/register/mini` | `identifier`, `storage_path` |
 | `reef:api/clear_registry` | — |
 
-`storage_path` is `"<storage id> <nbt path>"`, e.g. `'stoupy_panel:reef register.page."stoupy_panel:intro"'`.
+`storage_path` is `"<storage id> <nbt path>"`, e.g. `'stoupy:reef register.page."stoupy:intro"'`.
 
 ### 6.4 The remote — **the controls you will actually use on stage**
 
@@ -415,23 +415,35 @@ The generic advice above is implemented in [src/reef/](src/reef/). Two files, no
 
 What the build does on every run:
 
-1. Reads `How to Boost your Productivity.pdf` from the project root with `pypdf`.
-2. **Rescales it to `TARGET_STAGE`'s page size**, preserving aspect and centring, into `.beet_cache/panel_slides/`. Only redone when the export actually changed, since rasterizing is the slow part. Export at any page size.
-3. Registers that fitted copy as `stoupy_panel:panel`, generating one texture, model and item-model entry per slide.
-4. Emits `data/stoupy_panel/reef/special/panel.json` with the **page count read from the PDF**, so adding slides needs no code change.
-5. Appends `function stoupy_panel:reef/register_namespace` to `confirm_load`.
+1. Reads `How to Boost your Productivity.pdf` from the project root with `pypdf` — slide count and page size.
+2. Registers that PDF **untouched** as `stoupy:panel`, so each slide bakes a texture at the resolution it was exported with.
+3. Generates one Reef page per slide, each holding a single `graphic` element carrying the **`scale` and `pos` that shrink the slide onto the stage**.
+4. Generates the slideshow listing those pages, straight from the PDF's own page count, so adding slides needs no code change.
+5. Appends `function stoupy:reef/register_namespace` to `confirm_load`.
 
-Result in game: slideshow id **`stoupy_panel:panel`**.
+Result in game: slideshow id **`stoupy:panel`**.
+
+### Why the element is scaled instead of the PDF
+
+Reef sizes an element from the PDF page size (§3.2), so a 1440 x 810 pt export would be a 90 x 50.6 block wall. Two ways to fix that: shrink the PDF, or shrink the display entity. **This project shrinks the entity.** The export stays pristine, textures keep their full resolution, and the sizing lives where it belongs — in the page definition:
+
+```json
+{"type": "graphic", "model": "stoupy:reef/mini/panel", "pos": [0, -0.09375, 0], "scale": [0.2333, 0.2333, 1]}
+```
+
+`scale` is `min(stage_width / page_width, stage_height / page_height)`, so the aspect ratio is preserved and `pos` centres whatever is left over. **Export at any page size you like.**
+
+Note this is why `meta.reef.pdf.dpi` is `72` rather than `144`: the on-screen size no longer depends on it, so dpi only controls texture resolution. At 72 a 1440 pt wide export bakes 1440 px textures, which is 68 px per block — 4x vanilla. Raising it mostly grows the resource pack everyone has to download.
 
 Per-slide commands go in `PAGE_OVERRIDES` in [src/reef/slideshow.py](src/reef/slideshow.py), keyed by 0-based slide index:
 
 ```python
 PAGE_OVERRIDES: dict[int, PageOverride] = {
-	12: PageOverride(on_enter=["function stoupy_panel:tomato/give"], on_unload=["function stoupy_panel:tomato/clear"]),
+	12: PageOverride(on_enter=["function stoupy:tomato/give"], on_unload=["function stoupy:tomato/clear"]),
 }
 ```
 
-While that dict is empty the deck compiles to a lighter Reef Mini; adding an entry switches it to full page definitions. Only `commands` are exposed, which sidesteps gotcha #6 entirely.
+Since the pages are built here rather than through a `reef:pdf` special definition, gotcha #6 never comes into play at all.
 
 ---
 

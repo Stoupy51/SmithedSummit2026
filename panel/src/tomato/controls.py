@@ -1,7 +1,7 @@
 """ Stage controls for the tomatoes.
 
 Tomatoes always fly, so there is no arming step to forget: hand them out with
-`/function stoupy_panel:tomato/give`, and take everything back with `/function stoupy_panel:tomato/clear`.
+`/function stoupy:tomato/give`, and take everything back with `/function stoupy:tomato/clear`.
 Both are unversioned on purpose, so they stay short enough to type live.
 """
 # Imports

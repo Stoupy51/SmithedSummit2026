@@ -3,7 +3,7 @@
 # All configurations are filled with default values, and you can remove any that you don't need.
 
 # Project identifier used for namespacing functions and tags. Should align with the namespace in the source folder.
-id: "stoupy_panel"
+id: "stoupy"
 # Project name that will be used in messages, item lore, etc.
 name: "Boost Your Productivity"
 # Pack description for pack.mcmeta. Defaults to "{name} [{version}] by {author}" if empty.
@@ -97,9 +97,11 @@ meta:
         # true puts every registration command into a single function instead of one per definition
         compress_functions: false
         pdf:
-            # Keep this a multiple of 72 so page pixel dimensions stay integers.
-            # 144 = 2x, which turns a 336x192 pt page into a 672x384 px texture (32 px per block).
-            dpi: 144
+            # Rasterization resolution, unrelated to the on-screen size which src/reef/ handles.
+            # 72 keeps one PDF point per pixel: a 1440x810 pt export bakes 1440x810 px textures,
+            # which is 68 px per block on a 21 block wide screen, 4x vanilla. Raising this mostly
+            # grows the resource pack everyone has to download.
+            dpi: 72
             # Poppler binaries required by pdf2image, from https://github.com/oschwartz10612/poppler-windows
             # Set to null once poppler's bin folder is on the system PATH.
             poppler_path: "D:/advanced_desktop/poppler/poppler-26.02.0/Library/bin"

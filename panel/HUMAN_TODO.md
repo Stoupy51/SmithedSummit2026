@@ -100,13 +100,13 @@ uv pip install git+https://github.com/Stoupy51/smithed-python.git
 function summit.stages:permissions/grant_host
 ```
 
-That gives you `reef.permissions.use_remote`, the stage remote and the stage controls. Then hold the Welded Woodlands remote and **sneak + sprint + right-click** to open the settings dialog → *Load slideshow* → `stoupy_panel:panel`.
+That gives you `reef.permissions.use_remote`, the stage remote and the stage controls. Then hold the Welded Woodlands remote and **sneak + sprint + right-click** to open the settings dialog → *Load slideshow* → `stoupy:panel`.
 
 Tomatoes:
 
 ```mcfunction
-function stoupy_panel:tomato/give      # 8 tomatoes to everyone
-function stoupy_panel:tomato/clear     # kill switch: splats what is flying and empties every inventory
+function stoupy:tomato/give      # 8 tomatoes to everyone
+function stoupy:tomato/clear     # kill switch: splats what is flying and empties every inventory
 ```
 
 Tomatoes always fly, so there is nothing to arm and nothing to forget. `clear` is the only thing you need if the room gets rowdy.
@@ -130,6 +130,6 @@ It is a *consumable* item — "use" means **hold** right-click. Sneak+Sprint is 
 - [ ] Resource pack delivered (the slides live in it — not optional)
 - [ ] `Bookshelf Move.zip` delivered too, or confirm the server already has `bs.move` ≥ 4.1
 - [ ] Confirm you have `reef.permissions.use_remote`
-- [ ] Confirm `stoupy_panel:panel` loads on their screen
+- [ ] Confirm `stoupy:panel` loads on their screen
 - [ ] Know the recovery path: settings dialog → *Load slideshow* → *Change page*
 - [ ] Slides as a normal PDF on hand as a fallback
