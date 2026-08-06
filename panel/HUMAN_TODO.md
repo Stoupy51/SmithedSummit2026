@@ -68,7 +68,7 @@ From [TODO.md](TODO.md): the GitHub contribution graph, code samples from Myriad
 ### 6. The live AI vote
 5-point hate/tolerate scale per Gen-AI type (image / text-code / sound), results shown live. A `dialog` plus scoreboards. Wire it to a slide with `PAGE_OVERRIDES` in [src/reef/slideshow.py](src/reef/slideshow.py).
 
-### 7. Tomato polish
+### 7. tomato polish
 The mechanics work, but two things are yours to decide:
 - **Appearance.** The tomato is a `recovery_compass` carrying a `profile` component, which does nothing on that base item — it currently renders as a plain recovery compass. Give it an `item_model` and a texture, or change `base_item`. The flying tomato copies whatever the thrower holds, so it follows automatically.
 - **Distribution.** Right now `<ns>:tomato/give` hands 8 to everyone. Decide whether people find them, get them at the start, or only during the AI section.
@@ -102,14 +102,14 @@ function summit.stages:permissions/grant_host
 
 That gives you `reef.permissions.use_remote`, the stage remote and the stage controls. Then hold the Welded Woodlands remote and **sneak + sprint + right-click** to open the settings dialog → *Load slideshow* → `stoupy:panel`.
 
-Tomatoes:
+tomatoes:
 
 ```mcfunction
 function stoupy:tomato/give      # 8 tomatoes to everyone
 function stoupy:tomato/clear     # kill switch: splats what is flying and empties every inventory
 ```
 
-Tomatoes always fly, so there is nothing to arm and nothing to forget. `clear` is the only thing you need if the room gets rowdy.
+tomatoes always fly, so there is nothing to arm and nothing to forget. `clear` is the only thing you need if the room gets rowdy.
 
 ### 9. Practise the remote until it is muscle memory
 

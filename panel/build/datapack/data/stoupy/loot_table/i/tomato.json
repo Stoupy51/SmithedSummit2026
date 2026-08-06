@@ -21,6 +21,7 @@
 									"sound": "minecraft:intentionally_empty",
 									"has_consume_particles": false
 								},
+								"minecraft:item_model": "stoupy:tomato",
 								"minecraft:item_name": {
 									"text": "Tomato"
 								},

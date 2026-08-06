@@ -10,7 +10,6 @@ from stewbeet import Mem, write_advancement, write_tick_file, write_versioned_fu
 from .constants import (
 	LIFETIME,
 	THROW_SPEED,
-	THROWER_TAG,
 	TOMATO_ITEM,
 	TOMATO_TAG,
 	USED_TAG,
@@ -59,22 +58,19 @@ function {ns}:v{version}/{TOMATO_ITEM}/throw
 
 		write_versioned_function(f"{TOMATO_ITEM}/throw", f"""
 # Let the freshly summoned tomato copy the item it was thrown with
-tag @s add {ns}.{THROWER_TAG}
 execute anchored eyes positioned ^ ^ ^0.4 summon item_display run function {ns}:v{version}/{TOMATO_ITEM}/init
-tag @s remove {ns}.{THROWER_TAG}
 
 # Spend one tomato from the stack
 item modify entity @s weapon.mainhand {ns}:v{version}/{TOMATO_ITEM}/consume_one
-playsound minecraft:entity.snowball.throw player @a[distance=..24] ~ ~ ~ 0.8 1.4
+playsound minecraft:entity.snowball.throw player @s ~ ~ ~ 0.25 1.4
 """)
 
 		write_versioned_function(f"{TOMATO_ITEM}/init", f"""
 tag @s add {ns}.{TOMATO_TAG}
 
 # Wear the exact item that was thrown, so restyling the tomato needs no change here
-data modify entity @s item set from entity @n[type=player,tag={ns}.{THROWER_TAG},limit=1] equipment.mainhand
-data modify entity @s item.count set value 1
-data modify entity @s item_display set value "fixed"
+loot replace entity @s contents loot {ns}:i/tomato
+data modify entity @s billboard set value "vertical"
 data modify entity @s brightness set value {{sky: 15, block: 15}}
 data modify entity @s teleport_duration set value 1
 data modify entity @s transformation.scale set value [0.55f, 0.55f, 0.55f]

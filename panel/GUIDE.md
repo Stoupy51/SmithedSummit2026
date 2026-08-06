@@ -124,14 +124,14 @@ Two things worth internalising before you are in front of people:
 /loot give @s loot summit.laser_pointer:zz/smithed_laser_pointer
 ```
 
-**Tomatoes** (for the AI section):
+**tomatoes** (for the AI section):
 
 ```mcfunction
 /function stoupy:tomato/give      # 8 tomatoes to everyone not spectating
 /function stoupy:tomato/clear     # splats what is flying AND empties every inventory
 ```
 
-Tomatoes always fly, there is nothing to arm. `clear` is the kill switch — it takes them out of people's hands, so the barrage actually stops.
+tomatoes always fly, there is nothing to arm. `clear` is the kill switch — it takes them out of people's hands, so the barrage actually stops.
 
 To fire either of these off a specific slide instead of typing them, add a `PAGE_OVERRIDES` entry in [src/reef/slideshow.py](src/reef/slideshow.py):
 

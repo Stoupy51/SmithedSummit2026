@@ -45,8 +45,8 @@ execute if score @s {ns}.{TOMATO_ITEM}.life matches ..0 run function {ns}:v{vers
 	def write_splat() -> None:
 		""" Burst the tomato into redstone block debris and remove it. """
 		write_versioned_function(f"{TOMATO_ITEM}/splat", f"""
-particle minecraft:block{{block_state: "minecraft:redstone_block"}} ~ ~ ~ 0.25 0.25 0.25 0.12 {SPLAT_PARTICLES} normal @a[distance=..64]
-particle minecraft:dust{{color: [0.85, 0.1, 0.1], scale: 1.4}} ~ ~ ~ 0.3 0.3 0.3 0 25 normal @a[distance=..64]
+particle minecraft:block{{block_state: "minecraft:redstone_block"}} ~ ~ ~ 0.25 0.25 0.25 0.12 {SPLAT_PARTICLES} force @a[distance=..64]
+particle minecraft:dust{{color: [0.85, 0.1, 0.1], scale: 1.4}} ~ ~ ~ 0.3 0.3 0.3 0 25 force @a[distance=..64]
 playsound minecraft:entity.slime.squish_small player @a[distance=..32] ~ ~ ~ 1 1.4
 kill @s
 """)

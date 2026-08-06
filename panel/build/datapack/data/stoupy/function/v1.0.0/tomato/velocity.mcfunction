@@ -18,9 +18,9 @@ execute store result score @s bs.vel.y run data get entity @s Pos[1] 1000
 execute store result score @s bs.vel.z run data get entity @s Pos[2] 1000
 
 # Scale that unit vector up to the throwing speed
-scoreboard players operation @s bs.vel.x *= #900 stoupy.data
-scoreboard players operation @s bs.vel.y *= #900 stoupy.data
-scoreboard players operation @s bs.vel.z *= #900 stoupy.data
+scoreboard players operation @s bs.vel.x *= #1800 stoupy.data
+scoreboard players operation @s bs.vel.y *= #1800 stoupy.data
+scoreboard players operation @s bs.vel.z *= #1800 stoupy.data
 scoreboard players operation @s bs.vel.x /= #1000 stoupy.data
 scoreboard players operation @s bs.vel.y /= #1000 stoupy.data
 scoreboard players operation @s bs.vel.z /= #1000 stoupy.data

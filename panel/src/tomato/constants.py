@@ -8,7 +8,7 @@ lives here so the panel can be balanced without touching the command generation.
 TOMATO_ITEM: str = "tomato"
 """ Item id registered in src/definitions/additions.py. """
 
-THROW_SPEED: int = 900
+THROW_SPEED: int = 1800
 """ Initial speed in thousandths of a block per tick, so 900 is 0.9 block per tick. """
 
 GRAVITY: int = 35

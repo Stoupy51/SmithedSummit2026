@@ -15,7 +15,7 @@ def beet_default(ctx: Context):
     main_additions()
 
     # Final adjustments
-    add_item_model_component(black_list=["tomato"])
+    add_item_model_component(black_list=[])
     add_item_name_and_lore_if_missing()
     add_private_custom_data_for_namespace()
     add_smithed_ignore_vanilla_behaviours_convention()

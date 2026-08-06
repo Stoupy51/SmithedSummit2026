@@ -9,9 +9,8 @@
 tag @s add stoupy.tomato
 
 # Wear the exact item that was thrown, so restyling the tomato needs no change here
-data modify entity @s item set from entity @n[type=player,tag=stoupy.tomato.thrower,limit=1] equipment.mainhand
-data modify entity @s item.count set value 1
-data modify entity @s item_display set value "fixed"
+loot replace entity @s contents loot stoupy:i/tomato
+data modify entity @s billboard set value "vertical"
 data modify entity @s brightness set value {sky: 15, block: 15}
 data modify entity @s teleport_duration set value 1
 data modify entity @s transformation.scale set value [0.55f, 0.55f, 0.55f]

@@ -27,6 +27,7 @@ ignore: ["build", "manual_cache", "definitions_debug.json"]
 require:
     - "reef"
     - "stewbeet"
+    - "stewbeet.plugins.livereload"
     - "beet.contrib.unknown_files"
 
 # Takes a nested pack config, see PackConfig() documentation
