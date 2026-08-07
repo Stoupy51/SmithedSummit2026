@@ -102,7 +102,7 @@ meta:
             # 72 keeps one PDF point per pixel: a 1440x810 pt export bakes 1440x810 px textures,
             # which is 68 px per block on a 21 block wide screen, 4x vanilla. Raising this mostly
             # grows the resource pack everyone has to download.
-            dpi: 72
+            dpi: 108 #72
             # Poppler binaries required by pdf2image, from https://github.com/oschwartz10612/poppler-windows
             # Set to null once poppler's bin folder is on the system PATH.
             poppler_path: "D:/advanced_desktop/poppler/poppler-26.02.0/Library/bin"

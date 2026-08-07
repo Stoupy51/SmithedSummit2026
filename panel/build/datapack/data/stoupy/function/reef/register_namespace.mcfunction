@@ -11,5 +11,23 @@ function stoupy:reef/register/page/panel/2
 function stoupy:reef/register/page/panel/3
 function stoupy:reef/register/page/panel/4
 function stoupy:reef/register/page/panel/5
+function stoupy:reef/register/page/panel/6
+function stoupy:reef/register/page/panel/7
+function stoupy:reef/register/page/panel/8
+function stoupy:reef/register/page/panel/9
+function stoupy:reef/register/page/panel/10
+function stoupy:reef/register/page/panel/11
+function stoupy:reef/register/page/panel/12
+function stoupy:reef/register/page/panel/13
+function stoupy:reef/register/page/panel/14
+function stoupy:reef/register/page/panel/15
+function stoupy:reef/register/page/panel/16
+function stoupy:reef/register/page/panel/17
+function stoupy:reef/register/page/panel/18
+function stoupy:reef/register/page/panel/19
+function stoupy:reef/register/page/panel/20
+function stoupy:reef/register/page/panel/21
+function stoupy:reef/register/page/panel/22
+function stoupy:reef/register/page/panel/23
 function stoupy:reef/register/slideshow/panel
 
