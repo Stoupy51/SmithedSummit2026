@@ -11,6 +11,7 @@ They are familiar with the basics of datapacks, so don't need to explain everyth
 Things I want to do:
 - Have a pointer (using bookshelf raycast) so people can see where i'm pointing on the screen.
 - Ability to launch tomatoes that explodes in red particles (redstone block) when encounter a block (check how grenades are thrown in D:\advanced_desktop\StoupGun\src)
+- HAMMER ON A MANNEQUIN
 
 My initial plan is:
 
@@ -67,6 +68,5 @@ My initial plan is:
   - Therefore, I'll explain how I personally use AI for datapacks and present some examples and goes into details of advantages and disadvantages.
     - A little bit (SimplEnergy): Code auto-completion, refactoring, making documentation and code comments
     - Average (StewBeet): Big refactors, creating tests, performance improvements (not mcfunction but python: pyinstrument), updating to new versions of Minecraft (ex: I read changelogs, ask AI to update, then review the changes) <= Human always have the last word and guide what the AI should work on. I don't let AI do things I don't understand. But there was a time I asked AI to explain me the cache system of Beet: "Explain me the cache system of Beet => then I understand => then "Use the beet cache system for handling dependencies versioning in StewBeet" => then I understand and can correct what was wrong. Bad example would be: "Use a cache system for handling dependencies versioning" => that's too vague, I could have not understood parts of generated code and it may have not been optimal.
-    - Vibecoding demon (MC Guns Systems): 99.9% of the lines of code are AI generated, almost all is prompts. The nightmare of almost everyone here listening to me.
 
 

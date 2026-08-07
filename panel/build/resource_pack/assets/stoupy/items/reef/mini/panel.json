@@ -8,42 +8,78 @@
         "threshold": 0,
         "model": {
           "type": "minecraft:model",
-          "model": "stoupy:item/reef/mini/panel/0"
+          "model": "stoupy:item/reef/mini/panel/0",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
         }
       },
       {
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "stoupy:item/reef/mini/panel/1"
+          "model": "stoupy:item/reef/mini/panel/1",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "stoupy:item/reef/mini/panel/2"
+          "model": "stoupy:item/reef/mini/panel/2",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "stoupy:item/reef/mini/panel/3"
+          "model": "stoupy:item/reef/mini/panel/3",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "stoupy:item/reef/mini/panel/4"
+          "model": "stoupy:item/reef/mini/panel/4",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "stoupy:item/reef/mini/panel/5"
+          "model": "stoupy:item/reef/mini/panel/5",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
         }
       }
     ],

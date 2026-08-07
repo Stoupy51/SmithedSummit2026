@@ -27,7 +27,7 @@ ignore: ["build", "manual_cache", "definitions_debug.json"]
 require:
     - "reef"
     - "stewbeet"
-    - "stewbeet.plugins.livereload"
+    - "beet.contrib.livereload"
     - "beet.contrib.unknown_files"
 
 # Takes a nested pack config, see PackConfig() documentation
@@ -93,8 +93,8 @@ meta:
 
     # Reef slideshow library, see REEF.md for the full reference
     reef:
-        # Constant tint multiplied into every generated element. null keeps the PDF colors untouched.
-        tint: null
+        # Constant tint multiplied into every generated element.
+        tint: 66046
         # true puts every registration command into a single function instead of one per definition
         compress_functions: false
         pdf:

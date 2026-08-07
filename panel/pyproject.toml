@@ -9,10 +9,12 @@ dependencies = [
     "stewbeet>=3.5.8",
     "smithed",
     "pypdf>=6.14.2",
+    "beet",
 ]
 
 [tool.uv.sources]
 smithed = { git = "https://github.com/Stoupy51/smithed-python.git" }
+beet = { path = "../../beet", editable = true }
 
 [tool.pyright]
 typeCheckingMode = "strict"

@@ -92,7 +92,7 @@ wheels = [
 [[package]]
 name = "beet"
 version = "0.116.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../../beet" }
 dependencies = [
     { name = "click" },
     { name = "click-help-colors" },
@@ -104,9 +104,29 @@ dependencies = [
     { name = "pyyaml" },
     { name = "toml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2a/0b/cf16e81838c3bc23dd4752bb11e874b6ade6692ed66be4cf07bde267b754/beet-0.116.0.tar.gz", hash = "sha256:11e680777f8f5f9a139c70e6f0b51067552bad36726e7dc64e3136a91b1edf5a", size = 95924, upload-time = "2026-06-26T20:53:55.979Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6d/cf/80c118bec8247bd1d1d7270152f683a9e4edf49f7ef46ec92e9ce9799ada/beet-0.116.0-py3-none-any.whl", hash = "sha256:0955308e3768fe40119c70ba047b411485fef3164a6da77e6e8fb172d5cd23c7", size = 125348, upload-time = "2026-06-26T20:53:54.75Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "click", specifier = ">=8.3.1" },
+    { name = "click-help-colors", specifier = ">=0.9.4" },
+    { name = "jinja2", specifier = ">=3.1.6" },
+    { name = "nbtlib", specifier = "==1.12.1" },
+    { name = "pathspec", specifier = ">=0.12.1" },
+    { name = "pillow", specifier = ">=12.0.0" },
+    { name = "pydantic", specifier = ">=2.12.4" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
+    { name = "toml", specifier = ">=0.10.2" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "basedpyright", specifier = ">=1.33.0" },
+    { name = "pytest", specifier = ">=9.0.0" },
+    { name = "pytest-insta", specifier = ">=0.4.0" },
+    { name = "pytest-minecraft", specifier = ">=0.2.0" },
+    { name = "python-semantic-release", specifier = ">=10.5.2" },
+    { name = "ruff", specifier = ">=0.14.4" },
+    { name = "zensical", specifier = ">=0.0.20" },
 ]
 
 [[package]]
@@ -606,6 +626,7 @@ name = "panel"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "beet" },
     { name = "pypdf" },
     { name = "reef-beet-plugin" },
     { name = "smithed" },
@@ -614,6 +635,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "beet", editable = "../../beet" },
     { name = "pypdf", specifier = ">=6.14.2" },
     { name = "reef-beet-plugin", specifier = ">=1.0.0b9" },
     { name = "smithed", git = "https://github.com/Stoupy51/smithed-python.git" },
