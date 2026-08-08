@@ -1,0 +1,7 @@
+{
+  "credit": "Generated with Reef",
+  "parent": "reef:item/element_base",
+  "textures": {
+    "image": "stoupy:item/reef/mini/main/11"
+  }
+}

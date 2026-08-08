@@ -26,8 +26,8 @@ from .stages import POINTS_PER_BLOCK, TARGET_STAGE, Stage
 SOURCE_PDF: str = "How to Boost your Productivity.pdf"
 """ Presentation export sitting next to beet.yml. Re-export over this file to update the slides, at any page size. """
 
-SLIDESHOW_NAME: str = "panel"
-""" Path of the generated slideshow, loaded in game as `<namespace>:panel`. """
+SLIDESHOW_NAME: str = "main"
+""" Path of the generated slideshow, loaded in game as `<namespace>:main`. """
 
 MAX_MARGIN_RATIO: float = 0.02
 """ Border left by fitting the slides, past which the export aspect ratio is worth complaining about. """

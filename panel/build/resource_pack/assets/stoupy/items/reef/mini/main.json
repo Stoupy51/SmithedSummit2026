@@ -1,0 +1,339 @@
+{
+  "model": {
+    "type": "minecraft:range_dispatch",
+    "property": "minecraft:custom_model_data",
+    "index": 0,
+    "entries": [
+      {
+        "threshold": 0,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/0",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 1,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/1",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 2,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/2",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 3,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/3",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 4,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/4",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 5,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/5",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 6,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/6",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 7,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/7",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 8,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/8",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 9,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/9",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 10,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/10",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 11,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/11",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 12,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/12",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 13,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/13",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 14,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/14",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 15,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/15",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 16,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/16",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 17,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/17",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/18",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 19,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/19",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 20,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/20",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 21,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/21",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 22,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/22",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 23,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/23",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      }
+    ],
+    "transformation": [
+      1440.0,
+      0,
+      0,
+      -89.5,
+      0,
+      810.0,
+      0,
+      -50.125,
+      0,
+      0,
+      1,
+      0.5,
+      0,
+      0,
+      0,
+      1
+    ]
+  }
+}
