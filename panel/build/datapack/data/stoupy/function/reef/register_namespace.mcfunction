@@ -29,5 +29,7 @@ function stoupy:reef/register/page/main/20
 function stoupy:reef/register/page/main/21
 function stoupy:reef/register/page/main/22
 function stoupy:reef/register/page/main/23
+function stoupy:reef/register/page/main/24
+function stoupy:reef/register/page/main/25
 function stoupy:reef/register/slideshow/main
 

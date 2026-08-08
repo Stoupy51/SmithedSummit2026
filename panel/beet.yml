@@ -51,7 +51,7 @@ pipeline:
     - "stewbeet.plugins.resource_pack.item_models.silent"
     - "stewbeet.plugins.custom_recipes.silent"
     - "stewbeet.plugins.custom_paintings.silent"
-    - "stewbeet.plugins.ingame_manual"
+    # - "stewbeet.plugins.ingame_manual"
     - "stewbeet.plugins.datapack.loading.silent"
     - "stewbeet.plugins.datapack.custom_blocks.silent"
     - "stewbeet.plugins.datapack.loot_tables.silent"
