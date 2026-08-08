@@ -31,5 +31,7 @@ function stoupy:reef/register/page/main/22
 function stoupy:reef/register/page/main/23
 function stoupy:reef/register/page/main/24
 function stoupy:reef/register/page/main/25
+function stoupy:reef/register/page/main/26
+function stoupy:reef/register/page/main/27
 function stoupy:reef/register/slideshow/main
 

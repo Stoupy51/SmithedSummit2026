@@ -341,6 +341,32 @@
             }
           ]
         }
+      },
+      {
+        "threshold": 26,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/26",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
+      },
+      {
+        "threshold": 27,
+        "model": {
+          "type": "minecraft:model",
+          "model": "stoupy:item/reef/mini/main/27",
+          "tints": [
+            {
+              "type": "minecraft:constant",
+              "value": 66046
+            }
+          ]
+        }
       }
     ],
     "transformation": [
